@@ -10,6 +10,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import { useNavigate } from "react-router";
 
 const categories = [
   {
@@ -47,6 +48,8 @@ const itemCategory = {
 export default function Navigator(props) {
   const { ...other } = props;
 
+  const navigate = useNavigate();
+
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -55,7 +58,7 @@ export default function Navigator(props) {
         >
           Tutorly
         </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
+        <ListItem onClick={() => { navigate('/home')}} sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
