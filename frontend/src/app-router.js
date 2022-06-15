@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Content from "./components/Content";
 import AppLayout from "./views/layout/AppLayout";
+import Board from "./components/board";
 
 const AppRoutes = (props) => {
   return (
@@ -10,6 +11,7 @@ const AppRoutes = (props) => {
           <Route index element={<Content />} />
           <Route path="/home" element={<Content />} />
         </Route>
+        <Route path='/board' element = {<Board/>}/>
       </Routes>
     </Router>
   );

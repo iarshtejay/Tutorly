@@ -10,12 +10,25 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
+import NotificationDialog from "../../../components/notificationDialog";
+import * as React from 'react';
 
 function Header(props) {
   const { onDrawerToggle } = props;
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
+    <NotificationDialog open = {open} handleClose  = {handleClose}/>
       <AppBar color="primary" position="sticky" elevation={0}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
@@ -36,8 +49,8 @@ function Header(props) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <Tooltip title="Alerts • No alerts">
-                <IconButton color="inherit">
+              <Tooltip title="View Notifications">
+                <IconButton color="inherit" onClick={handleClickOpen}>
                   <NotificationsIcon />
                 </IconButton>
               </Tooltip>
