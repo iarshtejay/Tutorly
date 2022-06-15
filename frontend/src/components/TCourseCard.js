@@ -15,7 +15,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Button } from '@mui/material';
 
 
-export default function TCourseCard({courseName, tutorName, description, cost, rating, imageURL}) {
+export default function TCourseCard({courseName, tutorName, description, cost, rating, imageURL, isTutor}) {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
