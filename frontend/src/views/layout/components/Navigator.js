@@ -10,6 +10,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 const categories = [
   {
@@ -25,8 +26,10 @@ const categories = [
   },
   {
     id: "Courses",
-    children: [{ id: "Manage", icon: <SettingsIcon /> }],
+    children: [{ id: "Manage", icon: <SettingsIcon /> },
+    { id: "Blogs", icon: <DriveFileRenameOutlineIcon /> }],
   },
+  
 ];
 
 const item = {
@@ -66,7 +69,7 @@ export default function Navigator(props) {
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: "#fff" }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
+            {children.map(({ id: childId, icon, active,onclick }) => (
               <ListItem disablePadding key={childId}>
                 <ListItemButton selected={active} sx={item}>
                   <ListItemIcon>{icon}</ListItemIcon>

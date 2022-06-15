@@ -10,9 +10,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
+import { useNavigate } from 'react-router-dom';
 
 function Header(props) {
   const { onDrawerToggle } = props;
+  const navigate = useNavigate()
 
   return (
     <>
@@ -43,8 +45,8 @@ function Header(props) {
               </Tooltip>
             </Grid>
             <Grid item>
-              <IconButton color="inherit" sx={{ p: 0.5 }}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+              <IconButton color="inherit" sx={{ p: 0.5 }} onClick={() => navigate('/profile')}>
+                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar"  />
               </IconButton>
             </Grid>
           </Grid>
