@@ -1,64 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import TCourseCard from "../../components/courses/TCourseCard";
+import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 
-export default function HomeDashboard() {
-    const dummy_data = [
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "Web Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "Android Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "App Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "React",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "Front-end Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-    ];
+export default function ArchivedCoursesDashboard() {
+    const dummy_data = [];
 
     const [courses, setCourses] = useState(dummy_data);
     const [showCourses, setShowCourses] = useState(dummy_data);
@@ -102,6 +50,7 @@ export default function HomeDashboard() {
                                 cost={value.cost}
                                 rating={value.rating}
                                 imageURL={value.imageURL}
+                                showProgress={true}
                             ></TCourseCard>
                         </Grid>
                     ))

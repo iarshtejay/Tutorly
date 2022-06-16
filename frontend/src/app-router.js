@@ -6,6 +6,9 @@ import HomeLayout from "./views/layout/HomeLayout";
 import CoursesDashboard from "./views/pages/CourseDashboard";
 import CourseDetails from "./views/pages/CourseDetails";
 import NotFound from "./components/NotFound";
+import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
+import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
+import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 
 const AppRoutes = (props) => {
   return (
@@ -14,15 +17,16 @@ const AppRoutes = (props) => {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Content />} />
         </Route>
-        <Route path="/home" element={<HomeLayout />}>
+        <Route path="home" element={<HomeLayout />}>
           <Route index element={<HomeDashboard />} />
-        </Route>
-        <Route path="/courses" element={<HomeLayout />}>
-          <Route index element={<CoursesDashboard />} />
-          <Route path=":id" element={<CourseDetails />} />
-        </Route>
-        <Route path="*" element={<HomeLayout/>}>
-          <Route index element={<NotFound/>}/>
+          <Route path="my-courses" element={<MyCoursesDashboard />} >
+            <Route path=":id" element={<CourseDetails />} />
+          </Route>
+          <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
+          <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
+          <Route path="*" element={<HomeLayout />}>
+            <Route index element={<NotFound />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

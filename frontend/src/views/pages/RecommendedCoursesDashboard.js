@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import TCourseCard from "../../components/courses/TCourseCard";
+import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 
-export default function HomeDashboard() {
+export default function RecommendedCoursesDashboard() {
     const dummy_data = [
         {
             id: "0F8JIqi4zwvb77FGz6Wt",
