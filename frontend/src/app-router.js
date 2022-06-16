@@ -8,6 +8,7 @@ import NotFound from "./components/NotFound";
 import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
+import CourseLayout from "./views/layout/CourseLayout";
 
 const AppRoutes = (props) => {
   return (
@@ -18,15 +19,14 @@ const AppRoutes = (props) => {
         </Route>
         <Route path="home" element={<HomeLayout />}>
           <Route index element={<HomeDashboard />} />
-          <Route path="my-courses" element={<MyCoursesDashboard />} >
-            <Route path=":id" element={<CourseDetails />} />
-          </Route>
+          <Route path="my-courses" element={<MyCoursesDashboard />} />
           <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
           <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
           <Route path="*" element={<HomeLayout />}>
             <Route index element={<NotFound />} />
           </Route>
         </Route>
+        <Route path="courses/:id" element={<CourseLayout/>}></Route>
       </Routes>
     </Router>
   );

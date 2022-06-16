@@ -10,13 +10,27 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 function THomeHeader(props) {
   const { onDrawerToggle } = props;
   const [chosenTab, setChosenTab] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const route_path = location.pathname.split("/")[2];
+    if(route_path === undefined){
+      setChosenTab(0);
+    } else if (route_path === 'my-courses') {
+      setChosenTab(1);
+    } else if (route_path === 'archived-courses') {
+      setChosenTab(2);
+    } else if (route_path === 'recommended-courses') {
+      setChosenTab(3);
+    }
+  }, []);
 
   const handleHomeTabClick = () => {
     setChosenTab(0);
