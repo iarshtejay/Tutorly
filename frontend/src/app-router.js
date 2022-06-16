@@ -21,6 +21,7 @@ import HomeLayout from "./views/layout/HomeLayout";
 import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
+import CourseDetails from "./views/pages/CourseDetails";
 
 const AppRoutes = (props) => {
     return (
@@ -33,6 +34,7 @@ const AppRoutes = (props) => {
                 <Route path="landing" element={<LangingPage />}></Route>
                 <Route path="/" element={<HomeLayout />}>
                     <Route index element={<HomeDashboard />} />
+                    <Route path="courses/:id" element={<CourseDetails />}></Route>
                     <Route path="my-courses" element={<MyCoursesDashboard />} />
                     <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
                     <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
