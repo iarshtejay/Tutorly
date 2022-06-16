@@ -22,6 +22,10 @@ import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import CourseDetails from "./views/pages/CourseDetails";
+import CourseLayout from "./views/layout/CourseLayout";
+import Review from "./components/Review";
+import Upload from "./components/Upload";
+import Board from "./components/board";
 
 const AppRoutes = (props) => {
     return (
@@ -34,8 +38,8 @@ const AppRoutes = (props) => {
                 <Route path="landing" element={<LangingPage />}></Route>
                 <Route path="/" element={<HomeLayout />}>
                     <Route index element={<HomeDashboard />} />
-                    <Route path="courses/:id" element={<CourseDetails />}></Route>
                     <Route path="my-courses" element={<MyCoursesDashboard />} />
+                    <Route path="my-courses/upload" element={<Upload />} />
                     <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
                     <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
                     <Route path="profile" element={<Profile />} />
@@ -51,16 +55,15 @@ const AppRoutes = (props) => {
                         <Route path="forum" element={<DiscussionForum />} />
                         <Route path="forum/:id" element={<DiscussionForumDetails />} />
                     </Route>
-                    <Route path="course">
-                        <Route index path="quiz" element={<QuizList />} />
-                        <Route path="quiz" element={<QuizList />} />
-                        <Route path="quiz/:id" element={<Quiz />} />
-                        <Route path="assignments" element={<AssignmentList />} />
-
-                        {/* <Route path="/review" element={<Review />} />
-
-                        <Route path="/upload" element={<Upload />} /> */}
-                    </Route>
+                </Route>
+                <Route path="courses" element={<CourseLayout />}>
+                    <Route path=":id" element={<CourseDetails />}></Route>
+                    {/* <Route index path="quiz" element={<QuizList />} /> */}
+                    <Route path=":id/quiz" element={<QuizList />} />
+                    <Route path=":id/quiz/:id" element={<Quiz />} />
+                    <Route path=":id/assignments" element={<AssignmentList />} />
+                    <Route path=":id/leaderboard" element={<Board />} />
+                    <Route path=":id/review" element={<Review />} />
                 </Route>
             </Routes>
         </Router>

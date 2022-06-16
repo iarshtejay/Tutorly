@@ -12,6 +12,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import Container from "@mui/material/Container";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router";
 
 const quizzes = [
     {
@@ -54,6 +55,7 @@ const Demo = styled("div")(({ theme }) => ({
 
 const QuizList = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     return (
         <>
@@ -73,7 +75,8 @@ const QuizList = () => {
                                                 <IconButton
                                                     aria-label="Start"
                                                     onClick={(e) => {
-                                                        navigate(`/course/quiz/${quiz.id}`);
+                                                        const id = location.pathname.split("/")[2];
+                                                        navigate(`/courses/${id}/quiz/${quiz.id}`);
                                                     }}
                                                 >
                                                     <KeyboardArrowRightRoundedIcon />
