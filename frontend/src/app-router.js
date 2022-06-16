@@ -9,12 +9,26 @@ import QuizList from "./components/QuizList";
 import DiscussionLayout from "./views/discussion/DiscussionLayout";
 import AppLayout from "./views/layout/AppLayout";
 import MessagingLayout from "./views/messaging/MessagingLayout";
+import LangingPage from "./components/LandingPage";
+import Login from "./components/Login";
+import Signup from "./components/SignUp";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
+import Blog from "./components/Blog";
+import Profile from "./components/Profile";
 
 const AppRoutes = (props) => {
     return (
         <Router basename={process.env.REACT_APP_BASE_HREF}>
             <Routes>
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<Signup />} />
+                <Route path="forgotPassword" element={<ForgotPassword />} />
+                <Route path="resetPassword" element={<ResetPassword />} />
+                <Route path="landing" element={<LangingPage />}></Route>
                 <Route path="/" element={<AppLayout />}>
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="blogs" element={<Blog />} />
                     <Route index element={<MessagingLayout />} />
                     <Route path="chat" element={<MessagingLayout />}>
                         <Route index element={<Messaging />} />
