@@ -90,6 +90,7 @@ export default function HomeDashboard() {
                         <Grid item xs={12} sm={6} md={4} key={key}>
                             <TCourseCard
                                 key={key}
+                                courseId={value.id}
                                 courseName={value.courseName}
                                 tutorName={value.tutorName}
                                 description={value.description}
@@ -120,18 +121,22 @@ export default function HomeDashboard() {
                     </Grid>
                 )}
             </Grid>
-            <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                style={{ minHeight: "10vh" }}
-            >
-                <Grid item xs={3}>
-                    <Pagination count={1} />
+            {showCourses.length > 0 ? (
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ minHeight: "10vh" }}
+                >
+                    <Grid item xs={3}>
+                        <Pagination count={1} />
+                    </Grid>
                 </Grid>
-            </Grid>
+            ) : (
+                <></>
+            )}
         </Paper>
     );
 }

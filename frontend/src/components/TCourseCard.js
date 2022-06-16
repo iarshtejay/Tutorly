@@ -23,6 +23,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
 }));
 
 export default function TCourseCard({
+  courseId,
   courseName,
   tutorName,
   description,
@@ -31,6 +32,18 @@ export default function TCourseCard({
   imageURL,
   showProgress
 }) {
+
+  const [favorite, setFavorite] = React.useState(false);
+
+  const handleFavoriteClick = () => {
+    console.log('fv', favorite);
+    if(favorite){
+      setFavorite(false);
+    } else {
+      setFavorite(true);
+    }
+    
+  }
   return (
     <Card sx={{ maxWidth: 350 }}>
       <CardHeader
@@ -54,7 +67,7 @@ export default function TCourseCard({
         alt="Paella dish"
       />
       <CardContent>
-        <Rating name="half-rating" defaultValue={rating} precision={0.5} />
+        <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly />
         <br />
         <Typography variant="body2" color="text.secondary">
           {description}
@@ -67,7 +80,7 @@ export default function TCourseCard({
         <Grid container spacing={2}>
           <Grid item xs={2}>
             <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
+              <FavoriteIcon style={{ color: favorite?"#009688":"grey" }} onClick={handleFavoriteClick} />
             </IconButton>
           </Grid>
           <Grid item xs={2}>

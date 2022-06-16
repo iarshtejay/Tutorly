@@ -14,11 +14,11 @@ const AppRoutes = (props) => {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Content />} />
         </Route>
-        <Route path="/home" element={<HomeLayout />}>
+        <Route path="home" element={<HomeLayout />}>
           <Route index element={<HomeDashboard />} />
-          <Route path="/home/my-courses" element={<MyCoursesDashboard />} />
-          <Route path="/home/archived-courses" element={<ArchivedCoursesDashboard />} />
-          <Route path="/home/recommended-courses" element={<RecommendedCoursesDashboard />} />
+          <Route path="my-courses" element={<MyCoursesDashboard />} />
+          <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
+          <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
         </Route>
       </Routes>
     </Router>
