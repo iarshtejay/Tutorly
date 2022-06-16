@@ -10,9 +10,33 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function THomeHeader(props) {
   const { onDrawerToggle } = props;
+  const [chosenTab, setChosenTab] = useState(0);
+  const navigate = useNavigate();
+
+  const handleHomeTabClick = () => {
+    setChosenTab(0);
+    navigate("/home");
+  }
+
+  const handleMyCoursesTabClick = () => {
+    setChosenTab(1);
+    navigate("/home/my-courses/");
+  }
+
+  const handleArchivedCoursesTabClick = () => {
+    setChosenTab(2);
+    navigate("/home/archived-courses/");
+  }
+
+  const handleRecommendedCoursesTabClick = () => {
+    setChosenTab(3);
+    navigate("/home/recommended-courses/");
+  }
 
   return (
     <>
@@ -56,11 +80,11 @@ function THomeHeader(props) {
         elevation={0}
         sx={{ zIndex: 0 }}
       >
-        <Tabs value={0} textColor="inherit">
-          <Tab label="Home" />
-          <Tab label="My Courses" />
-          <Tab label="Archived Courses" />
-          <Tab label="Recommended Courses" />
+        <Tabs value={chosenTab} textColor="inherit">
+          <Tab label="Home" onClick={handleHomeTabClick}/>
+          <Tab label="My Courses" onClick={handleMyCoursesTabClick}/>
+          <Tab label="Archived Courses" onClick={handleArchivedCoursesTabClick}/>
+          <Tab label="Recommended Courses" onClick={handleRecommendedCoursesTabClick} />
         </Tabs>
       </AppBar>
     </>

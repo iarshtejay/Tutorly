@@ -3,7 +3,7 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import * as React from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import THomeHeader from "../../components/THomeHeader";
 import { theme } from "../../theme/theme";
 import Navigator from "./components/Navigator";
@@ -25,6 +25,10 @@ const drawerWidth = 256;
 export default function HomeLayout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
+
+  React.useEffect(()=> {
+    localStorage.setItem("isTutor", false);
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

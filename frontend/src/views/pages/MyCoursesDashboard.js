@@ -5,7 +5,7 @@ import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 
-export default function HomeDashboard() {
+export default function MyCoursesDashboard() {
     const dummy_data = [
         {
             id: "0F8JIqi4zwvb77FGz6Wt",
@@ -96,6 +96,7 @@ export default function HomeDashboard() {
                                 cost={value.cost}
                                 rating={value.rating}
                                 imageURL={value.imageURL}
+                                showProgress={true}
                             ></TCourseCard>
                         </Grid>
                     ))
