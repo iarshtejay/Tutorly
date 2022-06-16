@@ -4,17 +4,13 @@ import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
-import { useNavigate } from 'react-router-dom';
+import TabLayout from "../TabLayout";
 
-function Header(props) {
-  const { onDrawerToggle } = props;
-  const navigate = useNavigate()
+function Header({ tabs, onDrawerToggle }) {
 
   return (
     <>
@@ -52,19 +48,17 @@ function Header(props) {
           </Grid>
         </Toolbar>
       </AppBar>
-      <AppBar
-        component="div"
-        position="static"
-        elevation={0}
-        sx={{ zIndex: 0 }}
-      >
-        <Tabs value={0} textColor="inherit">
-          <Tab label="Users" />
-          <Tab label="Sign-in method" />
-          <Tab label="Templates" />
-          <Tab label="Usage" />
-        </Tabs>
-      </AppBar>
+
+      {tabs && tabs.length > 0 && (
+        <AppBar
+          component="div"
+          position="static"
+          elevation={0}
+          sx={{ zIndex: 0 }}
+        >
+          <TabLayout data={tabs}></TabLayout>
+        </AppBar>
+      )}
     </>
   );
 }
