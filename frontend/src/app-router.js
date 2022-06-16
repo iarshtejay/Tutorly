@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AssignmentList from "./components/AssignmentList";
 import CourseSelector from "./components/Discussion/courses-list/CourseSelector";
 import DiscussionForum from "./components/Discussion/forum/DiscussionForum";
 import DiscussionForumDetails from "./components/Discussion/forum/DiscussionForumDetails";
 import { Messaging } from "./components/Messaging/Messaging";
+import Quiz from "./components/Quiz";
+import QuizList from "./components/QuizList";
 import DiscussionLayout from "./views/discussion/DiscussionLayout";
 import AppLayout from "./views/layout/AppLayout";
-import QuizList from "./components/QuizList";
-import Quiz from "./components/Quiz";
-import AssignmentList from "./components/AssignmentList";
 import MessagingLayout from "./views/messaging/MessagingLayout";
 
 const AppRoutes = (props) => {
@@ -25,9 +25,12 @@ const AppRoutes = (props) => {
                         <Route path="courses" element={<CourseSelector />} />
                         <Route path="forum" element={<DiscussionForum />} />
                         <Route path="forum/:id" element={<DiscussionForumDetails />} />
-                        <Route path="/course/quiz" element={<QuizList />} />
-                        <Route path="/course/quiz/:id" element={<Quiz />} />
-                        <Route path="/course/assignments" element={<AssignmentList />} />
+                    </Route>
+                    <Route path="course">
+                        <Route index path="quiz" element={<QuizList />} />
+                        <Route path="quiz" element={<QuizList />} />
+                        <Route path="quiz/:id" element={<Quiz />} />
+                        <Route path="assignments" element={<AssignmentList />} />
                     </Route>
                 </Route>
             </Routes>
