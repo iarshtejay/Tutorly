@@ -20,7 +20,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import ToggleButtonsMultipleDays from "./ToggleButtonsMultipleDays";
 import { AccordionDetails } from "@mui/material";
 
-export default function NewCourseDialogue({ currentCourses }) {
+export default function NewCourseDialogue({ showCourses, setShowCourses }) {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
@@ -29,14 +29,14 @@ export default function NewCourseDialogue({ currentCourses }) {
   const [classDays, setClassDays] = useState(() => [])
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [details, setDetails] = useState({
-    "id": "0F8JIqi4zwvb77FGz6Wp",
-    "courseName": "",
-    "tutorName": "Dr. Arshdeep Bree",
-    "description": "",
-    "cost": "",
-    "rating": 0,
-    "imageURL": "https://randomuser.me/api/portraits/men/81.jpg"
+  const [details, setDetails] =  useState({
+    'id': "0F8JIqi4zwvb77FGz6Wp",
+    'courseName': "",
+    'tutorName': "Dr. Arshdeep Bree",
+    'description': "",
+    'cost': "",
+    'rating': 0,
+    'imageURL': "https://randomuser.me/api/portraits/men/81.jpg"
   })
 
 
@@ -47,9 +47,10 @@ export default function NewCourseDialogue({ currentCourses }) {
   const [errorStructure, setErrorStructure] = useState(null);
   const [errorCoursePrice, setErrorCoursePrice] = useState(null);
 
-  const handleChange = (event) => {
-    setDetails({...details, event.target.name:event.target.value})
-    if (prop === 'amount') {
+  const handleChange = (prop, event) => {
+    setDetails((details) => {return {...details, prop:event.target.value}})
+    console.log(details)
+    if (prop === 'cost') {
       validateCoursePrice(event);
     } else if (prop === 'courseName') {
       validateCourseName(event);
@@ -82,13 +83,11 @@ export default function NewCourseDialogue({ currentCourses }) {
   const handleFinish = () => {
     setOpen(false);
     setOpen2(false);
-    currentCourses.push({
-      ...details
-    })
+    setShowCourses([...showCourses, details])
   };
 
   const validateCourseName = (event) => {
-    if (event.target.value.match("^[A-Za-z]*$") === null) {
+    if (event.target.value.match("^[A-Za-z ]*$") === null) {
       setErrorCourseName("Course name can only contain letters")
     } else {
       setErrorCourseName(null);
@@ -96,8 +95,8 @@ export default function NewCourseDialogue({ currentCourses }) {
   };
 
   const validateDesc = (event) => {
-    if (event.target.value.length < 250) {
-      setErrorDescription("Description should be of minimum 250 characters")
+    if (event.target.value.length === 0) {
+      setErrorDescription("Description cannot be empty")
     } else {
       setErrorDescription(null);
     }
@@ -112,11 +111,6 @@ export default function NewCourseDialogue({ currentCourses }) {
   }
 
   const validateStructure = (event) => {
-    if (event.target.value.length < 250) {
-      setErrorStructure("Structure should be of minimum 250 characters")
-    } else {
-      setErrorStructure(null);
-    }
   }
 
   const validateCoursePrice = (event) => {
@@ -139,7 +133,7 @@ export default function NewCourseDialogue({ currentCourses }) {
             Please try to be as specific as possible about the details
           </DialogContentText>
           <Stack spacing={2}>
-            <TextField id="outlined-basic" label="Name" variant="outlined" error={errorCourseName != null} helperText={errorCourseName} onChange={handleChange('courseName')} />
+            <TextField id="outlined-basic" label="Name" variant="outlined" error={errorCourseName != null} helperText={errorCourseName} onChange={e => handleChange('courseName',e)} />
             <TextField
               id="outlined-multiline-static"
               label="Description"
@@ -148,7 +142,7 @@ export default function NewCourseDialogue({ currentCourses }) {
               placeholder="Describe the course in your own words"
               error={errorDescription != null}
               helperText={errorDescription}
-              onChange={handleChange}
+              onChange={e => handleChange('description', e)}
             />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
@@ -156,7 +150,6 @@ export default function NewCourseDialogue({ currentCourses }) {
                 value={startDate}
                 onChange={(newValue) => {
                   setStartDate(newValue);
-                  handleChange()
                 }}
                 renderInput={(params) => <TextField {...params} />}
               />
@@ -221,7 +214,7 @@ export default function NewCourseDialogue({ currentCourses }) {
 
             <OutlinedInput
               id="outlined-adornment-amount"
-              onChange={handleChange('amount')}
+              onChange={e => handleChange('cost',e)}
               startAdornment={<InputAdornment position="start">$</InputAdornment>}
               placeholder={"Course Price"}
               error={errorCoursePrice != null}

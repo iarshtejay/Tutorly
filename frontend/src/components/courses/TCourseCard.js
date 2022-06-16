@@ -15,7 +15,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button, Grid } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
-import { theme } from "../theme/theme";
+import { theme } from "../../theme/theme";
 
 const BorderLinearProgress = styled(LinearProgress)(() => ({
   height: 10,

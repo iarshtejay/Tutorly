@@ -3,7 +3,6 @@ import Content from "./components/Content";
 import AppLayout from "./views/layout/AppLayout";
 import HomeDashboard from "./views/pages/HomeDashboard";
 import HomeLayout from "./views/layout/HomeLayout";
-import CoursesDashboard from "./views/pages/CourseDashboard";
 import CourseDetails from "./views/pages/CourseDetails";
 import NotFound from "./components/NotFound";
 import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";

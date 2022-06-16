@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import TCourseCard from "../../components/TCourseCard";
+import TCourseCard from "../../components/courses/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 

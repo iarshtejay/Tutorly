@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import TCourseCard from "../../components/TCourseCard";
+import TCourseCard from "../../components/courses/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
+import NewCourseDialogue from "../../components/courses/NewCourseDialog";
 
 export default function MyCoursesDashboard() {
     const dummy_data = [
@@ -84,6 +85,7 @@ export default function MyCoursesDashboard() {
                 handleSearch={handleSearch}
                 placeHolderText={"Search by course name or tutor name"}
             ></TSearchBar>
+            <NewCourseDialogue showCourses={showCourses} setShowCourses={setShowCourses}/>
             <Grid container spacing={2} sx={{ padding: 2 }}>
                 {showCourses.length > 0 ? (
                     showCourses.map((value, key) => (
