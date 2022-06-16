@@ -79,7 +79,7 @@ export default function Navigator(props) {
         >
           Tutorly
         </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
+        <ListItem onClick={() => { navigate('/home')}} sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
