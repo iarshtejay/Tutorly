@@ -11,7 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Blog from "../../../components/Blog";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const item = {
     py: "2px",
@@ -54,10 +54,6 @@ export default function Navigator(props) {
                 },
             ],
         },
-        {
-            id: "Courses",
-            children: [{ id: "Manage", icon: <SettingsIcon /> }],
-        },
     ]);
 
     const setActiveRoute = (category, child) => {
@@ -90,7 +86,7 @@ export default function Navigator(props) {
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
-                    <ListItemText>Home</ListItemText>
+                    <ListItemText>Dashboard</ListItemText>
                 </ListItem>
                 {categories.map(({ id, children }) => (
                     <Box key={id} sx={{ bgcolor: "#101F33" }}>
@@ -116,6 +112,17 @@ export default function Navigator(props) {
                         <Divider sx={{ mt: 2 }} />
                     </Box>
                 ))}
+                <ListItem
+                    onClick={() => {
+                        navigate("/landing");
+                    }}
+                    sx={{ ...item, ...itemCategory }}
+                >
+                    <ListItemIcon>
+                        <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText>Logout</ListItemText>
+                </ListItem>
             </List>
         </Drawer>
     );

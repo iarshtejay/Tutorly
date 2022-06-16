@@ -16,6 +16,11 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Blog from "./components/Blog";
 import Profile from "./components/Profile";
+import HomeDashboard from "./views/pages/HomeDashboard";
+import HomeLayout from "./views/layout/HomeLayout";
+import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
+import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
+import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 
 const AppRoutes = (props) => {
     return (
@@ -26,7 +31,11 @@ const AppRoutes = (props) => {
                 <Route path="forgotPassword" element={<ForgotPassword />} />
                 <Route path="resetPassword" element={<ResetPassword />} />
                 <Route path="landing" element={<LangingPage />}></Route>
-                <Route path="/" element={<AppLayout />}>
+                <Route path="/" element={<HomeLayout />}>
+                    <Route index element={<HomeDashboard />} />
+                    <Route path="my-courses" element={<MyCoursesDashboard />} />
+                    <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
+                    <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="blogs" element={<Blog />} />
                     <Route index element={<MessagingLayout />} />
@@ -45,6 +54,10 @@ const AppRoutes = (props) => {
                         <Route path="quiz" element={<QuizList />} />
                         <Route path="quiz/:id" element={<Quiz />} />
                         <Route path="assignments" element={<AssignmentList />} />
+
+                        {/* <Route path="/review" element={<Review />} />
+
+                        <Route path="/upload" element={<Upload />} /> */}
                     </Route>
                 </Route>
             </Routes>
