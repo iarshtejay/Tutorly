@@ -25,10 +25,10 @@ const AppRoutes = (props) => {
                         <Route path="courses" element={<CourseSelector />} />
                         <Route path="forum" element={<DiscussionForum />} />
                         <Route path="forum/:id" element={<DiscussionForumDetails />} />
-                        <Route path="/course/quiz" element={<QuizList />} />
-                        <Route path="/course/quiz/:id" element={<Quiz />} />
-                        <Route path="/course/assignments" element={<AssignmentList />} />
                     </Route>
+                    <Route path="/course/quiz" element={<QuizList />} />
+                    <Route path="/course/quiz/:id" element={<Quiz />} />
+                    <Route path="/course/assignments" element={<AssignmentList />} />
                 </Route>
             </Routes>
         </Router>
