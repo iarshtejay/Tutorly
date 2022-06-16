@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import * as React from "react";
 import { Outlet, useLocation } from "react-router";
+import THomeHeader from "../../components/THomeHeader";
 import { theme } from "../../theme/theme";
-import Header from "./components/Header";
 import Navigator from "./components/Navigator";
 
 function Copyright() {
@@ -22,37 +22,13 @@ function Copyright() {
 
 const drawerWidth = 256;
 
-export default function AppLayout() {
-  const location = useLocation();
-  const tabsConfig = {
-    "chat": {
-      tabs: [
-        {
-          label: "Messages",
-          route: "chat/messages",
-        },
-        {
-          label: "Users",
-          route: "chat/user",
-        },
-      ],
-    },
-    "discussion": {
-      tabs: [
-        {
-          label: "Courses",
-          route: "discussion/courses",
-        },
-        {
-          label: "Forum",
-          route: "discussion/forum",
-        },
-      ],
-    }
-  };
-
+export default function HomeLayout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
+
+  React.useEffect(()=> {
+    localStorage.setItem("isTutor", false);
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -79,14 +55,10 @@ export default function AppLayout() {
         />
       </Box>
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Header
-          onDrawerToggle={handleDrawerToggle}
-          tabs={tabsConfig[location.pathname.split("/")[1]]?.tabs }
-        />
+        <THomeHeader onDrawerToggle={handleDrawerToggle} />
         <Box
           component="main"
-          sx={{ flex: 1, py: 2, px: 2, bgcolor: "#eaeff1"}}
-        >
+          sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}>
           <Outlet />
         </Box>
         <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>

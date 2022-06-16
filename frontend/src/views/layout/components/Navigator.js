@@ -1,4 +1,3 @@
-import DnsRoundedIcon from "@mui/icons-material/DnsRounded";
 import HomeIcon from "@mui/icons-material/Home";
 import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -10,24 +9,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
-const categories = [
-  {
-    id: "Messaging",
-    children: [
-      {
-        id: "Chat",
-        icon: <PeopleIcon />,
-        active: true,
-      },
-      { id: "Contacts", icon: <DnsRoundedIcon /> },
-    ],
-  },
-  {
-    id: "Courses",
-    children: [{ id: "Manage", icon: <SettingsIcon /> }],
-  },
-];
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const item = {
   py: "2px",
@@ -47,6 +30,47 @@ const itemCategory = {
 export default function Navigator(props) {
   const { ...other } = props;
 
+  const navigate = useNavigate();
+
+  const [categories, updateCategories] = useState([
+    {
+      id: "Interactions",
+      children: [
+        {
+          id: "Chat",
+          icon: <PeopleIcon />,
+          route: "/chat",
+        },
+        {
+          id: "Discussion Forum",
+          icon: <PeopleIcon />,
+          route: "/discussion",
+        },
+      ],
+    },
+    {
+      id: "Courses",
+      children: [{ id: "Manage", icon: <SettingsIcon /> }],
+    },
+  ]);
+
+  const setActiveRoute = (category, child) => {
+    updateCategories((oldState) => {
+      const copy = [...oldState];
+      copy.forEach((itr) => {
+        [...itr.children].forEach((childItr) => {
+          if (itr.id === category && childItr.id === child) {
+            childItr.active = true;
+          } else {
+            childItr.active = false;
+          }
+        });
+      });
+
+      return copy;
+    });
+  };
+
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -55,7 +79,7 @@ export default function Navigator(props) {
         >
           Tutorly
         </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
+        <ListItem onClick={() => { navigate('/home')}} sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
@@ -66,9 +90,16 @@ export default function Navigator(props) {
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: "#fff" }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
+            {children.map(({ id: childId, icon, active, route, tabs }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item}>
+                <ListItemButton
+                  onClick={() => {
+                    setActiveRoute(id, childId);
+                    navigate(route, { state: { tabs } });
+                  }}
+                  selected={active}
+                  sx={item}
+                >
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

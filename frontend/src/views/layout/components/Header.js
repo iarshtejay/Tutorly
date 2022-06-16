@@ -4,17 +4,16 @@ import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import NotificationDialog from "../../../components/notificationDialog";
 import * as React from 'react';
+import TabLayout from "../TabLayout";
 
-function Header(props) {
-  const { onDrawerToggle } = props;
+
+function Header({ tabs, onDrawerToggle }) {
 
   const [open, setOpen] = React.useState(false);
 
@@ -56,26 +55,24 @@ function Header(props) {
               </Tooltip>
             </Grid>
             <Grid item>
-              <IconButton color="inherit" sx={{ p: 0.5 }}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+              <IconButton color="inherit" sx={{ p: 0.5 }} onClick={() => navigate('/profile')}>
+                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar"  />
               </IconButton>
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
-      <AppBar
-        component="div"
-        position="static"
-        elevation={0}
-        sx={{ zIndex: 0 }}
-      >
-        <Tabs value={0} textColor="inherit">
-          <Tab label="Users" />
-          <Tab label="Sign-in method" />
-          <Tab label="Templates" />
-          <Tab label="Usage" />
-        </Tabs>
-      </AppBar>
+
+      {tabs && tabs.length > 0 && (
+        <AppBar
+          component="div"
+          position="static"
+          elevation={0}
+          sx={{ zIndex: 0 }}
+        >
+          <TabLayout data={tabs}></TabLayout>
+        </AppBar>
+      )}
     </>
   );
 }
