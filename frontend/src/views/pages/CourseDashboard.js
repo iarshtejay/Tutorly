@@ -11,15 +11,16 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import TCourseCard from "../../components/TCourseCard";
+import TCourseCard from "../../components/courses/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
+import NewCourseDialogue from "../../components/courses/NewCourseDialog";
 
 
 
 export default function CoursesDashboard() {
     const isTutor = localStorage.getItem('isTutor') ? localStorage.getItem('isTutor') === 'true' : true;
     const [showUsers, setShowUsers] = useState([]);
-    const dummy_data = [
+    let dummy_data = [
         {
             "id": "0F8JIqi4zwvb77FGz6Wt",
             "courseName": "Web Development",
@@ -87,11 +88,9 @@ export default function CoursesDashboard() {
             >
                 <Stack spacing={4}>
                     <Stack alignItems="flex-end">
-                    <Button variant="contained" sx={{ maxWidth: "180px"}}>
-                        New Course
-                    </Button>
+                        <NewCourseDialogue currentCourses={dummy_data}/>
                     </Stack>
-                    
+
                     <Toolbar>
                         <Grid container spacing={1}>
                             {showUsers.map((value, key) => (
