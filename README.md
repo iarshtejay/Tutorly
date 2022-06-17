@@ -14,6 +14,7 @@
 * [Manasvi](mn838732@dal.ca) - *(Developer)*
 * [Parampal Singh](pr874463@dal.ca) - *(Developer)*
 * [Harsh Shah](harsh.shah@dal.ca) - *(Developer)*
+* [Parth Shah](parthshahk@dal.ca) - *(Developer)*
 
 ## Deployment - GCP Cloud Run
 * Hosted Url: [Tutorly-22](https://tutorly-gdhmctuboq-uc.a.run.app/landing)
