@@ -4,6 +4,9 @@ import Grid from "@mui/material/Grid";
 import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
+import NewCourseDialog from "../../components/NewCourseDialog";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
 export default function MyCoursesDashboard() {
     const dummy_data = [
@@ -67,8 +70,7 @@ export default function MyCoursesDashboard() {
             const selectedCourses = courses.filter((x) => {
                 for (var i in x) {
                     if (i === "courseName" || i === "description" || i === "tutorName") {
-                        if (x[i].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
-                            return x;
+                        if (x[i].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) return x;
                     }
                 }
             });
@@ -79,65 +81,51 @@ export default function MyCoursesDashboard() {
     }, [searchTerm]);
 
     return (
-        <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
-            <TSearchBar
-                handleSearch={handleSearch}
-                placeHolderText={"Search by course name or tutor name"}
-            ></TSearchBar>
-            <Grid container spacing={2} sx={{ padding: 2 }}>
-                {showCourses.length > 0 ? (
-                    showCourses.map((value, key) => (
-                        <Grid item xs={12} sm={6} md={4} key={key}>
-                            <TCourseCard
-                                key={key}
-                                courseId={value.id}
-                                courseName={value.courseName}
-                                tutorName={value.tutorName}
-                                description={value.description}
-                                cost={value.cost}
-                                rating={value.rating}
-                                imageURL={value.imageURL}
-                                showProgress={true}
-                            ></TCourseCard>
-                        </Grid>
-                    ))
-                ) : (
-                    <Grid
-                        container
-                        spacing={0}
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                        style={{ minHeight: "50vh" }}
-                    >
-                        <Grid item xs={3}>
-                            <Typography
-                                sx={{ my: 5, mx: 2 }}
-                                color="text.secondary"
-                                align="center"
-                            >
-                                No courses found.
-                            </Typography>
+        <>
+            <Container fixed>
+                <Box>
+                    <Grid container spacing={8}>
+                        <Grid item xs={9} md={9} />
+                        <Grid item xs={3} md={3}>
+                            <NewCourseDialog />
                         </Grid>
                     </Grid>
-                )}
+                </Box>
+            </Container>
+
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={12}></Grid>
+                <Grid item xs={12} md={12}></Grid>
             </Grid>
-            {showCourses.length > 0 ? (
-                <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: "10vh" }}
-                >
-                    <Grid item xs={3}>
-                        <Pagination count={1} />
-                    </Grid>
+            <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
+                <TSearchBar handleSearch={handleSearch} placeHolderText={"Search by course name or tutor name"}></TSearchBar>
+                <Grid container spacing={2} sx={{ padding: 2 }}>
+                    {showCourses.length > 0 ? (
+                        showCourses.map((value, key) => (
+                            <Grid item xs={12} sm={6} md={4} key={key}>
+                                <TCourseCard key={key} courseId={value.id} courseName={value.courseName} tutorName={value.tutorName} description={value.description} cost={value.cost} rating={value.rating} imageURL={value.imageURL} showProgress={true}></TCourseCard>
+                            </Grid>
+                        ))
+                    ) : (
+                        <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: "50vh" }}>
+                            <Grid item xs={3}>
+                                <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
+                                    No courses found.
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    )}
                 </Grid>
-            ) : (
-                <></>
-            )}
-        </Paper>
+                {showCourses.length > 0 ? (
+                    <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: "10vh" }}>
+                        <Grid item xs={3}>
+                            <Pagination count={1} />
+                        </Grid>
+                    </Grid>
+                ) : (
+                    <></>
+                )}
+            </Paper>
+        </>
     );
 }
