@@ -51,3 +51,38 @@ export const fetchForumPost = createAsyncThunk("discussion/forum", async () => {
     }, 1000);
   });
 });
+
+export const fetchPostDetails = createAsyncThunk("discussion/post", async () => {
+  return await new Promise((resolve) => {
+    setTimeout(() => {
+
+      const data = {
+        id: faker.datatype.uuid(),
+        name: faker.name.findName() + " " + faker.name.lastName(),
+        title: faker.lorem.words(15),
+        message: faker.random.words(150),
+        description: faker.random.words(150),
+        timestamp: faker.date.between(
+          "2022-01-01T00:00:00.000Z",
+          "2022-06-01T00:00:00.000Z"),
+      }
+
+
+      const responses =  Array.from({ length: 5 }, () => {
+        return {
+          id: faker.datatype.uuid(),
+          name: faker.name.findName() + " " + faker.name.lastName(),
+          title: faker.lorem.words(15),
+          message: faker.random.words(150),
+          description: faker.random.words(150),
+          timestamp: faker.date.between(
+            "2022-01-01T00:00:00.000Z",
+            "2022-06-01T00:00:00.000Z"),
+        };
+      })
+
+      resolve({ data, responses });
+    }, 1000);
+  });
+});
+

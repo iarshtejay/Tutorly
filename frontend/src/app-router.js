@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import AssignmentList from "./components/AssignmentList";
 import CourseSelector from "./components/Discussion/courses-list/CourseSelector";
 import DiscussionForum from "./components/Discussion/forum/DiscussionForum";
@@ -22,8 +22,11 @@ import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import CourseDetails from "./views/pages/CourseDetails";
+import DiscussionForumEditor from "./components/Discussion/forum/DiscussionForumEditor";
+import MasterLayout from "./views/layout/MasterLayout";
 
 const AppRoutes = (props) => {
+
     return (
         <Router basename={process.env.REACT_APP_BASE_HREF}>
             <Routes>
@@ -32,7 +35,7 @@ const AppRoutes = (props) => {
                 <Route path="forgotPassword" element={<ForgotPassword />} />
                 <Route path="resetPassword" element={<ResetPassword />} />
                 <Route path="landing" element={<LangingPage />}></Route>
-                <Route path="/" element={<HomeLayout />}>
+                <Route path="/" element={<MasterLayout />}>
                     <Route index element={<HomeDashboard />} />
                     <Route path="courses/:id" element={<CourseDetails />}></Route>
                     <Route path="my-courses" element={<MyCoursesDashboard />} />
@@ -49,6 +52,7 @@ const AppRoutes = (props) => {
                         <Route index element={<CourseSelector />} />
                         <Route path="courses" element={<CourseSelector />} />
                         <Route path="forum" element={<DiscussionForum />} />
+                        <Route path="forum/editor" element={<DiscussionForumEditor />} />
                         <Route path="forum/:id" element={<DiscussionForumDetails />} />
                     </Route>
                     <Route path="course">

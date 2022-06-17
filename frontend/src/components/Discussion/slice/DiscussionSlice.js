@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { createSlice, current } from "@reduxjs/toolkit";
-import { fetchCourseList, fetchForumPost } from "../services/discussion-rest";
+import { fetchCourseList, fetchForumPost, fetchPostDetails } from "../services/discussion-rest";
 
 const initialState = {
   courses: {
@@ -13,9 +13,11 @@ const initialState = {
     filteredList: [],
     isFetching: false,
   },
-  activeChat: {
+  postDetails: {
     id: null,
-    person: {},
+    details: {},
+    responses: [],
+    isFetching: false,
   },
 };
 
@@ -75,6 +77,16 @@ export const discussionSlice = createSlice({
       state.posts.isFetching = false;
     });
     builder.addCase(fetchForumPost.pending, (state) => {
+      state.posts.isFetching = true;
+    });
+
+
+    builder.addCase(fetchPostDetails.fulfilled, (state, action) => {
+      state.postDetails.details = action.payload.data;
+      state.postDetails.responses = action.payload.responses;
+      state.posts.isFetching = false;
+    });
+    builder.addCase(fetchPostDetails.pending, (state) => {
       state.posts.isFetching = true;
     });
   },
