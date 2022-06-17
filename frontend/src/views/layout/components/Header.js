@@ -38,7 +38,7 @@ function Header({ tabs, onDrawerToggle }) {
                         </Grid>
                         <Grid item xs>
                             <Typography color="inherit" variant="h6" component="h1">
-                                Tutorly
+                            Welcome, John Doe!
                             </Typography>
                         </Grid>
                         <Grid item xs />

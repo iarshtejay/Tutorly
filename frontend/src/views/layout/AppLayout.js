@@ -30,11 +30,7 @@ export default function AppLayout() {
         {
           label: "Messages",
           route: "chat/messages",
-        },
-        {
-          label: "Users",
-          route: "chat/user",
-        },
+        }
       ],
     },
     "discussion": {

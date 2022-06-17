@@ -1,31 +1,31 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AssignmentList from "./components/AssignmentList";
+import Blog from "./components/Blog";
+import Board from "./components/board";
 import CourseSelector from "./components/Discussion/courses-list/CourseSelector";
 import DiscussionForum from "./components/Discussion/forum/DiscussionForum";
 import DiscussionForumDetails from "./components/Discussion/forum/DiscussionForumDetails";
-import { Messaging } from "./components/Messaging/Messaging";
-import Quiz from "./components/Quiz";
-import QuizList from "./components/QuizList";
-import DiscussionLayout from "./views/discussion/DiscussionLayout";
-import AppLayout from "./views/layout/AppLayout";
-import MessagingLayout from "./views/messaging/MessagingLayout";
+import DiscussionForumEditor from "./components/Discussion/forum/DiscussionForumEditor";
+import ForgotPassword from "./components/ForgotPassword";
 import LangingPage from "./components/LandingPage";
 import Login from "./components/Login";
-import Signup from "./components/SignUp";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
-import Blog from "./components/Blog";
+import { Messaging } from "./components/Messaging/Messaging";
 import Profile from "./components/Profile";
-import HomeDashboard from "./views/pages/HomeDashboard";
-import HomeLayout from "./views/layout/HomeLayout";
-import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
-import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
-import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
-import CourseDetails from "./views/pages/CourseDetails";
-import CourseLayout from "./views/layout/CourseLayout";
+import Quiz from "./components/Quiz";
+import QuizList from "./components/QuizList";
+import ResetPassword from "./components/ResetPassword";
 import Review from "./components/Review";
+import Signup from "./components/SignUp";
 import Upload from "./components/Upload";
-import Board from "./components/board";
+import DiscussionLayout from "./views/discussion/DiscussionLayout";
+import CourseLayout from "./views/layout/CourseLayout";
+import MasterLayout from "./views/layout/MasterLayout";
+import MessagingLayout from "./views/messaging/MessagingLayout";
+import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
+import CourseDetails from "./views/pages/CourseDetails";
+import HomeDashboard from "./views/pages/HomeDashboard";
+import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
+import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 
 const AppRoutes = (props) => {
     return (
@@ -36,7 +36,7 @@ const AppRoutes = (props) => {
                 <Route path="forgotPassword" element={<ForgotPassword />} />
                 <Route path="resetPassword" element={<ResetPassword />} />
                 <Route path="landing" element={<LangingPage />}></Route>
-                <Route path="/" element={<HomeLayout />}>
+                <Route path="/" element={<MasterLayout />}>
                     <Route index element={<HomeDashboard />} />
                     <Route path="my-courses" element={<MyCoursesDashboard />} />
                     <Route path="my-courses/upload" element={<Upload />} />
@@ -53,6 +53,7 @@ const AppRoutes = (props) => {
                         <Route index element={<CourseSelector />} />
                         <Route path="courses" element={<CourseSelector />} />
                         <Route path="forum" element={<DiscussionForum />} />
+                        <Route path="forum/editor" element={<DiscussionForumEditor />} />
                         <Route path="forum/:id" element={<DiscussionForumDetails />} />
                     </Route>
                 </Route>
