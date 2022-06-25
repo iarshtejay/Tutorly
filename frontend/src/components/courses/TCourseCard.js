@@ -16,6 +16,7 @@ import { Button, Grid } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { theme } from "../../theme/theme";
+import { useNavigate } from "react-router";
 
 const BorderLinearProgress = styled(LinearProgress)(() => ({
   height: 10,
@@ -34,9 +35,9 @@ export default function TCourseCard({
 }) {
 
   const [favorite, setFavorite] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleFavoriteClick = () => {
-    console.log('fv', favorite);
     if(favorite){
       setFavorite(false);
     } else {
@@ -44,6 +45,11 @@ export default function TCourseCard({
     }
     
   }
+
+  const handleOnClick = () => {
+    navigate(`/home/courses/${courseId}`)
+  }
+
   return (
     <Card sx={{ maxWidth: 350 }}>
       <CardHeader
@@ -89,7 +95,7 @@ export default function TCourseCard({
             </IconButton>
           </Grid>
           <Grid item xs={8} style={{textAlign: 'right'}}>
-            <Button>GO TO COURSE</Button>
+            <Button onClick={handleOnClick}>GO TO COURSE</Button>
           </Grid>
         </Grid>
       </CardActions>

@@ -26,7 +26,9 @@ const AppRoutes = (props) => {
             <Route index element={<NotFound />} />
           </Route>
         </Route>
-        <Route path="courses/:id" element={<CourseLayout/>}></Route>
+        <Route path="courses" element={<CourseLayout />}>
+          <Route path=":id" element={<CourseDetails/>}></Route>
+        </Route>
       </Routes>
     </Router>
   );
