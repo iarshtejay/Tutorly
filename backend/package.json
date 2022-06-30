@@ -1,15 +1,18 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "Group 22 Tutorly Backend",
-  "main": "index.js",
+  "name": "tutorly",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
   "scripts": {
-    "test": "mocha test"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://git.cs.dal.ca/shah3/group22_tutorly.git"
+  "dependencies": {
   },
-  "author": "Bharatwaaj Shankaranarayanan",
-  "license": "ISC"
+  "author": {
+    "name": ""
+  },
+  "engines": {
+    "node": ">=12.x.x <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
 }
