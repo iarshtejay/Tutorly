@@ -1,3 +1,4 @@
+require('dotenv-flow').config();
 const express = require("express");
 const http = require("http");
 const bodyParser = require("body-parser");
@@ -6,7 +7,7 @@ const logger = require("morgan");
 const app = express();
 
 app.use(logger("dev"));
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 
 const db = require("./src/db");
 

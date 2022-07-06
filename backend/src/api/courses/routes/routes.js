@@ -48,6 +48,31 @@ router.get("/all", async (req, res) => {
     }
 });
 
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Create a new course
+ * @params req, res
+ * @return courses
+ */
+ router.put("/update/:id", async (req, res) => {
+    try {
+        const course = req.body.course;
+        if(!course){
+            requestParamCourseNotFound(res);
+        }
+        const courses = await Service.createCourse(course);
+        return res.status(200).json({
+            courses
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to retrieve courses.",
+            success: false,
+        });
+    }
+});
+
 
 
 module.exports = router;
