@@ -1,33 +1,15 @@
-require('dotenv-flow').config();
-
 const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
+const port = process.env.PORT || 5000;
 
-const session = require('express-session');
-const mongoose = require("mongoose");
-const MongoDBStore = require("connect-mongodb-session")(session);
+const db = require("./src/db");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log("ped", process.env.DATABASE_URI);
-
-const store = new MongoDBStore({
-    uri: process.env.DATABASE_URI,
-    collection: "sessions",
-    expires: 1000 * 1800,
-});
-
-mongoose.connect(process.env.DATABASE_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    socketTimeoutMS: 100000,
-    connectTimeoutMS: 100000,
-});
-
-app.use('/api', require('./src/api'));
+app.use("/api", require("./src/routes"));
 
 app.get("*", function (req, res) {
     res.status(404).send({
@@ -35,35 +17,20 @@ app.get("*", function (req, res) {
     });
 });
 
-mongoose.connection.on("connected", () => {
-    const server = app.listen(process.env.PORT || 8080, () => {
-        console.log("listening on port %s...", server.address().port);
-    });
-});
-
-mongoose.connection.on("error", (err) => {
-    console.error("Database Connection Error", "Database", err);
-});
-
-mongoose.connection.on("disconnected", () => {
-    console.log("Database Disconnected", "Database");
-
-    if (server) {
-        server.close();
-    }
-});
-
 const stop = () => {
-    mongoose.connection.close(() => {
+    db.close(() => {
         process.exit(0);
     });
 };
 
 process.on("SIGINT", () => {
-    mongoose.connection.close(() => {
+    db.close(() => {
         process.exit(0);
     });
 });
 
-module.exports = app;
-module.exports.stop = stop;
+app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+});
+
+module.exports = { app, stop };
