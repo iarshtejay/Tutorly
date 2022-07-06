@@ -1,7 +1,11 @@
 const express = require("express");
+const http = require("http");
 const bodyParser = require("body-parser");
+const logger = require("morgan");
 
 const app = express();
+
+app.use(logger("dev"));
 const port = process.env.PORT || 5000;
 
 const db = require("./src/db");
@@ -29,8 +33,14 @@ process.on("SIGINT", () => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+
+const server = http.createServer(app);
+
+db.on("connected", () => {
+    console.log("Database connected");
+    server.listen(port, () => {
+        console.log(`App listening on port ${port}`);
+    });
 });
 
 module.exports = { app, stop };
