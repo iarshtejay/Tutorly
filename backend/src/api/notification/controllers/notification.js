@@ -4,12 +4,20 @@ const mongoose = require('mongoose');
 const Notifications = require('../models/notification')
 const UserNotificationDetailsSchema = require('../models/userNotificationDetails')
 
+/**
+ * @author Parampal Singh
+ * @description Get all notifications of a user
+ * @params req, res
+ * @return all notifications
+ */
 const getNotifications = asyncHandler(async (req, res) => {
     try {
-        const notifications = await Notifications.find().sort({ createdAt: -1 })
-        
+        const userNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.params.id}).exec()
+        console.log("hi")
+        const notifications = await Notifications.find({"createdAt" : {$gte:userNotificationDetails.createdAt}, user: req.params.id}).sort({ createdAt: -1 })
+        console.log("hi")
         res.status(200).json({
-            message: 'Get notifications',
+            message: notifications.length,
             success: true,
             notification: notifications
         });
@@ -24,6 +32,12 @@ const getNotifications = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Send notifications
+ * @params req, res
+ * @return notification after saving it
+ */
 const sendNotifications = asyncHandler(async (req, res) => {
     try {
         if(!req.body.text){
@@ -56,6 +70,12 @@ const sendNotifications = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Get notificational details of a user
+ * @params req, res
+ * @return notification details
+ */
 const getUserNotificationDetails = asyncHandler(async (req, res) => {
     try {
         const userNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.params.id}).exec()
@@ -75,6 +95,12 @@ const getUserNotificationDetails = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Set notificational details of a user
+ * @params req, res
+ * @return notification details
+ */
 const setUserNotificationDetails = asyncHandler(async (req, res) => {
     try {
 
@@ -108,6 +134,12 @@ const setUserNotificationDetails = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Update notification preference (On/ Off)
+ * @params req, res
+ * @return updated notification details
+ */
 const updatePreference = asyncHandler(async (req, res) => {
     try {
         if(!req.body.preference){
@@ -132,6 +164,12 @@ const updatePreference = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Get favorite notifications
+ * @params req, res
+ * @return favorite notifications
+ */
 const getFavoriteNotifications = asyncHandler(async (req, res) => {
     try {
         const userNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.params.id}).exec()
@@ -154,6 +192,12 @@ const getFavoriteNotifications = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Update favorite notification list
+ * @params req, res
+ * @return success message 
+ */
 const updateFavorites = asyncHandler(async (req, res) => {
     try {
         if(!req.body.favorite){
@@ -201,6 +245,12 @@ const updateFavorites = asyncHandler(async (req, res) => {
     }
 })
 
+/**
+ * @author Parampal Singh
+ * @description Get notifications sent by a tutuor
+ * @params req, res
+ * @return notifications by a tutor
+ */
 const getSentNotifications = asyncHandler(async (req, res) => {
     try {
         const userSentNotifications = await Notifications.find({user: req.params.id}).sort({ createdAt: -1 }).exec()
