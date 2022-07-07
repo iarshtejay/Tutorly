@@ -67,10 +67,10 @@ function NotificationDialog(props) {
         setSendNotify(false);
     };
 
-    const url = "http://localhost:5000/api/notifications/";
+    const url = "http://localhost:5000/api/notifications/110987";
     const url2 = "http://localhost:5000/api/notifications/favorite/110987"
     const url3 = "http://localhost:5000/api/notifications/details/110987"
-    const url5 = "http://localhost:5000/api/notifications/110987"
+    const url6 = "http://localhost:5000/api/notifications/tutor/110987"
 
     const [allNotifications, setAllNotifications] = React.useState([])
     const [favNotifications, setAllFavoriteNotifications] = React.useState([])
@@ -79,7 +79,6 @@ function NotificationDialog(props) {
     const [isNotificationOn, setIsNotificationOn] = React.useState(false)
     const [isTutor, SetIsTutor] = React.useState(true); //Need to get from logged in user
 
-    let allNotificationsReplica = allNotifications.slice();
     let isTutorFromStore;
     const getNotificationData = async () => {
         const notifications = await axios.get(url);
