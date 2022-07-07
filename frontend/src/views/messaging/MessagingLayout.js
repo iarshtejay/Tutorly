@@ -8,7 +8,7 @@ const MessagingLayout = () => {
       item
       md={12}
       sm={12}
-      sx={{ height: "90%", maxHeight: "90%" }}
+      sx={{ height: "100%", maxHeight: "100%" }}
     >
       <Outlet />
     </Grid>
