@@ -22,5 +22,6 @@ db.on("disconnected", () => {
     console.log("Database connection disconnected");
 });
 
+const ObjectId = mongoose.Types.ObjectId; 
 
-module.exports = db;
+module.exports = { db, ObjectId } ;

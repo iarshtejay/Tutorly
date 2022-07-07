@@ -1,0 +1,3 @@
+use("tutorly")
+
+db.messages.deleteMany({})
