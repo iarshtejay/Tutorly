@@ -1,24 +1,10 @@
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import * as React from "react";
 import { Outlet, useLocation } from "react-router";
 import { theme } from "../../theme/theme";
 import Header from "./components/Header";
 import Navigator from "./components/Navigator";
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center">
-            {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{" "}
-            {new Date().getFullYear()}.
-        </Typography>
-    );
-}
 
 const drawerWidth = 256;
 
@@ -66,9 +52,6 @@ export default function AppLayout() {
                 <Box sx={{ flex: 1, py: 2, px: 2, bgcolor: "#eaeff1", height: "100%", maxHeight: "100%", overflow: "auto" }}>
                     <Outlet />
                 </Box>
-                {/* <Box component="footer" sx={{ p: 2, bgcolor: "#eaeff1" }}>
-          <Copyright />
-        </Box> */}
             </Box>
         </Box>
     );
