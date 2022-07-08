@@ -11,5 +11,7 @@ const requestParamCourseNotFound = (res) => {
 }
 
 module.exports = {
-    validateCourseModel
+    validateCourseModel,
+    requestParamCourseNotFound,
+    requestParamCourseIdNotFound
 }

@@ -56,6 +56,10 @@ router.get("/all", async (req, res) => {
  */
  router.put("/update/:id", async (req, res) => {
     try {
+        const courseId = req.params.id;
+        if(!courseId){
+            requestParamCourseIdNotFound(res);
+        }
         const course = req.body.course;
         if(!course){
             requestParamCourseNotFound(res);
