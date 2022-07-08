@@ -84,7 +84,7 @@ function NotificationDialog(props) {
         const notifications = await axios.get(url);
 
         if (isTutorFromStore) {
-            const sentNotifications = await axios.get(url5);
+            const sentNotifications = await axios.get(url6);
             setAllSentNotifications(sentNotifications.data.userSentNotifications);
 
             const filteredNotifications = notifications.data.notification?.filter((el) => {
