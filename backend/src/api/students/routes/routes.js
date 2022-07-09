@@ -149,7 +149,7 @@ router.put("/course/progress/:id", async (req, res) => {
  * @author Bharatwaaj Shankaranarayanan
  * @description Get all courses that the student has enrolled
  * @params req, res
- * @return boolean
+ * @return courses
  */
 router.get("/courses/enrolled", async (req, res) => {
     try {
@@ -173,7 +173,7 @@ router.get("/courses/enrolled", async (req, res) => {
  * @author Bharatwaaj Shankaranarayanan
  * @description Get all courses that the student has archived
  * @params req, res
- * @return boolean
+ * @return courses
  */
 router.get("/courses/archived", async (req, res) => {
     try {
