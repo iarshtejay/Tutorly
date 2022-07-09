@@ -54,5 +54,6 @@ const setCourseProgress = async (student, courseId, courseProgress) => {
 module.exports = {
     archiveCourse,
     unArchiveCourse,
-    getCourseProgress
+    getCourseProgress,
+    setCourseProgress
 }
