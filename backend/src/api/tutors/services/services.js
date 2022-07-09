@@ -25,6 +25,10 @@ const deleteTutor = async(id) => {
     return await Tutor.deleteOne({_id : id});
 }
 
+const getAllCoursesByTutor = async(id) => {
+    return await Tutor.find({_id : id}).courses;
+}
+
 
 module.exports = {
     getAllTutors,
