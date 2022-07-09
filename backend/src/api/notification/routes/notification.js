@@ -9,8 +9,8 @@ const {getNotifications,
     setUserNotificationDetails,
     getSentNotifications} = require('../controllers/notification')
 
-// Fetch notifications of a user (id is user id)
-router.get('/:id', getNotifications)
+// Fetch notifications
+router.get('/', getNotifications)
 
 // Create a new notification
 router.post('/', sendNotifications)
@@ -31,6 +31,6 @@ router.get('/favorite/:id', getFavoriteNotifications)
 router.put('/favorite/:id', updateFavorites)
 
 // Fetch sent notifications by tutor (id is tutor id)
-router.get('/tutor/:id', getSentNotifications)
+router.get('/:id', getSentNotifications)
 
 module.exports = router
