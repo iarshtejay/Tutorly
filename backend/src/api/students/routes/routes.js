@@ -259,4 +259,52 @@ router.post("/course/enroll/:id", async (req, res) => {
     }
 });
 
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Get all courses that the student can be recommended for
+ * @params req, res
+ * @return courses
+ */
+ router.get("/courses/recommendations", async (req, res) => {
+    try {
+        const { id: studentId } = req.body.student;
+        const courses = await Service.getCourseRecommendations(studentId);
+        return res.status(200).json({
+            message: "Sucessfully set the course progress.",
+            success: true,
+            data: courses,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to set the course progress.",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Get all tutors that the student can be recommended for
+ * @params req, res
+ * @return tutors
+ */
+ router.get("/tutors/recommendations", async (req, res) => {
+    try {
+        const { id: studentId } = req.body.student;
+        const courses = await Service.getTutorRecommendations(studentId);
+        return res.status(200).json({
+            message: "Sucessfully set the course progress.",
+            success: true,
+            data: courses,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to set the course progress.",
+            success: false,
+        });
+    }
+});
+
 module.exports = router;

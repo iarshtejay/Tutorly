@@ -179,4 +179,28 @@ router.get("/all", async (req, res) => {
     }
 });
 
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ * @description Get all students that the tutors can be recommended for
+ * @params req, res
+ * @return students
+ */
+ router.get("/student/recommendations", async (req, res) => {
+    try {
+        const { id: tutorId } = req.body.tutor;
+        const courses = await Service.recommendStudents(tutorId);
+        return res.status(200).json({
+            message: "Sucessfully got the student recommendations.",
+            success: true,
+            data: courses,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to get the student recommendations.",
+            success: false,
+        });
+    }
+});
+
 module.exports = router;

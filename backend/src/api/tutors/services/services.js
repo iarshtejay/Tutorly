@@ -29,11 +29,17 @@ const getAllCoursesByTutor = async(id) => {
     return await Tutor.find({_id : id}).courses;
 }
 
+const recommendStudents = async (tutorId) => {
+    return [];
+}
+
 
 module.exports = {
     getAllTutors,
     createTutor,
     getSpecificTutor,
     updateTutor,
-    deleteTutor
+    deleteTutor,
+    getAllCoursesByTutor,
+    recommendStudents
 }
