@@ -18,11 +18,17 @@ const checkIfCourseExistsAndUpdate = (student, courseId, archived) => {
     
 }
 
-const courseProgressHandler = (student, courseId, courseProgress) => {
+const courseProgressHandler = (student, courseId, type, courseProgress) => {
     for (let i=0; i < student.courses.length; i++) {
         const course = student.courses[i];
         if(course._id === courseId){
-            return course.progress;
+            if(type === "get"){
+                return course.progress;
+            } else if (type === "set"){
+                course.progress = courseProgress;
+                await student.save();
+                return course.progress;
+            }
         } else if ((course._id !== courseId) && (i === student.courseslength - 1)){
             return false;
         }
@@ -57,12 +63,12 @@ const unArchiveCourse = async (studentId, courseId) => {
 
 const getCourseProgress = async (studentId, courseId) => {
     const student = await Student.findById({_id: studentId});
-    return courseProgressHandler(student, courseId);
+    return courseProgressHandler(student, courseId, "get", null);
 }
 
 const setCourseProgress = async (studentId, courseId, courseProgress) => {
     const student = await Student.findById({_id: studentId});
-    return courseProgressHandler(student, courseId, courseProgress);
+    return courseProgressHandler(student, courseId, "set", courseProgress);
 }
 
 const getAllEnrolledCourses = async(studentId) => {
