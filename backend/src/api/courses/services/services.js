@@ -1,4 +1,5 @@
 const Course = require("../models/course");
+const Student = require("../../students/models/Student");
 
 const getAllCourses = async () => {
     return await Course.find({});
@@ -25,11 +26,23 @@ const deleteCourse = async(id) => {
     return await Course.deleteOne({_id : id});
 }
 
+const getAllStudents = async (id) => {
+    const studentIds =  await Course.find({_id : id}).students;
+    const students = []
+    studentIds.map(studentId => {
+        const student = await Student.findOne({_id : studentId })
+        if(student){
+            students.push(student);
+        }
+    })
+    return students;
+}
 
 module.exports = {
     getAllCourses,
     createCourse,
     getSpecificCourse,
     updateCourse,
-    deleteCourse
+    deleteCourse,
+    getAllStudents
 }
