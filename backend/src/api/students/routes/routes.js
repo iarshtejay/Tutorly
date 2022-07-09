@@ -93,7 +93,7 @@ router.get("/course/progress/:id", async (req, res) => {
         } else {
             return res.status(200).json({
                 message: "Unable to retrieved the course progress as the student hasn't enrolled for this course.",
-                success: false
+                success: false,
             });
         }
     } catch (err) {
@@ -133,7 +133,7 @@ router.put("/course/progress/:id", async (req, res) => {
         } else {
             return res.status(200).json({
                 message: "Unable to set the course progress as the student hasn't enrolled for this course.",
-                success: false
+                success: false,
             });
         }
     } catch (err) {
@@ -188,6 +188,72 @@ router.get("/courses/archived", async (req, res) => {
         console.log(err);
         return res.status(500).json({
             message: "Internal server error. Unable to set the course progress.",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Arshdeep Singh
+ * @description Unenrolls a student from a specific course
+ * @params req, res
+ * @return boolean
+ */
+router.post("/course/unenroll/:id", async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        const { id: studentId } = req.body.student;
+        if (!courseId) {
+            Utils.requiredRequestParamNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
+        }
+        const { newCourse: course, newStudent: student } = await Service.unenrollFromACourse(studentId, courseId);
+        return res.status(200).json({
+            message: "Student un enrolled from the course.",
+            success: true,
+            data: student,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to enroll student the course.",
+            success: false,
+        });
+    }
+});
+
+/**
+* @author Arshdeep Singh
+* @description Unenrolls a student from a course
+* @params req, res
+* @return boolean
+*/
+router.post("/course/enroll/:id", async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        const { id: studentId } = req.body.student;
+
+        if (!courseId) {
+            Utils.requiredRequestParamNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
+        }
+
+        const { newCourse: course, newStudent: student } = await Service.enrollInACourse(studentId, courseId);
+        return res.status(200).json({
+            message: "Student enrolled in the course.",
+            success: true,
+            data: { student: student, course: course },
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to enroll in the course.",
             success: false,
         });
     }
