@@ -174,5 +174,34 @@ router.get("/all", async (req, res) => {
     }
 });
 
+/**
+ * @author Arshdeep Singh
+ * @description Get all the students in a specific course
+ * @params req, res
+ * @return students
+ */
+ router.get("/:id/students", async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        if(!courseId){
+            Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: id
+            }});
+        }
+        const students = await Service.getAllStudents(courseId);
+        return res.status(200).json({
+            message: "Obtained all the students enrolled in the specific course",
+            success: true,
+            data: students,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to retrieve students from the course.",
+            success: false,
+        });
+    }
+});
+
 
 module.exports = router;
