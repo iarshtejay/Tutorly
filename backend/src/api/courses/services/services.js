@@ -10,7 +10,26 @@ const createCourse = async (course) => {
     return course_;
 }
 
+const getSpecificCourse = async (id) => {
+    return await Course.find({_id : id});
+}
+
+const updateCourse = async (id, course) => {
+    const course_ = await Course.updateOne({ _id: id }, 
+        { $set: course }, 
+        { upsert: true });
+    return course_;
+}
+
+const deleteCourse = async(id) => {
+    return await Course.deleteOne({_id : id});
+}
+
+
 module.exports = {
     getAllCourses,
-    createCourse
+    createCourse,
+    getSpecificCourse,
+    updateCourse,
+    deleteCourse
 }
