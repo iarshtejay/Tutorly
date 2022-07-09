@@ -35,15 +35,35 @@ const checkIfCourseExistsAndEnroll = (student, course) => {
     return { student: student, course: course }
 }
 
-const courseProgressHandler = (student, courseId, courseProgress) => {
-    for (let i = 0; i < student.courses.length; i++) {
+const courseProgressHandler = (student, courseId, type, courseProgress) => {
+    for (let i=0; i < student.courses.length; i++) {
         const course = student.courses[i];
-        if (course._id === courseId) {
-            return course.progress;
-        } else if ((course._id !== courseId) && (i === student.courseslength - 1)) {
+        if(course._id === courseId){
+            if(type === "get"){
+                return course.progress;
+            } else if (type === "set"){
+                course.progress = courseProgress;
+                await student.save();
+                return course.progress;
+            }
+        } else if ((course._id !== courseId) && (i === student.courseslength - 1)){
             return false;
         }
     }
+}
+
+const getAllCoursesTypeHandler = (student, type) => {
+    const archivedCourses = [];
+    const enrolledCourses = [];
+    for (let i=0; i < student.courses.length; i++) {
+        const course = student.courses[i];
+        if(course.archived === true){
+            archivedCourses.push(course);
+        } else {
+            enrolledCourses.push(course);
+        }
+    }
+    return type === "archived"? archivedCourses: enrolledCourses;
 }
 
 const archiveCourse = async (studentId, courseId) => {
@@ -58,14 +78,38 @@ const unArchiveCourse = async (studentId, courseId) => {
     return await newStudent.save();
 }
 
-const getCourseProgress = async (student, courseId) => {
-    const student = await Student.findById({ _id: studentId });
-    return courseProgressHandler(student, courseId);
+const getCourseProgress = async (studentId, courseId) => {
+    const student = await Student.findById({_id: studentId});
+    return courseProgressHandler(student, courseId, "get", null);
 }
 
-const setCourseProgress = async (student, courseId, courseProgress) => {
+const setCourseProgress = async (studentId, courseId, courseProgress) => {
+    const student = await Student.findById({_id: studentId});
+    return courseProgressHandler(student, courseId, "set", courseProgress);
+}
+
+const getAllEnrolledCourses = async(studentId) => {
+    const student = await Student.findById({_id: studentId});
+    getAllCoursesTypeHandler(student, "enrolled");
+}
+
+const getAllArchivedCourses = async(studentId) => {
+    const student = await Student.findById({_id: studentId});
+    getAllCoursesTypeHandler(student, "archived");
+}
+
+const enrollInACourse = async (studentId, courseId) => {
     const student = await Student.findById({ _id: studentId });
-    return courseProgressHandler(student, courseId, courseProgress);
+    const course = await Student.findById({ _id: courseId });
+    const { student: newStudent, course: newCourse } = checkIfCourseExistsAndEnroll(student, course);
+    return (await newStudent.save()) && (await newCourse.save());
+}
+
+const unenrollFromACourse = async (studentId, courseId) => {
+    const student = await Student.findById({ _id: studentId });
+    const course = await Student.findById({ _id: courseId });
+    const { student: newStudent, course: newCourse } = checkIfCourseExistsAndUnEnroll(student, course);
+    return (await newStudent.save()) && (await newCourse.save());
 }
 
 const enrollInACourse = async (studentId, courseId) => {
@@ -86,5 +130,9 @@ module.exports = {
     archiveCourse,
     unArchiveCourse,
     getCourseProgress,
-    setCourseProgress
+    setCourseProgress,
+    getAllEnrolledCourses,
+    getAllArchivedCourses,
+    enrollInACourse,
+    unenrollFromACourse
 }
