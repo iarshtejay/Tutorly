@@ -1,6 +1,8 @@
 const Service = require("../services/services");
+const Course = require("../models/course");
 const express = require("express");
 const router = express.Router();
+const Utils = require("../../../utils/utils");
 
 /**
  * @author Bharatwaaj Shankaranarayanan
@@ -35,7 +37,9 @@ router.get("/all", async (req, res) => {
     try {
         const course = req.body.course;
         if(!course){
-            requestParamCourseNotFound(res);
+            Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: Object.keys(Course.toObject())
+            }});
         }
         const newCourse = await Service.createCourse(course);
         return res.status(200).json({
@@ -62,11 +66,15 @@ router.get("/all", async (req, res) => {
     try {
         const courseId = req.params.id;
         if(!courseId){
-            requestParamCourseIdNotFound(res);
+            Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: id
+            }});
         }
         const course = req.body.course;
         if(!course){
-            requestParamCourseNotFound(res);
+            Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: Object.keys(Course.toObject())
+            }});
         }
         const updatedCourse = await Service.updateCourse(courseId, course);
         return res.status(200).json({
@@ -93,7 +101,9 @@ router.get("/all", async (req, res) => {
     try {
         const courseId = req.params.id;
         if(!courseId){
-            requestParamCourseIdNotFound(res);
+            Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: id
+            }});
         }
         const course = await Service.getSpecificCourse(courseId);
         return res.status(200).json({
@@ -120,7 +130,9 @@ router.get("/all", async (req, res) => {
     try {
         const courseId = req.params.id;
         if(!courseId){
-            requestParamCourseIdNotFound(res);
+            Utils.requiredRequestParamNotFound(res, "course", {course: {
+                param: id
+            }});
         }
         await Service.deleteCourse(courseId);
         return res.status(200).json({

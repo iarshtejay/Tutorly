@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const Course = new mongoose.Schema({
-  id: String,
   name: String,
   type: String,
   startDate: {
@@ -12,7 +11,7 @@ const Course = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  tutors: {
+  tutor: {
     type: mongoose.Schema.ObjectId,
     ref: "Tutor",
   },
