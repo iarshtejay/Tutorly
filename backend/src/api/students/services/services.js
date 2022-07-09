@@ -112,6 +112,20 @@ const unenrollFromACourse = async (studentId, courseId) => {
     return (await newStudent.save()) && (await newCourse.save());
 }
 
+const enrollInACourse = async (studentId, courseId) => {
+    const student = await Student.findById({ _id: studentId });
+    const course = await Student.findById({ _id: courseId });
+    const { student: newStudent, course: newCourse } = checkIfCourseExistsAndEnroll(student, course);
+    return (await newStudent.save()) && (await newCourse.save());
+}
+
+const unenrollFromACourse = async (studentId, courseId) => {
+    const student = await Student.findById({ _id: studentId });
+    const course = await Student.findById({ _id: courseId });
+    const { student: newStudent, course: newCourse } = checkIfCourseExistsAndUnEnroll(student, course);
+    return (await newStudent.save()) && (await newCourse.save());
+}
+
 module.exports = {
     archiveCourse,
     unArchiveCourse,
