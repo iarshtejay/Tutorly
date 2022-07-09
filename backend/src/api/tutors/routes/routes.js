@@ -105,7 +105,7 @@ router.get("/all", async (req, res) => {
                 param: id
             }});
         }
-        const course = await Service.getSpecificTutor(tutorId);
+        const tutor = await Service.getSpecificTutor(tutorId);
         return res.status(200).json({
             message: "Obtained the specific tutor",
             success: true,
@@ -149,5 +149,34 @@ router.get("/all", async (req, res) => {
     }
 });
 
+
+/**
+ * @author Arshdeep Singh
+ * @description Get all courses taught by tutor
+ * @params req, res
+ * @return courses
+ */
+ router.get("/:id/courses", async (req, res) => {
+    try {
+        const tutorId = req.params.id;
+        if(!tutorId){
+            Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: id
+            }});
+        }
+        const courses = await Service.getAllCoursesByTutor(tutorId);
+        return res.status(200).json({
+            message: "Obtained all the courses offered by tutor",
+            success: true,
+            data: courses,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Unable to retrieve the courses by tutor.",
+            success: false,
+        });
+    }
+});
 
 module.exports = router;
