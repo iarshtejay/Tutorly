@@ -1,5 +1,6 @@
 const Student = require("../models/student");
-const Course = require("../models/course");
+const Course = require("../../courses/models/course");
+const Tutor = require("../../tutors/models/tutor");
 
 const checkIfCourseExistsAndUpdate = (student, courseId, archived) => {
     for (let i = 0; i < student.courses.length; i++) {
@@ -35,7 +36,7 @@ const checkIfCourseExistsAndEnroll = (student, course) => {
     return { student: student, course: course }
 }
 
-const courseProgressHandler = (student, courseId, type, courseProgress) => {
+const courseProgressHandler = async (student, courseId, type, courseProgress) => {
     for (let i=0; i < student.courses.length; i++) {
         const course = student.courses[i];
         if(course._id === courseId){
@@ -80,12 +81,12 @@ const unArchiveCourse = async (studentId, courseId) => {
 
 const getCourseProgress = async (studentId, courseId) => {
     const student = await Student.findById({_id: studentId});
-    return courseProgressHandler(student, courseId, "get", null);
+    return await courseProgressHandler(student, courseId, "get", null);
 }
 
 const setCourseProgress = async (studentId, courseId, courseProgress) => {
     const student = await Student.findById({_id: studentId});
-    return courseProgressHandler(student, courseId, "set", courseProgress);
+    return await courseProgressHandler(student, courseId, "set", courseProgress);
 }
 
 const getAllEnrolledCourses = async(studentId) => {
@@ -113,11 +114,13 @@ const unenrollFromACourse = async (studentId, courseId) => {
 }
 
 const getCourseRecommendations = async (studentId) => {
-    return [];
+    const courses = await Course.find({});
+    return courses;
 }
 
 const getTutorRecommendations = async (studentId) => {
-    return [];
+    const tutors = await Tutor.find({});
+    return tutors;
 }
 
 module.exports = {

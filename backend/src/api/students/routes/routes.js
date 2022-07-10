@@ -1,6 +1,7 @@
 const Service = require("../services/services");
 const express = require("express");
 const router = express.Router();
+const Utils = require("../../../utils/utils");
 
 /**
  * @author Bharatwaaj Shankaranarayanan
@@ -267,17 +268,24 @@ router.post("/course/enroll/:id", async (req, res) => {
  */
  router.get("/courses/recommendations", async (req, res) => {
     try {
-        const { id: studentId } = req.body.student;
+        const {id: studentId} = req.body?.student;
+        if(!studentId){
+            Utils.requiredRequestBodyNotFound(res, "student", {
+                student: {
+                    param: "id"
+                },
+            });
+        }
         const courses = await Service.getCourseRecommendations(studentId);
         return res.status(200).json({
-            message: "Sucessfully set the course progress.",
+            message: "Sucessfully got the course recommendations.",
             success: true,
             data: courses,
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            message: "Internal server error. Unable to set the course progress.",
+            message: "Internal server error. Unable to get the course recommendations.",
             success: false,
         });
     }
@@ -292,16 +300,23 @@ router.post("/course/enroll/:id", async (req, res) => {
  router.get("/tutors/recommendations", async (req, res) => {
     try {
         const { id: studentId } = req.body.student;
+        if(!studentId){
+            Utils.requiredRequestBodyNotFound(res, "student", {
+                student: {
+                    param: id,
+                },
+            });
+        }
         const courses = await Service.getTutorRecommendations(studentId);
         return res.status(200).json({
-            message: "Sucessfully set the course progress.",
+            message: "Sucessfully got the tutor recommendations.",
             success: true,
             data: courses,
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            message: "Internal server error. Unable to set the course progress.",
+            message: "Internal server error. Unable to get the tutor recommendations.",
             success: false,
         });
     }

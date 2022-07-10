@@ -1,13 +1,15 @@
-const requiredRequestParamsNotFound = (res, params, module) => {
+const requiredRequestParamsNotFound = (res, module, params) => {
     res.json({
-        message: `Following request params not found in module ${module}. \n ${JSON.parse(params)}`,
+        message: `Following request params not found in module ${module}.`,
+        data: params,
         success: false 
     })
 }
 
-const requiredRequestBodyNotFound = (res, params, module) => {
+const requiredRequestBodyNotFound = (res, module, params) => {
     res.json({
-        message: `Following request body not found in module ${module}. \n ${JSON.parse(params)}`,
+        message: `Following request body not found in module ${module}.`,
+        data: params,
         success: false 
     })
 }
