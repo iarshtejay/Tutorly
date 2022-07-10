@@ -7,7 +7,7 @@ const { Server } = require("socket.io");
 const {errorHandler} = require('./src/api/notification/middleware/middleware')
 var cors = require('cors')
 const app = express();
-
+app.disable('etag');
 app.use(logger("dev"));
 const port = process.env.PORT || 8000;
 

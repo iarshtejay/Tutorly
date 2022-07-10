@@ -82,8 +82,7 @@ function NotificationDialog(props) {
     let isTutorFromStore;
     const getNotificationData = async () => {
         const notifications = await axios.get(url);
-
-        if (isTutorFromStore) {
+        if (isTutorFromStore === "true") {
             const sentNotifications = await axios.get(url6);
             setAllSentNotifications(sentNotifications.data.userSentNotifications);
 
@@ -104,7 +103,6 @@ function NotificationDialog(props) {
     }
 
     const getData = async () => {
-
         const userDetails = await axios.get(url3)
         setUserNotificationDetails(userDetails.data.userNotificationDetails)
         getNotificationData();
@@ -116,13 +114,13 @@ function NotificationDialog(props) {
 
     React.useEffect(() => {
         isTutorFromStore = localStorage.getItem('isTutor');
-        console.log("isTutorFromStore: ". isTutorFromStore);
         SetIsTutor(isTutorFromStore === "true");
         getData();
         socket.on("receive_notification", (data) => {
-            if (isTutorFromStore === "false") {
-                getData();
-            }
+            // if (isTutorFromStore === "false") {
+            //     getData();
+            // }
+            getData();
         })
     }, []);
 
