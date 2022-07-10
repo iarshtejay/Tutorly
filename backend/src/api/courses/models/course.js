@@ -21,6 +21,10 @@ const Course = new mongoose.Schema({
       ref: "Student",
     },
   ],
+  tags: [
+    String
+  ],
+  cost: mongoose.Types.Decimal128,
 });
 
 module.exports = mongoose.model("Course", Course);
