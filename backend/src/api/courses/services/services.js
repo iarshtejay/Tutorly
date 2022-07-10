@@ -1,5 +1,5 @@
 const Course = require("../models/course");
-const Student = require("../../students/models/Student");
+const Student = require("../../students/models/student");
 
 const getAllCourses = async () => {
     return await Course.find({});
@@ -27,9 +27,9 @@ const deleteCourse = async(id) => {
 }
 
 const getAllStudents = async (id) => {
-    const studentIds =  await Course.find({_id : id}).students;
+    const studentIds =  (await Course.find({_id : id})).students;
     const students = []
-    studentIds.map(studentId => {
+    studentIds.map(async studentId => {
         const student = await Student.findOne({_id : studentId })
         if(student){
             students.push(student);
