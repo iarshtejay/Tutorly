@@ -13,9 +13,8 @@ const UserNotificationDetailsSchema = require('../models/userNotificationDetails
 const getNotifications = asyncHandler(async (req, res) => {
     try {
         const userNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.params.id}).exec()
-        console.log("hi")
-        const notifications = await Notifications.find({"createdAt" : {$gte:userNotificationDetails.createdAt}, user: req.params.id}).sort({ createdAt: -1 })
-        console.log("hi")
+        const notifications = await Notifications.find({"createdAt" : {$gte:userNotificationDetails.createdAt}}).sort({ createdAt: -1 })
+
         res.status(200).json({
             message: notifications.length,
             success: true,

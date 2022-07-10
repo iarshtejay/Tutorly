@@ -23,8 +23,8 @@ export default function AddNotification(props) {
         // API to save the data
         const url = "http://localhost:5000/api/notifications/";
         const user = localStorage.getItem('user');
-        const response = await axios.post(url, { user: user ? user : '110987', text: text, type: notificationType });
-        console.log("res: ", response);
+        const response = await axios.post(url, { user: user ? user : '110965', text: text, type: notificationType });
+
         socket.emit("send_notification", {
             notificationInfo: response?.data?.notification
         });
@@ -33,7 +33,7 @@ export default function AddNotification(props) {
     };
 
     React.useEffect(() => {
-        console.log("useEffect compo created");
+
         if (!socket) {
             socket = io.connect("http://localhost:5000");
             socket.on("receive_notification", (data) => {
