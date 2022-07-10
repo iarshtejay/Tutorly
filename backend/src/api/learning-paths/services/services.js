@@ -4,21 +4,21 @@ const getAllLearningPaths = async () => {
     return await LearningPath.find({});
 }
 
-const createLearningPath = async (tutor) => {
-    const tutor_ = await new LearningPath(tutor);
-    await tutor_.save();
-    return tutor_;
+const createLearningPath = async (learningPath) => {
+    const learningPath_ = await new LearningPath(learningPath);
+    await learningPath_.save();
+    return learningPath_;
 }
 
 const getSpecificLearningPath = async (id) => {
     return await LearningPath.find({_id : id});
 }
 
-const updateLearningPath = async (id, tutor) => {
-    const tutor_ = await LearningPath.updateOne({ _id: id }, 
-        { $set: tutor }, 
+const updateLearningPath = async (id, learningPath) => {
+    const learningPath_ = await LearningPath.updateOne({ _id: id }, 
+        { $set: learningPath }, 
         { upsert: true });
-    return tutor_;
+    return learningPath_;
 }
 
 const deleteLearningPath = async(id) => {
