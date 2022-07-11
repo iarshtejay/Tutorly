@@ -1,4 +1,5 @@
 const Service = require("../services/services");
+const QuizService = require("../services/quiz");
 const Course = require("../models/course");
 const express = require("express");
 const router = express.Router();
@@ -33,13 +34,15 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return courses
  */
- router.post("/add", async (req, res) => {
+router.post("/add", async (req, res) => {
     try {
         const course = req.body.course;
-        if(!course){
-            Utils.requiredRequestBodyNotFound(res, "course", {course: {
-                param: Object.keys(Course.toObject())
-            }});
+        if (!course) {
+            Utils.requiredRequestBodyNotFound(res, "course", {
+                course: {
+                    param: Object.keys(Course.toObject()),
+                },
+            });
         }
         const newCourse = await Service.createCourse(course);
         return res.status(200).json({
@@ -62,19 +65,23 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return courses
  */
- router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
     try {
         const courseId = req.params.id;
-        if(!courseId){
-            Utils.requiredRequestBodyNotFound(res, "course", {course: {
-                param: id
-            }});
+        if (!courseId) {
+            Utils.requiredRequestBodyNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
         }
         const course = req.body.course;
-        if(!course){
-            Utils.requiredRequestBodyNotFound(res, "course", {course: {
-                param: Object.keys(Course.toObject())
-            }});
+        if (!course) {
+            Utils.requiredRequestBodyNotFound(res, "course", {
+                course: {
+                    param: Object.keys(Course.toObject()),
+                },
+            });
         }
         const updatedCourse = await Service.updateCourse(courseId, course);
         return res.status(200).json({
@@ -97,13 +104,15 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return courses
  */
- router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
         const courseId = req.params.id;
-        if(!courseId){
-            Utils.requiredRequestBodyNotFound(res, "course", {course: {
-                param: id
-            }});
+        if (!courseId) {
+            Utils.requiredRequestBodyNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
         }
         const course = await Service.getSpecificCourse(courseId);
         return res.status(200).json({
@@ -126,13 +135,15 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return courses
  */
- router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
     try {
         const courseId = req.params.id;
-        if(!courseId){
-            Utils.requiredRequestParamNotFound(res, "course", {course: {
-                param: id
-            }});
+        if (!courseId) {
+            Utils.requiredRequestParamNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
         }
         await Service.deleteCourse(courseId);
         return res.status(200).json({
@@ -155,15 +166,15 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return courses
  */
- router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
     try {
         const course = req.body.course;
-        if(!course){
+        if (!course) {
             requestParamCourseNotFound(res);
         }
         const courses = await Service.createCourse(course);
         return res.status(200).json({
-            courses
+            courses,
         });
     } catch (err) {
         console.log(err);
@@ -180,13 +191,15 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return students
  */
- router.get("/:id/students", async (req, res) => {
+router.get("/:id/students", async (req, res) => {
     try {
         const courseId = req.params.id;
-        if(!courseId){
-            Utils.requiredRequestBodyNotFound(res, "course", {course: {
-                param: id
-            }});
+        if (!courseId) {
+            Utils.requiredRequestBodyNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
         }
         const students = await Service.getAllStudents(courseId);
         return res.status(200).json({
@@ -203,5 +216,190 @@ router.get("/all", async (req, res) => {
     }
 });
 
+/**
+ * @author Parth Shah
+ * @description Create a new quiz for the specific course
+ * @params req, res
+ * @return status
+ */
+router.put("/:id/quiz/new", async (req, res) => {
+    try {
+        const quiz = req.body.quiz;
+        if (!quiz) {
+            return Utils.requiredRequestBodyNotFound(res, "quiz", {
+                quiz: {},
+            });
+        }
+        quiz.course = req.params.id;
+        await QuizService.createQuiz(quiz);
+        return res.status(200).json({
+            message: "Quiz created Successfully",
+            success: true,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while create a quiz",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Parth Shah
+ * @description Delete an existing quiz for the specific course
+ * @params req, res
+ * @return status
+ */
+router.delete("/:id/quiz/:quizId", async (req, res) => {
+    try {
+        const quizId = req.params.quizId;
+        if (!quizId) {
+            return Utils.requiredRequestParamNotFound(res, "quiz", {
+                quiz: {
+                    param: quizId,
+                },
+            });
+        }
+        await QuizService.deleteQuiz(quizId);
+        return res.status(200).json({
+            message: "Quiz deleted Successfully",
+            success: true,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while deleting the quiz",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Parth Shah
+ * @description List all quizzes by the specific course
+ * @params req, res
+ * @return QuizList
+ */
+router.get("/:id/quiz/list", async (req, res) => {
+    try {
+        const course = req.params.id;
+        if (!course) {
+            return Utils.requiredRequestParamNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
+        }
+        const quizzes = await QuizService.getAllQuizzes(course);
+        return res.status(200).json({
+            message: "Quizes retrieved Successfully",
+            success: true,
+            data: quizzes,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while getting the quizzes.",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Parth Shah
+ * @description Get a quiz by quizId
+ * @params req, res
+ * @return Quiz
+ */
+router.get("/:id/quiz/:quizId", async (req, res) => {
+    try {
+        const quizId = req.params.quizId;
+        if (!quizId) {
+            return Utils.requiredRequestParamNotFound(res, "quiz", {
+                quiz: {
+                    param: quizId,
+                },
+            });
+        }
+        const quiz = await QuizService.getQuiz(quizId);
+        return res.status(200).json({
+            message: "Quizes retrieved Successfully",
+            success: true,
+            data: quiz,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while getting the quizzes.",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Parth Shah
+ * @description Attempt a quiz by student
+ * @params req, res
+ * @return Score
+ */
+router.put("/:id/quiz/:quizId/attempt", async (req, res) => {
+    try {
+        const attempt = req.body.attempt;
+        if (!attempt) {
+            return Utils.requiredRequestBodyNotFound(res, "attempt", {
+                attempt: {},
+            });
+        }
+        attempt.quiz = req.params.quizId;
+        const score = await QuizService.attemptQuiz(attempt);
+
+        return res.status(200).json({
+            message: "Quizes attempted Successfully",
+            success: true,
+            data: score,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while attempting the quiz.",
+            success: false,
+        });
+    }
+});
+
+/**
+ * @author Parth Shah
+ * @description List Quiz for student
+ * @params req, res
+ * @return QuizList
+ */
+router.get("/:id/quiz/list/:studentId", async (req, res) => {
+    try {
+        const studentId = req.params.studentId;
+        const course = req.params.id;
+        if (!studentId) {
+            return Utils.requiredRequestParamNotFound(res, "studentId", {
+                studentId: {
+                    param: studentId,
+                },
+            });
+        }
+
+        const quizzes = await QuizService.studentQuizzes(course, studentId);
+
+        return res.status(200).json({
+            message: "Quizes retrieved Successfully",
+            success: true,
+            data: quizzes,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while attempting the quiz.",
+            success: false,
+        });
+    }
+});
 
 module.exports = router;
