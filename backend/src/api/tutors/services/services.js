@@ -1,7 +1,8 @@
 const Tutor = require("../models/tutor");
 
 const getAllTutors = async () => {
-    return await Tutor.find({});
+    return await Tutor.find({}).populate('courses');
+;
 }
 
 const createTutor = async (tutor) => {

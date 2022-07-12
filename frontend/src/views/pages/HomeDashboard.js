@@ -5,6 +5,7 @@ import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 import { getAllCourses } from "./services/courses-rest";
+import { getAllTutors } from "./services/tutors-rest";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateSearchCourses } from "./slice/courseSlice";
 
@@ -17,6 +18,7 @@ export default function HomeDashboard() {
   
     useEffect(() => {
       dispatch(getAllCourses({ isTutor: false }));
+      dispatch(getAllTutors());
     }, [dispatch]);
 
     const handleSearch = (value) => {

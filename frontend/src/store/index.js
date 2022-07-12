@@ -5,13 +5,15 @@ import discussionReducer from "../components/Discussion/slice/DiscussionSlice";
 import messageReducer from "../components/Messaging/slice/MessageSlice";
 import appReducer from "./slice/appSlice";
 import courseReducer from "../views/pages/slice/courseSlice";
+import tutorReducer from "../views/pages/slice/tutorSlice";
 
 export const store = configureStore({
   reducer: {
     messages: messageReducer,
     discussion: discussionReducer,
     app: appReducer,
-    course: courseReducer
+    course: courseReducer,
+    tutor: tutorReducer
   },
   middleware: [thunk, logger],
 });
