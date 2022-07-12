@@ -69,6 +69,15 @@ export const getRecommendedTutors = createAsyncThunk(
   }
 );
 
+export const getCourseDetails = createAsyncThunk(
+  "/course/:id",
+  async ({ isTutor, courseId }) => {
+    return (
+      await httpClient.get(`/course/${courseId}`)
+    ).data;
+  }
+);
+
 
 
 export const fetchForumPost = createAsyncThunk("discussion/forum", async () => {
