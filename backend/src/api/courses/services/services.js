@@ -6,6 +6,7 @@ const getAllCourses = async () => {
 }
 
 const createCourse = async (course) => {
+    console.log(course)
     const course_ = await Course(course);
     await course_.save();
     return course_;
