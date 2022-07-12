@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllCourses } from '../services/courses-rest';
+import { getAllCourses, getEnrolledCourses } from '../services/courses-rest';
 
 const initialState = {
     enrolledCourses: {
@@ -39,6 +39,10 @@ export const courseSlice = createSlice({
             state.searchCourses.data = action.payload.data
             state.allCourses.loading = false
             state.searchCourses.loading = false
+        });
+        builder.addCase(getEnrolledCourses.fulfilled, (state, action) => {
+            state.enrolledCourses.data = action.payload.data
+            state.enrolledCourses.loading = false
         });
     }
 });

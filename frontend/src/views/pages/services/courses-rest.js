@@ -13,6 +13,21 @@ export const getAllCourses = createAsyncThunk(
   }
 );
 
+export const getEnrolledCourses = createAsyncThunk(
+  "/course/enrolled",
+  async ({ isTutor, studentId }) => {
+    return (
+      await httpClient.get("/student/courses/enrolled", {
+        isTutor, student: {
+          id: studentId
+        }
+      })
+    ).data;
+  }
+);
+
+
+
 export const fetchForumPost = createAsyncThunk("discussion/forum", async () => {
   return await new Promise((resolve) => {
     setTimeout(() => {
