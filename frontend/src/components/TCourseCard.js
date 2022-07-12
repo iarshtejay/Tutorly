@@ -53,7 +53,7 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
             />
             <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
             <CardContent>
-                <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly />
+                <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
                     {description}
