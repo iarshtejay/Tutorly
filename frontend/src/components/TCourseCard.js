@@ -22,6 +22,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
     borderRadius: 5,
 }));
 export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress }) {
+    console.log("data", cost, rating);
     const [favorite, setFavorite] = React.useState(false);
     const navigate = useNavigate();
     const handleFavoriteClick = () => {
@@ -39,7 +40,7 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {tutorName[0]}
+                        {tutorName}
                     </Avatar>
                 }
                 action={
@@ -61,18 +62,25 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                 {showProgress && <BorderLinearProgress theme={theme} variant="determinate" value={50} />}
             </CardContent>
             <CardActions disableSpacing>
-                <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                <Grid container spacing={1}>
+                    <Grid item xs={1.5}>
                         <IconButton aria-label="add to favorites">
                             <FavoriteIcon style={{ color: favorite ? "#009688" : "grey" }} onClick={handleFavoriteClick} />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1.5}>
                         <IconButton aria-label="share">
                             <ShareIcon />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={8} style={{ textAlign: "right" }}>
+                    <Grid item xs={3}>
+                        <Button>
+                            <Typography color="text.secondary" style={{ fontWeight: "bold" }}>
+                            {cost?.$numberDecimal}
+                            </Typography>
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6} style={{ textAlign: "right" }}>
                         <Button onClick={handleOnClick}>GO TO COURSE</Button>
                     </Grid>
                 </Grid>

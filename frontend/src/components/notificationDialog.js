@@ -26,7 +26,7 @@ import axios from 'axios';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import moment from 'moment'
 import io from 'socket.io-client';
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("http://localhost:8000");
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -67,10 +67,10 @@ function NotificationDialog(props) {
         setSendNotify(false);
     };
 
-    const url = "http://localhost:5000/api/notifications/110987";
-    const url2 = "http://localhost:5000/api/notifications/favorite/110987"
-    const url3 = "http://localhost:5000/api/notifications/details/110987"
-    const url6 = "http://localhost:5000/api/notifications/tutor/110987"
+    const url = "http://localhost:8000/api/notifications/110987";
+    const url2 = "http://localhost:8000/api/notifications/favorite/110987"
+    const url3 = "http://localhost:8000/api/notifications/details/110987"
+    const url6 = "http://localhost:8000/api/notifications/tutor/110987"
 
     const [allNotifications, setAllNotifications] = React.useState([])
     const [favNotifications, setAllFavoriteNotifications] = React.useState([])
@@ -133,7 +133,7 @@ function NotificationDialog(props) {
     }
 
     const updateFavouriteNotification = async (id) => {
-        const url5 = "http://localhost:5000/api/notifications/favorite/110987";
+        const url5 = "http://localhost:8000/api/notifications/favorite/110987";
         const favNotification = favNotifications.find((notification) => {
             return notification._id === id;
         });
@@ -175,7 +175,7 @@ function NotificationDialog(props) {
             getNotificationData()
 
         //API call to change the value 
-        const url4 = "http://localhost:5000/api/notifications/preference/110987";
+        const url4 = "http://localhost:8000/api/notifications/preference/110987";
         const updatePreference = await axios.put(url4, { preference: notificationState });
         setUpdateNotification(true)
     }

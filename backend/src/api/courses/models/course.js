@@ -25,6 +25,7 @@ const Course = new mongoose.Schema({
     String
   ],
   cost: mongoose.Types.Decimal128,
+  rating: mongoose.Types.Decimal128,
 });
 
 module.exports = mongoose.model("Course", Course);
