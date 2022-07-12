@@ -2,7 +2,7 @@ const Course = require("../models/course");
 const Student = require("../../students/models/student");
 
 const getAllCourses = async () => {
-    return await Course.find({});
+    return await Course.find({}).populate('tutor');
 }
 
 const createCourse = async (course) => {
