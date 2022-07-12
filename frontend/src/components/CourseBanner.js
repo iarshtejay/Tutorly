@@ -8,61 +8,36 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTheme } from "@mui/material/styles";
-import { Card, CardActions, CardContent, CardMedia, Grid, Stack } from "@mui/material";
-const CourseBanner = ({ image }) => {
+import { Card, CardActions, CardContent, CardMedia, Grid, Rating, Stack } from "@mui/material";
+import TTutorCard from "./TTutorCard";
+const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tutorDescription }) => {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-    console.log("image", image);
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
     };
-    const categories = ["Technology", "Computer Science", "Machine Learning", "Computers"];
-    const levels = ["Intermediate", "Beginner", "Advanced", "Super Advanced"];
     return (
-        <Grid container>
+        <Grid container spacing={2}>
             <Grid item xs={8}>
-                <img class="w-100" src={image || "assets/img/gallery/ux-designer.png"} alt="..." />
-                <CourseDescription></CourseDescription>
+                <img className="w-100" src={courseImage || "assets/img/gallery/ux-designer.png"} alt="..." />
+                <Grid container spacing={1} style={{marginTop: 15}}>
+                    <Grid item xs={4}>
+                        <Rating name="half-rating" defaultValue={courseRating?.$numberDecimal} precision={0.5} readOnly />
+                    </Grid>
+                    <Grid item xs={8} style={{textAlign: "right"}}>
+                        <Button variant="contained" type="submit" onClick={handleClickOpen}>
+                            APPLY
+                        </Button>
+                    </Grid>
+                </Grid>
+                <CourseDescription courseDescription={courseDescription} tutorDescription={tutorDescription}></CourseDescription>
             </Grid>
             <Grid item xs={4}>
-                <Card>
-                    <CardMedia component="img" height="194" image={image} alt="Paella dish" />
-                    <CardContent>
-                        <Stack style={{ padding: 2 }}>
-                            <div>
-                                <strong>Name </strong>: John Wick
-                            </div>
-                            <div>
-                                <strong>Enrolled </strong>: {Math.round(Math.random() * 500)} students
-                            </div>
-                            <div>
-                                <strong>Duration </strong>: {Math.round(Math.random() * 70)} hours
-                            </div>
-                            <div>
-                                <strong>Lectures </strong>: {Math.round(Math.random() * 20)} Sessions
-                            </div>
-                            <div>
-                                <strong>Categories </strong>: {categories[Math.floor(Math.random() * categories.length)]}
-                            </div>
-                            <div>
-                                <strong>Level </strong>: {levels[Math.floor(Math.random() * levels.length)]} Level
-                            </div>
-                        </Stack>
-                    </CardContent>
-                    <CardActions>
-                        <Stack>
-                            <div>
-                                <Button type="submit" onClick={handleClickOpen}>
-                                    APPLY
-                                </Button>
-                            </div>
-                        </Stack>
-                    </CardActions>
-                </Card>
+                {tutor && <TTutorCard tutorId={tutor._id} courses={tutor.courses} tutorName={tutor.name} description={tutor.description} rating={tutor.rating} imageURL={tutor.imageURL} expertise={tutor.expertise}></TTutorCard>}
             </Grid>
             <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
                 <DialogTitle id="responsive-dialog-title">{"Please hit apply to continue..."}</DialogTitle>

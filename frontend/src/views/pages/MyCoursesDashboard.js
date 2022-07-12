@@ -7,76 +7,43 @@ import { Pagination, Typography } from "@mui/material";
 import NewCourseDialog from "../../components/NewCourseDialog";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import { useDispatch, useSelector } from "react-redux";
+import { getEnrolledCourses } from "./services/courses-rest";
+import { updateEnrolledCourses } from "./slice/courseSlice";
 
 export default function MyCoursesDashboard() {
-    const dummy_data = [
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "Web Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "Android Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "App Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "React",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-        {
-            id: "0F8JIqi4zwvb77FGz6Wt",
-            courseName: "Front-end Development",
-            tutorName: "Dr. Arshdeep Bree",
-            description: "This is a web development course.",
-            cost: "25 USD",
-            rating: 4,
-            imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-        },
-    ];
 
-    const [courses, setCourses] = useState(dummy_data);
-    const [showCourses, setShowCourses] = useState(dummy_data);
+    const dispatch = useDispatch();
+    const allCourses =  useSelector(state => state.course.enrolledCourses);
+    const showCourses = useSelector(state => state.course.searchEnrolledCourses);
     const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        dispatch(getEnrolledCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+    }, [dispatch]);
+  
 
     const handleSearch = (value) => {
         setSearchTerm(value);
     };
 
     useEffect(() => {
-        if (searchTerm !== "" || searchTerm !== null || searchTerm !== undefined) {
-            const selectedCourses = courses.filter((x) => {
-                for (var i in x) {
-                    if (i === "courseName" || i === "description" || i === "tutorName") {
-                        if (x[i].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) return x;
+        if (searchTerm !== "" && searchTerm !== null && searchTerm !== undefined) {
+            const selectedCourses = allCourses.data.filter((x) => {
+                const course = x.course;
+                for (var i in course) {
+                    if (i === "name" || i === "description") {
+                        if (course[i]?.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+                            return course;
+                    } else if (i === "tutor") {
+                        if (course[i]?.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+                            return course;
                     }
                 }
             });
-            setShowCourses(selectedCourses);
+            dispatch(updateEnrolledCourses(selectedCourses));
         } else {
-            setShowCourses(courses);
+            dispatch(getEnrolledCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
         }
     }, [searchTerm]);
 
@@ -100,10 +67,10 @@ export default function MyCoursesDashboard() {
             <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
                 <TSearchBar handleSearch={handleSearch} placeHolderText={"Search by course name or tutor name"}></TSearchBar>
                 <Grid container spacing={2} sx={{ padding: 2 }}>
-                    {showCourses.length > 0 ? (
-                        showCourses.map((value, key) => (
+                    {showCourses.data.length > 0 ? (
+                        showCourses.data.map((value, key) => (
                             <Grid item xs={12} sm={6} md={4} key={key}>
-                                <TCourseCard key={key} courseId={value.id} courseName={value.courseName} tutorName={value.tutorName} description={value.description} cost={value.cost} rating={value.rating} imageURL={value.imageURL} showProgress={true}></TCourseCard>
+                                <TCourseCard key={key} courseId={value.course._id} courseName={value.course.courseName} tutorName={value.course.tutor.name} description={value.course.description} cost={value.course.cost} rating={value.course.rating} imageURL={value.course.imageURL} showProgress={true} progress={value.progress}></TCourseCard>
                             </Grid>
                         ))
                     ) : (
@@ -116,7 +83,7 @@ export default function MyCoursesDashboard() {
                         </Grid>
                     )}
                 </Grid>
-                {showCourses.length > 0 ? (
+                {showCourses.data.length > 0 ? (
                     <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: "10vh" }}>
                         <Grid item xs={3}>
                             <Pagination count={1} />

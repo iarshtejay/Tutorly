@@ -13,7 +13,7 @@ const createCourse = async (course) => {
 }
 
 const getSpecificCourse = async (id) => {
-    return await Course.find({_id : id});
+    return await Course.find({_id : id}).populate('tutor');
 }
 
 const updateCourse = async (id, course) => {

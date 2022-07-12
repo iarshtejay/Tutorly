@@ -21,7 +21,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
     height: 10,
     borderRadius: 5,
 }));
-export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress, progress }) {
+export default function TTutorCard({ tutorId, tutorName, description, rating, imageURL, courses, expertise}) {
     const [favorite, setFavorite] = React.useState(false);
     const navigate = useNavigate();
     const handleFavoriteClick = () => {
@@ -32,7 +32,7 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
         }
     };
     const handleOnClick = () => {
-        navigate(`/courses/${courseId}`);
+        navigate(`/tutors/${tutorId}`);
     };
     return (
         <Card sx={{ maxWidth: 350}}>
@@ -47,11 +47,11 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={courseName}
-                subheader={tutorName}
+                title={tutorName}
+                subheader={expertise}
             />
             <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
-            <CardContent>
+            <CardContent style={{ maxHeight: 120 }}>
                 <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
@@ -59,7 +59,6 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                 </Typography>
                 <br />
             </CardContent>
-            {showProgress && <BorderLinearProgress style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }} theme={theme} variant="determinate" value={progress?.$numberDecimal} />}
             <CardActions disableSpacing>
                 <Grid container spacing={1}>
                     <Grid item xs={1.5}>
@@ -72,15 +71,8 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                             <ShareIcon />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={3}>
-                        <Button>
-                            <Typography color="text.secondary" style={{ fontWeight: "bold" }}>
-                                {cost?.$numberDecimal}
-                            </Typography>
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6} style={{ textAlign: "right" }}>
-                        <Button onClick={handleOnClick}>GO TO COURSE</Button>
+                    <Grid item xs={9} style={{ textAlign: "right" }}>
+                        <Button onClick={handleOnClick}>GO TO TUTOR PAGE</Button>
                     </Grid>
                 </Grid>
             </CardActions>

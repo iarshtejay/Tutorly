@@ -5,18 +5,19 @@ import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { updateArchivedCourses } from "./slice/courseSlice";
-import { getArchivedCourses } from "./services/courses-rest";
+import { getRecommendedCourses, getRecommendedTutors } from "./services/courses-rest";
+import { updateRecommendedCourses, updateRecommendedTutors } from "./slice/courseSlice";
+import TTutorCard from "../../components/TTutorCard";
 
-export default function ArchivedCoursesDashboard() {
-
+export default function RecommendedTutorsDashboard() {
+    
     const dispatch = useDispatch();
-    const allCourses =  useSelector(state => state.course.archivedCourses);
-    const showCourses = useSelector(state => state.course.searchArchivedCourses);
+    const allTutors =  useSelector(state => state.course.recommendedTutors);
+    const showTutors = useSelector(state => state.course.searchRecommendedTutors);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        dispatch(getArchivedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+        dispatch(getRecommendedTutors({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
     }, [dispatch]);
 
     const handleSearch = (value) => {
@@ -25,23 +26,23 @@ export default function ArchivedCoursesDashboard() {
 
     useEffect(() => {
         if (searchTerm !== "" && searchTerm !== null && searchTerm !== undefined) {
-            const selectedCourses = allCourses.data.filter((x) => {
-                const course = x.course;
-                for (var i in course) {
+            const selectedCourses = allTutors.data.filter((x) => {
+                for (var i in x) {
                     if (i === "name" || i === "description") {
-                        if (course[i]?.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
-                            return course;
+                        if (x[i]?.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+                            return x;
                     } else if (i === "tutor") {
-                        if (course[i]?.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
-                            return course;
+                        if (x[i]?.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+                            return x
                     }
                 }
             });
-            dispatch(updateArchivedCourses(selectedCourses));
+            dispatch(updateRecommendedTutors(selectedCourses));
         } else {
-            dispatch(getArchivedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+            dispatch(getRecommendedTutors({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
         }
     }, [searchTerm]);
+
 
     return (
         <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
@@ -50,10 +51,19 @@ export default function ArchivedCoursesDashboard() {
                 placeHolderText={"Search by course name or tutor name"}
             ></TSearchBar>
             <Grid container spacing={2} sx={{ padding: 2 }}>
-                {showCourses.data.length > 0 ? (
-                    showCourses.data.map((value, key) => (
+                {showTutors?.data?.length > 0 ? (
+                    showTutors?.data?.map((value, key) => (
                         <Grid item xs={12} sm={6} md={4} key={key}>
-                                <TCourseCard key={key} courseId={value.course._id} courseName={value.course.courseName} tutorName={value.course.tutor.name} description={value.course.description} cost={value.course.cost} rating={value.course.rating} imageURL={value.course.imageURL} showProgress={false}></TCourseCard>
+                            <TTutorCard
+                                key={key}
+                                tutorId={value._id}
+                                courses={value.courses}
+                                tutorName={value.name}
+                                description={value.description}
+                                rating={value.rating}
+                                imageURL={value.imageURL}
+                                expertise={value.expertise}
+                            ></TTutorCard>
                         </Grid>
                     ))
                 ) : (
@@ -76,8 +86,8 @@ export default function ArchivedCoursesDashboard() {
                         </Grid>
                     </Grid>
                 )}
-            </Grid> 
-            {showCourses.data.length > 0 ? (
+            </Grid>
+            {showTutors?.data?.length > 0 ? (
                 <Grid
                     container
                     spacing={0}

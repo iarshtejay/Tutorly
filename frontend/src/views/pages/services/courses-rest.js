@@ -17,11 +17,63 @@ export const getEnrolledCourses = createAsyncThunk(
   "/course/enrolled",
   async ({ isTutor, studentId }) => {
     return (
-      await httpClient.get("/student/courses/enrolled", {
-        isTutor, student: {
+      await httpClient.post("/student/courses/enrolled", {
+        isTutor, 
+        student: {
           id: studentId
         }
       })
+    ).data;
+  }
+);
+
+export const getArchivedCourses = createAsyncThunk(
+  "/course/archived",
+  async ({ isTutor, studentId }) => {
+    return (
+      await httpClient.post("/student/courses/archived", {
+        isTutor, 
+        student: {
+          id: studentId
+        }
+      })
+    ).data;
+  }
+);
+
+export const getRecommendedCourses = createAsyncThunk(
+  "/course/recommendations",
+  async ({ isTutor, studentId }) => {
+    return (
+      await httpClient.post("/student/courses/recommendations", {
+        isTutor, 
+        student: {
+          id: studentId
+        }
+      })
+    ).data;
+  }
+);
+
+export const getRecommendedTutors = createAsyncThunk(
+  "/course/tutors",
+  async ({ isTutor, studentId }) => {
+    return (
+      await httpClient.post("/student/tutors/recommendations", {
+        isTutor, 
+        student: {
+          id: studentId
+        }
+      })
+    ).data;
+  }
+);
+
+export const getCourseDetails = createAsyncThunk(
+  "/course/:id",
+  async ({ isTutor, courseId }) => {
+    return (
+      await httpClient.get(`/course/${courseId}`)
     ).data;
   }
 );
