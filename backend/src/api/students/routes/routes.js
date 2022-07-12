@@ -393,7 +393,7 @@ router.post("/course/enroll/:id", async (req, res) => {
                 param: "id"
             }});
         }
-        const courses = await Service.getTutorRecommendations(studentId);
+        const courses = await Service.getTutorRecommendations(rawStudentId);
         return res.status(200).json({
             message: "Sucessfully got the tutor recommendations.",
             success: true,

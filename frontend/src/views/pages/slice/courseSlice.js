@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllCourses, getArchivedCourses, getEnrolledCourses, getRecommendedCourses } from '../services/courses-rest';
+import { getAllCourses, getArchivedCourses, getEnrolledCourses, getRecommendedCourses, getRecommendedTutors } from '../services/courses-rest';
 
 const initialState = {
     enrolledCourses: {
@@ -7,6 +7,10 @@ const initialState = {
         data: []
     },
     recommendedCourses: {
+        loading: true,
+        data: [],
+    },
+    recommendedTutors: {
         loading: true,
         data: [],
     },
@@ -33,6 +37,10 @@ const initialState = {
     searchRecommendedCourses: {
         loading: true,
         data: []
+    },
+    searchRecommendedTutors: {
+        loading: true,
+        data: []
     }
 };
 
@@ -51,6 +59,9 @@ export const courseSlice = createSlice({
         },
         updateRecommendedCourses: (state, action) => {
             state.searchRecommendedCourses.data = action.payload;
+        },
+        updateRecommendedTutors: (state, action) => {
+            state.searchRecommendedTutors.data = action.payload;
         },
     },
     extraReducers: builder => {
@@ -78,9 +89,15 @@ export const courseSlice = createSlice({
             state.recommendedCourses.loading = false
             state.searchRecommendedCourses.loading = false
         });
+        builder.addCase(getRecommendedTutors.fulfilled, (state, action) => {
+            state.recommendedTutors.data = action.payload.data
+            state.searchRecommendedTutors.data = action.payload.data
+            state.recommendedTutors.loading = false
+            state.searchRecommendedTutors.loading = false
+        });
     }
 });
 
-export const { updateSearchCourses, updateEnrolledCourses, updateArchivedCourses, updateRecommendedCourses } = courseSlice.actions;
+export const { updateSearchCourses, updateEnrolledCourses, updateArchivedCourses, updateRecommendedCourses, updateRecommendedTutors } = courseSlice.actions;
 
 export default courseSlice.reducer;
