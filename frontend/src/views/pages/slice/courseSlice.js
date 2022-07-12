@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllCourses, getArchivedCourses, getEnrolledCourses, getRecommendedCourses, getRecommendedTutors } from '../services/courses-rest';
+import { getAllCourses, getArchivedCourses, getCourseDetails, getEnrolledCourses, getRecommendedCourses, getRecommendedTutors } from '../services/courses-rest';
 
 const initialState = {
     enrolledCourses: {
@@ -41,6 +41,10 @@ const initialState = {
     searchRecommendedTutors: {
         loading: true,
         data: []
+    },
+    courseDetail: {
+        data: [],
+        loading: true
     }
 };
 
@@ -94,6 +98,10 @@ export const courseSlice = createSlice({
             state.searchRecommendedTutors.data = action.payload.data
             state.recommendedTutors.loading = false
             state.searchRecommendedTutors.loading = false
+        });
+        builder.addCase(getCourseDetails.fulfilled, (state, action) => {
+            state.courseDetail.data = action.payload.data
+            state.courseDetail.loading = false
         });
     }
 });
