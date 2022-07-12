@@ -11,15 +11,25 @@ const Utils = require("../../../utils/utils");
  */
 router.post("/course/archive/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const { id: studentId } = req.body.student;
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "course id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "student id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const studentId = rawStudentId;
         const student = await Service.archiveCourse(studentId, courseId);
         return res.status(200).json({
             message: "Archived the course.",
@@ -43,15 +53,25 @@ router.post("/course/archive/:id", async (req, res) => {
  */
 router.post("/course/unarchive/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const { id: studentId } = req.body.student;
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "course id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "student id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const studentId = rawStudentId;
         const student = await Service.unArchiveCourse(studentId, courseId);
         return res.status(200).json({
             message: "Unarchived the course.",
@@ -75,15 +95,25 @@ router.post("/course/unarchive/:id", async (req, res) => {
  */
 router.get("/course/progress/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const { id: studentId } = req.body.student;
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "course id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "student id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const studentId = rawStudentId;
         const student = await Service.getCourseProgress(studentId, courseId);
         if (student) {
             return res.status(200).json({
@@ -114,16 +144,25 @@ router.get("/course/progress/:id", async (req, res) => {
  */
 router.put("/course/progress/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const { id: studentId } = req.body.student;
-        const { progess: courseProgress } = req.body.course;
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "course id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "student id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const studentId = rawStudentId;
         const student = await Service.setCourseProgress(studentId, courseId, courseProgress);
         if (student) {
             return res.status(200).json({
@@ -154,7 +193,18 @@ router.put("/course/progress/:id", async (req, res) => {
  */
 router.get("/courses/enrolled", async (req, res) => {
     try {
-        const { id: studentId } = req.body.student;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawStudentId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "id"
+            }});
+        }
+        const studentId = rawStudentId;
         const courses = await Service.getAllEnrolledCourses(studentId);
         return res.status(200).json({
             message: "Sucessfully set the course progress.",
@@ -178,7 +228,18 @@ router.get("/courses/enrolled", async (req, res) => {
  */
 router.get("/courses/archived", async (req, res) => {
     try {
-        const { id: studentId } = req.body.student;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawStudentId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "id"
+            }});
+        }
+        const studentId = rawStudentId;
         const courses = await Service.getAllArchivedCourses(studentId);
         return res.status(200).json({
             message: "Sucessfully set the course progress.",
@@ -202,15 +263,25 @@ router.get("/courses/archived", async (req, res) => {
  */
 router.post("/course/unenroll/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const { id: studentId } = req.body.student;
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "course id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "student id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const studentId = rawStudentId;
         const { newCourse: course, newStudent: student } = await Service.unenrollFromACourse(studentId, courseId);
         return res.status(200).json({
             message: "Student un enrolled from the course.",
@@ -234,16 +305,25 @@ router.post("/course/unenroll/:id", async (req, res) => {
 */
 router.post("/course/enroll/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        const { id: studentId } = req.body.student;
-
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        const { id: rawStudentId } = req.body.student;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "course id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "student id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const studentId = rawStudentId;
 
         const { newCourse: course, newStudent: student } = await Service.enrollInACourse(studentId, courseId);
         return res.status(200).json({
@@ -268,13 +348,16 @@ router.post("/course/enroll/:id", async (req, res) => {
  */
  router.get("/courses/recommendations", async (req, res) => {
     try {
-        const {id: studentId} = req.body?.student;
-        if(!studentId){
-            Utils.requiredRequestBodyNotFound(res, "student", {
-                student: {
-                    param: "id"
-                },
-            });
+        const { id: rawStudentId } = req.body.student;
+        if(!rawStudentId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "id"
+            }});
         }
         const courses = await Service.getCourseRecommendations(studentId);
         return res.status(200).json({
@@ -299,13 +382,16 @@ router.post("/course/enroll/:id", async (req, res) => {
  */
  router.get("/tutors/recommendations", async (req, res) => {
     try {
-        const { id: studentId } = req.body.student;
-        if(!studentId){
-            Utils.requiredRequestBodyNotFound(res, "student", {
-                student: {
-                    param: id,
-                },
-            });
+        const { id: rawStudentId } = req.body.student;
+        if(!rawStudentId){
+            return Utils.requiredRequestBodyNotFound(res, "student", {student: {
+                param: "id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawStudentId)){
+            return Utils.idNotValidBsonObjectId(res, "student", {student: {
+                param: "id"
+            }});
         }
         const courses = await Service.getTutorRecommendations(studentId);
         return res.status(200).json({

@@ -27,14 +27,9 @@ const deleteCourse = async(id) => {
 }
 
 const getAllStudents = async (id) => {
-    const studentIds =  (await Course.find({_id : id})).students;
-    const students = []
-    studentIds.map(async studentId => {
-        const student = await Student.findOne({_id : studentId })
-        if(student){
-            students.push(student);
-        }
-    })
+    const courseObj =  (await Course.findOne({_id : id}));
+    const studentIds = courseObj?.students?courseObj.students:[]
+    const students = Promise.all(studentIds.map(async (studentId) => {return (await Student.findOne({_id : studentId }))}))
     return students;
 }
 

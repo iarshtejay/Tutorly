@@ -26,7 +26,7 @@ const deleteTutor = async(id) => {
 }
 
 const getAllCoursesByTutor = async(id) => {
-    return await Tutor.find({_id : id}).courses;
+    return (await Tutor.findOne({_id : id}))._doc;
 }
 
 const recommendStudents = async (tutorId) => {
