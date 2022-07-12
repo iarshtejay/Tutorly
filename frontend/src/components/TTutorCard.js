@@ -51,7 +51,7 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
                 subheader={expertise}
             />
             <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
-            <CardContent style={{ maxHeight: 100 }}>
+            <CardContent style={{ maxHeight: 120 }}>
                 <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
