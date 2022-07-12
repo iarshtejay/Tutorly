@@ -70,7 +70,7 @@ export default function MyCoursesDashboard() {
                     {showCourses.data.length > 0 ? (
                         showCourses.data.map((value, key) => (
                             <Grid item xs={12} sm={6} md={4} key={key}>
-                                <TCourseCard key={key} courseId={value.course._id} courseName={value.course.courseName} tutorName={value.course.tutor.name} description={value.course.description} cost={value.course.cost} rating={value.course.rating} imageURL={value.course.imageURL} showProgress={true} progress={value.progress}></TCourseCard>
+                                <TCourseCard key={key} courseId={value?.course._id} courseName={value?.course?.courseName} tutorName={value?.course?.tutor?.name} description={value?.course?.description} cost={value?.course?.cost} rating={value?.course?.rating} imageURL={value?.course?.imageURL} showProgress={true} progress={value?.progress}></TCourseCard>
                             </Grid>
                         ))
                     ) : (
