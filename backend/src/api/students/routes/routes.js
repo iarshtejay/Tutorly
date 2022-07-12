@@ -191,9 +191,9 @@ router.put("/course/progress/:id", async (req, res) => {
  * @params req, res
  * @return courses
  */
-router.get("/courses/enrolled", async (req, res) => {
+router.post("/courses/enrolled", async (req, res) => {
     try {
-        const { id: rawStudentId } = req.body.student;
+        const { id: rawStudentId } = req.body?.student;
         if(!rawStudentId){
             return Utils.requiredRequestBodyNotFound(res, "student", {student: {
                 param: "id"
@@ -214,7 +214,7 @@ router.get("/courses/enrolled", async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            message: "Internal server error. Unable to set the course progress.",
+            message: "Internal server error. Unable to get the courses enrolled.",
             success: false,
         });
     }
@@ -226,7 +226,7 @@ router.get("/courses/enrolled", async (req, res) => {
  * @params req, res
  * @return courses
  */
-router.get("/courses/archived", async (req, res) => {
+router.post("/courses/archived", async (req, res) => {
     try {
         const { id: rawStudentId } = req.body.student;
         if(!rawStudentId){
@@ -346,7 +346,7 @@ router.post("/course/enroll/:id", async (req, res) => {
  * @params req, res
  * @return courses
  */
- router.get("/courses/recommendations", async (req, res) => {
+ router.post("/courses/recommendations", async (req, res) => {
     try {
         const { id: rawStudentId } = req.body.student;
         if(!rawStudentId){
@@ -359,7 +359,7 @@ router.post("/course/enroll/:id", async (req, res) => {
                 param: "id"
             }});
         }
-        const courses = await Service.getCourseRecommendations(studentId);
+        const courses = await Service.getCourseRecommendations(rawStudentId);
         return res.status(200).json({
             message: "Sucessfully got the course recommendations.",
             success: true,
@@ -380,7 +380,7 @@ router.post("/course/enroll/:id", async (req, res) => {
  * @params req, res
  * @return tutors
  */
- router.get("/tutors/recommendations", async (req, res) => {
+ router.post("/tutors/recommendations", async (req, res) => {
     try {
         const { id: rawStudentId } = req.body.student;
         if(!rawStudentId){

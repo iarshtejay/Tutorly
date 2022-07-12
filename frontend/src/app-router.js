@@ -26,6 +26,7 @@ import CourseDetails from "./views/pages/CourseDetails";
 import HomeDashboard from "./views/pages/HomeDashboard";
 import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
+import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
 
 const AppRoutes = (props) => {
     return (
@@ -42,6 +43,7 @@ const AppRoutes = (props) => {
                     <Route path="my-courses/upload" element={<Upload />} />
                     <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
                     <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
+                    <Route path="recommended-tutors" element={<RecommendedTutorsDashboard />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="blogs" element={<Blog />} />
                     <Route index element={<MessagingLayout />} />

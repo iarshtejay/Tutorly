@@ -219,7 +219,7 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return students
  */
- router.get("/student/recommendations", async (req, res) => {
+ router.post("/student/recommendations", async (req, res) => {
     try {
         const { id: tutorId } = req.body.tutor;
         const courses = await Service.recommendStudents(tutorId);

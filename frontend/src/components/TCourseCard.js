@@ -21,7 +21,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
     height: 10,
     borderRadius: 5,
 }));
-export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress }) {
+export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress, progress }) {
     const [favorite, setFavorite] = React.useState(false);
     const navigate = useNavigate();
     const handleFavoriteClick = () => {
@@ -58,8 +58,8 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                     {description? description?.substring(0, 120) + "..." : ""}
                 </Typography>
                 <br />
-                {showProgress && <BorderLinearProgress theme={theme} variant="determinate" value={50} />}
             </CardContent>
+            {showProgress && <BorderLinearProgress style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }} theme={theme} variant="determinate" value={progress?.$numberDecimal} />}
             <CardActions disableSpacing>
                 <Grid container spacing={1}>
                     <Grid item xs={1.5}>
