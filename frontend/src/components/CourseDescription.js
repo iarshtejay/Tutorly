@@ -12,7 +12,7 @@ const CourseDescription = ({ courseDescription, tutorDescription }) => {
                 {tutorDescription ||
                     "A tutor works with students to improve their academic performance. They are typically found in educational institutions and businesses that provide after-school tutoring. A tutor will meet with students individually or in groups to supervise their completion of schoolwork. A tutor can also assist students in improving their test-taking abilities, taking better notes, and expanding on classroom concepts. They are designed to assist students and encourage a deeper understanding of course materials."}
             </p>
-            <h1>What You’ll Learn?</h1>
+            {/* <h1>What You’ll Learn?</h1>
             <ul className="list-unstyled">
                 <li className="mb-3">
                     {" "}
@@ -49,7 +49,7 @@ const CourseDescription = ({ courseDescription, tutorDescription }) => {
                     <i className="fas fa-check text-info me-2"></i>
                     <strong>Learn MySQL for saving data (databases)</strong>
                 </li>
-            </ul>
+            </ul> */}
         </>
     );
 };
