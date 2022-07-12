@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRecommendedCourses } from "./services/courses-rest";
 import { updateRecommendedCourses } from "./slice/courseSlice";
 
-export default function RecommendedCoursesDashboard() {
+export default function RecommendedTutorsDashboard() {
     
     const dispatch = useDispatch();
     const allCourses =  useSelector(state => state.course.recommendedCourses);

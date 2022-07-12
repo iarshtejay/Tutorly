@@ -37,17 +37,17 @@ const checkIfCourseExistsAndEnroll = (student, course) => {
 }
 
 const courseProgressHandler = async (student, courseId, type, courseProgress) => {
-    for (let i=0; i < student.courses.length; i++) {
+    for (let i = 0; i < student.courses.length; i++) {
         const course = student.courses[i];
-        if(course._id === courseId){
-            if(type === "get"){
+        if (course._id === courseId) {
+            if (type === "get") {
                 return course.progress;
-            } else if (type === "set"){
+            } else if (type === "set") {
                 course.progress = courseProgress;
                 await student.save();
                 return course.progress;
             }
-        } else if ((course._id !== courseId) && (i === student.courseslength - 1)){
+        } else if ((course._id !== courseId) && (i === student.courseslength - 1)) {
             return false;
         }
     }
@@ -56,15 +56,15 @@ const courseProgressHandler = async (student, courseId, type, courseProgress) =>
 const getAllCoursesTypeHandler = (student, type) => {
     const archivedCourses = [];
     const enrolledCourses = [];
-    for (let i=0; i < student.courses.length; i++) {
+    for (let i = 0; i < student.courses.length; i++) {
         const course = student.courses[i];
-        if(course.archived === true){
+        if (course.archived === true) {
             archivedCourses.push(course);
         } else {
             enrolledCourses.push(course);
         }
     }
-    return type === "archived"? archivedCourses: enrolledCourses;
+    return type === "archived" ? archivedCourses : enrolledCourses;
 }
 
 const archiveCourse = async (studentId, courseId) => {
@@ -80,23 +80,43 @@ const unArchiveCourse = async (studentId, courseId) => {
 }
 
 const getCourseProgress = async (studentId, courseId) => {
-    const student = await Student.findById({_id: studentId});
+    const student = await Student.findById({ _id: studentId });
     return await courseProgressHandler(student, courseId, "get", null);
 }
 
 const setCourseProgress = async (studentId, courseId, courseProgress) => {
-    const student = await Student.findById({_id: studentId});
+    const student = await Student.findById({ _id: studentId });
     return await courseProgressHandler(student, courseId, "set", courseProgress);
 }
 
-const getAllEnrolledCourses = async(studentId) => {
-    const student = await Student.findById({_id: studentId});
-    getAllCoursesTypeHandler(student, "enrolled");
+const getAllEnrolledCourses = async (studentId) => {
+    const student = await Student.findById({ _id: studentId }).populate({
+        path: 'courses',
+        populate: {
+            path: 'course',
+            model: 'Course',
+            populate: {
+                path: 'tutor',
+                model: 'Tutor'
+            }
+        }
+    });
+    return getAllCoursesTypeHandler(student, "enrolled");
 }
 
-const getAllArchivedCourses = async(studentId) => {
-    const student = await Student.findById({_id: studentId});
-    getAllCoursesTypeHandler(student, "archived");
+const getAllArchivedCourses = async (studentId) => {
+    const student = await Student.findById({ _id: studentId }).populate({
+        path: 'courses',
+        populate: {
+            path: 'course',
+            model: 'Course',
+            populate: {
+                path: 'tutor',
+                model: 'Tutor'
+            }
+        }
+    });
+    return getAllCoursesTypeHandler(student, "archived");
 }
 
 const enrollInACourse = async (studentId, courseId) => {
@@ -114,7 +134,7 @@ const unenrollFromACourse = async (studentId, courseId) => {
 }
 
 const getCourseRecommendations = async (studentId) => {
-    const courses = await Course.find({});
+    const courses = await Course.find({}).populate('tutor');
     return courses;
 }
 

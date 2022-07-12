@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllCourses, getEnrolledCourses } from '../services/courses-rest';
+import { getAllCourses, getArchivedCourses, getEnrolledCourses, getRecommendedCourses } from '../services/courses-rest';
 
 const initialState = {
     enrolledCourses: {
@@ -21,6 +21,18 @@ const initialState = {
     searchCourses: {
         loading: true,
         data: []
+    },
+    searchEnrolledCourses: {
+        loading: true,
+        data: []
+    },
+    searchArchivedCourses: {
+        loading: true,
+        data: []
+    },
+    searchRecommendedCourses: {
+        loading: true,
+        data: []
     }
 };
 
@@ -29,8 +41,16 @@ export const courseSlice = createSlice({
     initialState,
     reducers: {
         updateSearchCourses: (state, action) => {
-            console.log("ac", action.payload);
             state.searchCourses.data = action.payload;
+        },
+        updateEnrolledCourses: (state, action) => {
+            state.searchEnrolledCourses.data = action.payload;
+        },
+        updateArchivedCourses: (state, action) => {
+            state.searchArchivedCourses.data = action.payload;
+        },
+        updateRecommendedCourses: (state, action) => {
+            state.searchRecommendedCourses.data = action.payload;
         },
     },
     extraReducers: builder => {
@@ -42,11 +62,25 @@ export const courseSlice = createSlice({
         });
         builder.addCase(getEnrolledCourses.fulfilled, (state, action) => {
             state.enrolledCourses.data = action.payload.data
+            state.searchEnrolledCourses.data = action.payload.data
             state.enrolledCourses.loading = false
+            state.searchEnrolledCourses.loading = false
+        });
+        builder.addCase(getArchivedCourses.fulfilled, (state, action) => {
+            state.archivedCourses.data = action.payload.data
+            state.searchArchivedCourses.data = action.payload.data
+            state.archivedCourses.loading = false
+            state.searchArchivedCourses.loading = false
+        });
+        builder.addCase(getRecommendedCourses.fulfilled, (state, action) => {
+            state.recommendedCourses.data = action.payload.data
+            state.searchRecommendedCourses.data = action.payload.data
+            state.recommendedCourses.loading = false
+            state.searchRecommendedCourses.loading = false
         });
     }
 });
 
-export const { updateSearchCourses } = courseSlice.actions;
+export const { updateSearchCourses, updateEnrolledCourses, updateArchivedCourses, updateRecommendedCourses } = courseSlice.actions;
 
 export default courseSlice.reducer;
