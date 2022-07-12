@@ -26,6 +26,8 @@ const Course = new mongoose.Schema({
   ],
   cost: mongoose.Types.Decimal128,
   rating: mongoose.Types.Decimal128,
+  description: String,
+  imageURL: String
 });
 
 module.exports = mongoose.model("Course", Course);

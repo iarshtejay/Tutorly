@@ -6,7 +6,7 @@ const getAllCourses = async () => {
 }
 
 const createCourse = async (course) => {
-    const course_ = await new Course(course);
+    const course_ = await Course(course);
     await course_.save();
     return course_;
 }

@@ -98,7 +98,7 @@ export default function HomeDashboard() {
                         <Grid item xs={12} sm={6} md={4} key={key}>
                             <TCourseCard
                                 key={key}
-                                courseId={value.id}
+                                courseId={value._id}
                                 courseName={value.name}
                                 tutorName={value.tutor?.name}
                                 description={value.description}
