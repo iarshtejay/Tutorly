@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Tutor = new mongoose.Schema({
     id: String,
@@ -9,6 +9,9 @@ const Tutor = new mongoose.Schema({
             ref: "Course",
         },
     ],
+    rating: mongoose.Types.Decimal128,
+    description: String,
+    imageURL: String,
 });
 
-module.exports = mongoose.model('Tutor', Tutor);
+module.exports = mongoose.model("Tutor", Tutor);

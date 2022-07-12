@@ -5,18 +5,19 @@ import TCourseCard from "../../components/TCourseCard";
 import TSearchBar from "../../components/TSearchBar";
 import { Pagination, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getRecommendedCourses } from "./services/courses-rest";
-import { updateRecommendedCourses } from "./slice/courseSlice";
+import { getRecommendedCourses, getRecommendedTutors } from "./services/courses-rest";
+import { updateRecommendedCourses, updateRecommendedTutors } from "./slice/courseSlice";
+import TTutorCard from "../../components/TTutorCard";
 
 export default function RecommendedTutorsDashboard() {
     
     const dispatch = useDispatch();
-    const allCourses =  useSelector(state => state.course.recommendedCourses);
-    const showCourses = useSelector(state => state.course.searchRecommendedCourses);
+    const allTutors =  useSelector(state => state.course.recommendedTutors);
+    const showTutors = useSelector(state => state.course.searchRecommendedTutors);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        dispatch(getRecommendedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+        dispatch(getRecommendedTutors({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
     }, [dispatch]);
 
     const handleSearch = (value) => {
@@ -25,7 +26,7 @@ export default function RecommendedTutorsDashboard() {
 
     useEffect(() => {
         if (searchTerm !== "" && searchTerm !== null && searchTerm !== undefined) {
-            const selectedCourses = allCourses.data.filter((x) => {
+            const selectedCourses = allTutors.data.filter((x) => {
                 for (var i in x) {
                     if (i === "name" || i === "description") {
                         if (x[i]?.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
@@ -36,9 +37,9 @@ export default function RecommendedTutorsDashboard() {
                     }
                 }
             });
-            dispatch(updateRecommendedCourses(selectedCourses));
+            dispatch(updateRecommendedTutors(selectedCourses));
         } else {
-            dispatch(getRecommendedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+            dispatch(getRecommendedTutors({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
         }
     }, [searchTerm]);
 
@@ -50,19 +51,19 @@ export default function RecommendedTutorsDashboard() {
                 placeHolderText={"Search by course name or tutor name"}
             ></TSearchBar>
             <Grid container spacing={2} sx={{ padding: 2 }}>
-                {showCourses?.data?.length > 0 ? (
-                    showCourses?.data?.map((value, key) => (
+                {showTutors?.data?.length > 0 ? (
+                    showTutors?.data?.map((value, key) => (
                         <Grid item xs={12} sm={6} md={4} key={key}>
-                            <TCourseCard
+                            <TTutorCard
                                 key={key}
-                                courseId={value._id}
-                                courseName={value.name}
-                                tutorName={value.tutor?.name}
+                                tutorId={value._id}
+                                courses={value.courses}
+                                tutorName={value.name}
                                 description={value.description}
-                                cost={value.cost}
                                 rating={value.rating}
                                 imageURL={value.imageURL}
-                            ></TCourseCard>
+                                expertise={value.expertise}
+                            ></TTutorCard>
                         </Grid>
                     ))
                 ) : (
@@ -86,7 +87,7 @@ export default function RecommendedTutorsDashboard() {
                     </Grid>
                 )}
             </Grid>
-            {showCourses?.data?.length > 0 ? (
+            {showTutors?.data?.length > 0 ? (
                 <Grid
                     container
                     spacing={0}
