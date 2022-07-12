@@ -9,54 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateSearchCourses } from "./slice/courseSlice";
 
 export default function HomeDashboard() {
-    // const dummy_data = [
-    //     {
-    //         id: "0F8JIqi4zwvb77FGz6Wt",
-    //         courseName: "Web Development",
-    //         tutorName: "Dr. Arshdeep Bree",
-    //         description: "This is a web development course.",
-    //         cost: "25 USD",
-    //         rating: 4,
-    //         imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-    //     },
-    //     {
-    //         id: "0F8JIqi4zwvb77FGz6Wt",
-    //         courseName: "Android Development",
-    //         tutorName: "Dr. Arshdeep Bree",
-    //         description: "This is a web development course.",
-    //         cost: "25 USD",
-    //         rating: 4,
-    //         imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-    //     },
-    //     {
-    //         id: "0F8JIqi4zwvb77FGz6Wt",
-    //         courseName: "App Development",
-    //         tutorName: "Dr. Arshdeep Bree",
-    //         description: "This is a web development course.",
-    //         cost: "25 USD",
-    //         rating: 4,
-    //         imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-    //     },
-    //     {
-    //         id: "0F8JIqi4zwvb77FGz6Wt",
-    //         courseName: "React",
-    //         tutorName: "Dr. Arshdeep Bree",
-    //         description: "This is a web development course.",
-    //         cost: "25 USD",
-    //         rating: 4,
-    //         imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-    //     },
-    //     {
-    //         id: "0F8JIqi4zwvb77FGz6Wt",
-    //         courseName: "Front-end Development",
-    //         tutorName: "Dr. Arshdeep Bree",
-    //         description: "This is a web development course.",
-    //         cost: "25 USD",
-    //         rating: 4,
-    //         imageURL: "https://randomuser.me/api/portraits/men/81.jpg",
-    //     },
-    // ];
-
+    
     const dispatch = useDispatch();
     const allCourses =  useSelector(state => state.course.allCourses);
     const showCourses = useSelector(state => state.course.searchCourses);
@@ -74,9 +27,12 @@ export default function HomeDashboard() {
         if (searchTerm !== "" && searchTerm !== null && searchTerm !== undefined) {
             const selectedCourses = allCourses.data.filter((x) => {
                 for (var i in x) {
-                    if (i === "name" || i === "description" || i === "tutor") {
-                        if (x[i].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+                    if (i === "name" || i === "description") {
+                        if (x[i]?.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
                             return x;
+                    } else if (i === "tutor") {
+                        if (x[i]?.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+                            return x
                     }
                 }
             });

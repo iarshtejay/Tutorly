@@ -22,7 +22,6 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
     borderRadius: 5,
 }));
 export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress }) {
-    console.log("data", cost, rating);
     const [favorite, setFavorite] = React.useState(false);
     const navigate = useNavigate();
     const handleFavoriteClick = () => {
@@ -36,11 +35,11 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
         navigate(`/courses/${courseId}`);
     };
     return (
-        <Card sx={{ maxWidth: 350 }}>
+        <Card sx={{ maxWidth: 350}}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {tutorName}
+                        {tutorName? tutorName.substring(0,1) : ""}
                     </Avatar>
                 }
                 action={
@@ -52,11 +51,11 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                 subheader={tutorName}
             />
             <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
-            <CardContent>
+            <CardContent style={{ maxHeight: 100 }}>
                 <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
-                    {description}
+                    {description? description?.substring(0, 120) + "..." : ""}
                 </Typography>
                 <br />
                 {showProgress && <BorderLinearProgress theme={theme} variant="determinate" value={50} />}
@@ -76,7 +75,7 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                     <Grid item xs={3}>
                         <Button>
                             <Typography color="text.secondary" style={{ fontWeight: "bold" }}>
-                            {cost?.$numberDecimal}
+                                {cost?.$numberDecimal}
                             </Typography>
                         </Button>
                     </Grid>
