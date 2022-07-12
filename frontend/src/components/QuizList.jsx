@@ -9,45 +9,18 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import FolderIcon from "@mui/icons-material/Folder";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
+import { useState, useEffect } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import moment from "moment";
 
-const quizzes = [
-    {
-        id: 1,
-        name: "Quiz 1",
-        startDate: "2020-01-01",
-        dueDate: "2020-01-01",
-        status: true,
-        attemps: 2,
-    },
-    {
-        id: 2,
-        name: "Quiz 2",
-        startDate: "2020-02-01",
-        dueDate: "2020-02-04",
-        status: true,
-        attemps: 1,
-    },
-    {
-        id: 3,
-        name: "Quiz 3",
-        startDate: "2020-03-01",
-        dueDate: "2020-03-03",
-        status: false,
-        attemps: 3,
-    },
-    {
-        id: 4,
-        name: "Quiz 4",
-        startDate: "2020-04-01",
-        dueDate: "2020-04-03",
-        status: false,
-        attemps: 0,
-    },
-];
+const rootDomain = "http://localhost:8000";
 
 const Demo = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -57,41 +30,87 @@ const QuizList = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // const courseId = useParams().id;
+    const courseId = `62ca26bd2838cca760fed1ef`;
+
+    const [userType, setUserType] = useState("tutor");
+    const [userId, setUserId] = useState("");
+    const [quizzes, setQuizzes] = useState([]);
+
+    const getQuizzes = async () => {
+        const response = await axios({
+            method: "GET",
+            url: `${rootDomain}/api/course/${courseId}/quiz/list`,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.data && response.data.data && response.data.data.length > 0) {
+            return response.data.data;
+        } else {
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        getQuizzes().then((quizzes) => {
+            setQuizzes(quizzes);
+        });
+    }, []);
+
     return (
         <>
             <Container fixed>
+                <Box>
+                    <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={(e) => {
+                            const id = location.pathname.split("/")[2];
+                            navigate(`/courses/${id}/quiz/new`);
+                        }}
+                    >
+                        New Quiz
+                    </Button>
+                </Box>
                 <Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
                             <Typography sx={{ mt: 4, mb: 2 }} variant="h5" component="div">
                                 Active Quizzes
                             </Typography>
-                            <Demo>
-                                <List>
-                                    {quizzes.map((quiz) => (
-                                        <ListItem
-                                            key={quiz.id}
-                                            secondaryAction={
-                                                <IconButton
-                                                    aria-label="Start"
-                                                    onClick={(e) => {
-                                                        const id = location.pathname.split("/")[2];
-                                                        navigate(`/courses/${id}/quiz/${quiz.id}`);
-                                                    }}
-                                                >
-                                                    <KeyboardArrowRightRoundedIcon />
-                                                </IconButton>
-                                            }
-                                            disabled={!quiz.status}
-                                        >
-                                            <ListItemIcon>
-                                                <FolderIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={quiz.name} secondary={`Available On ${quiz.startDate} Until ${quiz.dueDate}`} />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Demo>
+                            {quizzes.length === 0 ? (
+                                <Typography sx={{ mt: 10 }} variant="h6" component="div">
+                                    No Quizzes Available
+                                </Typography>
+                            ) : (
+                                <Demo>
+                                    <List>
+                                        {quizzes.map((quiz) => (
+                                            <ListItem
+                                                key={quiz._id}
+                                                secondaryAction={
+                                                    <IconButton
+                                                        aria-label="Start"
+                                                        onClick={(e) => {
+                                                            const id = location.pathname.split("/")[2];
+                                                            navigate(`/courses/${id}/quiz/${quiz._id}`);
+                                                        }}
+                                                    >
+                                                        <KeyboardArrowRightRoundedIcon />
+                                                    </IconButton>
+                                                }
+                                            >
+                                                <ListItemIcon>
+                                                    <FolderIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary={quiz.title} secondary={`Available On ${moment(quiz.startDate).format("llll")} Until ${moment(quiz.endDate).format("llll")}`} />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </Demo>
+                            )}
                         </Grid>
                     </Grid>
                 </Box>
