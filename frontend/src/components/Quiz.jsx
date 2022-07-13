@@ -5,9 +5,11 @@ import Typography from "@mui/material/Typography";
 import QuizQuestion from "./QuizQuestion";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router";
 
 const Quiz = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     return (
         <>
             <Box>
@@ -26,7 +28,8 @@ const Quiz = () => {
                         <Button
                             variant="contained"
                             onClick={(e) => {
-                                navigate(`/course/quiz`);
+                                const id = location.pathname.split("/")[2];
+                                navigate(`/courses/${id}/quiz`);
                             }}
                         >
                             Submit

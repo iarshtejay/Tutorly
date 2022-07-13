@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useReducer, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -9,8 +9,70 @@ import StarIcon from '@mui/icons-material/Star';
 import SendIcon from '@mui/icons-material/Send';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Container, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardActions, CardContent, Link, Rating, Box } from '@mui/material';
+import Rating_Tutor from './Rating';
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
+
+const formReducer = (state, event) => {
+    if(event.reset) {
+        return {
+            rating: '',
+            review: '',
+        }
+    }
+    return {
+        ...state,
+        [event.name]: event.value
+    }
+}
 
 export default function Review() {
+
+    const[formData, setFormData] = useReducer(formReducer, {
+    });
+    const [posting, setPosting] = useState(false);
+    const handleSubmit = event => {
+        event.preventDefault();
+        setPosting(true);
+        alert ('Review Submitted')
+
+        setTimeout(() => {
+            setPosting(false);
+            setFormData({
+                reset:true
+            })
+        }, 100000);
+    }
+
+    const handleChange = event => {
+        setFormData({
+            name: event.target.name,
+            value: event.target.value,
+        });
+    }
+
+    const [feedback, setFeedback] = useState({
+        courseId_: "12kjfdbhj67jh",
+        userId_: "qw67ertbj234n",
+        rating_: '',
+        feedback_: "",
+    });
+
+    const root = "http://localhost:8000";
+    const handleFeedback = async () => {
+
+    await axios({
+        method: "PUT",
+        url: `${root}/api/feedback/add`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: {feedback}
+    });
+};
+
+
+
 
 
   return (
@@ -78,7 +140,36 @@ export default function Review() {
         </Typography>
         <Card>
             <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Rate Module</Typography>
+            <form method='POST'>
+                            <fieldset style={{border: "1px solid lightgray", padding: "10px"}}>
+                                <label>
+                                    <p>Rate the Module:<Rating_Tutor name='rating'  onClick={(e) => { setFeedback({ ...feedback , rating_: e.target.value });}}/></p>
+                                    Review:<br />
+                                    <textarea name='review' id='review' style={{margin: "5px 5px", padding: "5px"}} placeholder='Post your Review...'  onChange={(e) => { setFeedback({ ...feedback , feedback_: e.target.value });}} ></textarea>
+                                </label>
+                                <div className='d-grid gap-2 d-md-flex justify-content-md-end' style={{marginRight: "10px", marginBottom: "10px"}}> 
+                                    <button type='submit' className='btn btn-success' style={{width: "100px"}} onClick={handleFeedback}>Post</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                        {posting && 
+                        <div class="card">
+                            <div class="row d-flex">
+                                
+                                <div class="d-flex flex-column">
+                                    <h6 class="user">Dhairya</h6>
+                                    <div>
+                                        <p class="text-left"><span class="text-muted">3.0</span> <span class="fa fa-star star-active ml-3"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-inactive"></span> <span class="fa fa-star star-inactive"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-left">
+                            {Object.entries(formData).map(([name, value]) => (
+                                <p class="content" key={name}>{value.toString()}</p>
+                                ))}
+                            </div>
+                        </div> }
+                {/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Rate Module</Typography>
                 <StarIcon style={{color: "#F6BE00"}}/><StarIcon style={{color: "#F6BE00"}} /><StarBorderIcon /><StarBorderIcon /><StarBorderIcon />
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Review Module</Typography>
                 <TextField id="outlined-basic" label="Write Review" variant="outlined" />
@@ -99,7 +190,7 @@ export default function Review() {
                     "This course says learn from scratch but what i found is that it automatically 
                     jumps in to coding without really explaining the definition of what you are doing. 
                     This course feels more suited for people whom already have experience in python."
-                </Typography>
+                </Typography> */}
             </CardContent>
         </Card>
     </Container>
