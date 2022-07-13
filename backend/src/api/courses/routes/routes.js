@@ -39,9 +39,9 @@ router.post("/add", async (req, res) => {
     try {
         const course = req.body.course;
         if (!course) {
-            Utils.requiredRequestBodyNotFound(res, "course", {
+            return Utils.requiredRequestBodyNotFound(res, "course", {
                 course: {
-                    param: Object.keys(Course.toObject()),
+                    param: Object.keys(Course.schema.tree),
                 },
             });
         }
@@ -68,19 +68,23 @@ router.post("/add", async (req, res) => {
  */
 router.put("/update/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        if (!courseId) {
-            Utils.requiredRequestBodyNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "course", {course: {
+                param: "id"
+            }});
+        }
+        const courseId = rawCourseId;
         const course = req.body.course;
         if (!course) {
-            Utils.requiredRequestBodyNotFound(res, "course", {
+            return Utils.requiredRequestBodyNotFound(res, "course", {
                 course: {
-                    param: Object.keys(Course.toObject()),
+                    param: Object.keys(Course.schema.tree),
                 },
             });
         }
@@ -107,14 +111,18 @@ router.put("/update/:id", async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        if (!courseId) {
-            Utils.requiredRequestBodyNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "course", {course: {
+                param: "id"
+            }});
+        }
+        const courseId = rawCourseId;
         const course = await Service.getSpecificCourse(courseId);
         return res.status(200).json({
             message: "Obtained the specific course",
@@ -138,20 +146,32 @@ router.get("/:id", async (req, res) => {
  */
 router.delete("/delete/:id", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        if (!courseId) {
-            Utils.requiredRequestParamNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
+        const rawCourseId = req.params.id;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: "id"
+            }});
+        }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "course", {course: {
+                param: "id"
+            }});
+        }
+        const courseId = rawCourseId;
+        const result = await Service.deleteCourse(courseId);
+        if(result && result.deletedCount === 0){
+            return res.status(200).json({
+                message: "No matching records found",
+                success: true,
+                data: courseId,
+            });
+        }else{
+            return res.status(200).json({
+                message: "Deleted the specific course",
+                success: true,
+                data: courseId,
             });
         }
-        await Service.deleteCourse(courseId);
-        return res.status(200).json({
-            message: "Deleted the specific course",
-            success: true,
-            data: courseId,
-        });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
@@ -161,30 +181,6 @@ router.delete("/delete/:id", async (req, res) => {
     }
 });
 
-/**
- * @author Bharatwaaj Shankaranarayanan
- * @description Create a new course
- * @params req, res
- * @return courses
- */
-router.put("/update/:id", async (req, res) => {
-    try {
-        const course = req.body.course;
-        if (!course) {
-            requestParamCourseNotFound(res);
-        }
-        const courses = await Service.createCourse(course);
-        return res.status(200).json({
-            courses,
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            message: "Internal server error. Unable to retrieve courses.",
-            success: false,
-        });
-    }
-});
 
 /**
  * @author Arshdeep Singh
@@ -194,14 +190,18 @@ router.put("/update/:id", async (req, res) => {
  */
 router.get("/:id/students", async (req, res) => {
     try {
-        const courseId = req.params.id;
-        if (!courseId) {
-            Utils.requiredRequestBodyNotFound(res, "course", {
-                course: {
-                    param: id,
-                },
-            });
+        const rawCourseId = req.params.id;
+        if(!rawCourseId){
+            return Utils.requiredRequestBodyNotFound(res, "course", {course: {
+                param: "id"
+            }});
         }
+        if(!Utils.isValidObjectId(rawCourseId)){
+            return Utils.idNotValidBsonObjectId(res, "course", {course: {
+                param: "id"
+            }});
+        }
+        const courseId = rawCourseId;
         const students = await Service.getAllStudents(courseId);
         return res.status(200).json({
             message: "Obtained all the students enrolled in the specific course",

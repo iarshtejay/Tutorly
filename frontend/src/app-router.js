@@ -20,14 +20,17 @@ import Signup from "./components/SignUp";
 import Upload from "./components/Upload";
 import DiscussionLayout from "./views/discussion/DiscussionLayout";
 import CourseLayout from "./views/layout/CourseLayout";
+import HomeLayout from "./views/layout/HomeLayout";
 import MasterLayout from "./views/layout/MasterLayout";
 import MessagingLayout from "./views/messaging/MessagingLayout";
 import ArchivedCoursesDashboard from "./views/pages/ArchivedCoursesDashboard";
 import CourseDetails from "./views/pages/CourseDetails";
+import TutorDetails from "./views/pages/TutorDetails";
 import HomeDashboard from "./views/pages/HomeDashboard";
 import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import QuizAttempt from "./components/QuizAttempt";
+import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
 
 const AppRoutes = (props) => {
     return (
@@ -44,6 +47,7 @@ const AppRoutes = (props) => {
                     <Route path="my-courses/upload" element={<Upload />} />
                     <Route path="archived-courses" element={<ArchivedCoursesDashboard />} />
                     <Route path="recommended-courses" element={<RecommendedCoursesDashboard />} />
+                    <Route path="recommended-tutors" element={<RecommendedTutorsDashboard />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="blogs" element={<Blog />} />
                     <Route index element={<MessagingLayout />} />
@@ -69,6 +73,9 @@ const AppRoutes = (props) => {
                     <Route path=":id/assignments" element={<AssignmentList />} />
                     <Route path=":id/leaderboard" element={<Board />} />
                     <Route path=":id/review" element={<Review />} />
+                </Route>
+                <Route path="tutors" element={<HomeLayout />}>
+                    <Route path=":id" element={<TutorDetails />}></Route>
                 </Route>
             </Routes>
         </Router>

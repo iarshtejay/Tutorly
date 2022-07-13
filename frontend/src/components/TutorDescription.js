@@ -1,12 +1,7 @@
 import React from "react";
-const CourseDescription = ({ courseDescription, tutorDescription }) => {
+const TutorDescription = ({ tutorDescription }) => {
     return (
         <>
-            <h1 className="my-4">Course Description</h1>
-            <p>
-                {courseDescription ||
-                    "The online Master of Applied Computer Science is a computer science master's degree designed for computer science majors. This new programme, offered by the University of Dalhousie, brings the long-running, well-established on-campus. The Dal Online programme prepares students who do not have a background in computer science to succeed in computing and technology fields. Students at Dal Online come from a variety of academic backgrounds, ranging from business and history to chemistry and medicine."}
-            </p>
             <h1 className="my-4">Tutor Description</h1>
             <p>
                 {tutorDescription ||
@@ -53,4 +48,4 @@ const CourseDescription = ({ courseDescription, tutorDescription }) => {
         </>
     );
 };
-export default CourseDescription;
+export default TutorDescription;

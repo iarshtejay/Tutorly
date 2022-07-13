@@ -25,6 +25,9 @@ const Course = new mongoose.Schema({
     String
   ],
   cost: mongoose.Types.Decimal128,
+  rating: mongoose.Types.Decimal128,
+  description: String,
+  imageURL: { type: String, default: 'https://burst.shopifycdn.com/photos/hard-cover-books-on-blue-background.jpg' }
 });
 
 module.exports = mongoose.model("Course", Course);
