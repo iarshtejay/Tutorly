@@ -13,6 +13,7 @@ import { Messaging } from "./components/Messaging/Messaging";
 import Profile from "./components/Profile";
 import Quiz from "./components/Quiz";
 import QuizList from "./components/QuizList";
+import QuizNew from "./components/QuizNew";
 import ResetPassword from "./components/ResetPassword";
 import Review from "./components/Review";
 import Signup from "./components/SignUp";
@@ -28,6 +29,7 @@ import TutorDetails from "./views/pages/TutorDetails";
 import HomeDashboard from "./views/pages/HomeDashboard";
 import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
+import QuizAttempt from "./components/QuizAttempt";
 import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
 
 const AppRoutes = (props) => {
@@ -65,6 +67,8 @@ const AppRoutes = (props) => {
                     <Route path=":id" element={<CourseDetails />}></Route>
                     {/* <Route index path="quiz" element={<QuizList />} /> */}
                     <Route path=":id/quiz" element={<QuizList />} />
+                    <Route path=":id/quiz/new" element={<QuizNew />} />
+                    <Route path=":id/quiz/:id/attempt" element={<QuizAttempt />} />
                     <Route path=":id/quiz/:id" element={<Quiz />} />
                     <Route path=":id/assignments" element={<AssignmentList />} />
                     <Route path=":id/leaderboard" element={<Board />} />
