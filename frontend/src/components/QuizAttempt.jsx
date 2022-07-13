@@ -28,18 +28,26 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import Chip from "@mui/material/Chip";
+import Countdown from "react-countdown";
+import moment from "moment";
 
 const rootDomain = "http://localhost:8000";
 
-const Quiz = () => {
+const QuizAttempt = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
     // const courseId = useParams().id;
     const courseId = `62ca26bd2838cca760fed1ef`;
     const quizId = location.pathname.split("/")[4];
+    const studentId = `62ca2f7a4f3727bc5d9a3e98`;
 
     const [quiz, setQuiz] = useState({});
+    const [attempt, setAttempt] = useState({
+        student: studentId,
+        answers: [],
+    });
 
     const getQuiz = async () => {
         const response = await axios({
@@ -52,15 +60,38 @@ const Quiz = () => {
         setQuiz(response.data.data);
     };
 
-    const deleteQuiz = async () => {
+    const setAnswer = (questionId, attemptAnswer) => {
+        // push to answers array, update if it already exists
+        const currentAttemptState = attempt;
+        const findAttemptAnswer = currentAttemptState.answers.find((answer) => answer.id === questionId);
+        if (findAttemptAnswer) {
+            currentAttemptState.answers = currentAttemptState.answers.map((answer) => {
+                if (answer.id === questionId) {
+                    answer.option = attemptAnswer;
+                }
+                return answer;
+            });
+        } else {
+            currentAttemptState.answers.push({
+                id: questionId,
+                option: attemptAnswer,
+            });
+        }
+        setAttempt(currentAttemptState);
+    };
+
+    const submitQuiz = async () => {
         await axios({
-            method: "DELETE",
-            url: `${rootDomain}/api/course/${courseId}/quiz/${quizId}`,
+            method: "PUT",
+            url: `${rootDomain}/api/course/${courseId}/quiz/${quizId}/attempt`,
             headers: {
                 "Content-Type": "application/json",
             },
+            data: {
+                attempt,
+            },
         });
-        navigate(`/courses/${courseId}/quiz`);
+        navigate(`/courses/${courseId}/quiz/`);
     };
 
     useEffect(() => {
@@ -76,22 +107,24 @@ const Quiz = () => {
                 <Box>
                     <Button
                         variant="contained"
-                        startIcon={<ArrowBackIosIcon />}
+                        startIcon={<DeleteIcon />}
                         sx={{ mr: 2, mt: 3 }}
                         onClick={() => {
                             navigate(`/courses/${courseId}/quiz`);
                         }}
+                        color="error"
                     >
-                        Back
+                        Cancel
                     </Button>
-                    <Button variant="contained" color="error" startIcon={<DeleteIcon />} sx={{ mr: 2, mt: 3 }} onClick={deleteQuiz}>
-                        Delete
+                    <Button variant="contained" color="success" startIcon={<SaveIcon />} sx={{ mr: 2, mt: 3 }} onClick={submitQuiz}>
+                        Submit Quiz
                     </Button>
+                    {/* <Chip label={`Time Remaining: `} variant="outlined" sx={{ mr: 2, mt: 3 }} /> */}
                 </Box>
 
                 <Box>
                     <Grid container spacing={2} style={{ backgroundColor: "#FFF", marginTop: "20px" }}>
-                        {quiz.questions && quiz.questions.map((question) => <QuizQuestion question={question} key={question.id} />)}
+                        {quiz.questions && quiz.questions.map((question) => <QuizQuestion key={question.id} question={question} type="attempt" setAnswer={setAnswer} />)}
                     </Grid>
                 </Box>
             </Container>
@@ -99,4 +132,4 @@ const Quiz = () => {
     );
 };
 
-export default Quiz;
+export default QuizAttempt;
