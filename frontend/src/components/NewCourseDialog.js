@@ -29,7 +29,7 @@ export default function NewCourseDialogue() {
     const [details, setDetails] = useState({
         name: "",
         type: "",
-        tutor: "62cd523d5f8539afeb85aeaf", //Get from redux state
+        tutor: "62cd523d5f8539afeb85aeaf", //Placeholder: Get from redux state
         cost: 0,
         description: "",
         tags: [],
