@@ -21,15 +21,18 @@ function THomeHeader(props) {
     const location = useLocation();
 
     useEffect(() => {
-        const route_path = location.pathname.split("/")[2];
+        const route_path = location.pathname.split("/");
+        console.log("loca", location.pathname.split, route_path);
         if (route_path === undefined) {
             setChosenTab(0);
-        } else if (route_path === "my-courses") {
+        } else if (route_path.includes("my-courses")) {
             setChosenTab(1);
-        } else if (route_path === "archived-courses") {
+        } else if (route_path.includes("archived-courses")) {
             setChosenTab(2);
-        } else if (route_path === "recommended-courses") {
+        } else if (route_path.includes("recommended-courses")) {
             setChosenTab(3);
+        } else if (route_path.includes("recommended-tutors")) {
+            setChosenTab(4);
         }
     }, []);
 
@@ -51,6 +54,11 @@ function THomeHeader(props) {
     const handleRecommendedCoursesTabClick = () => {
         setChosenTab(3);
         navigate("/recommended-courses/");
+    };
+
+    const handleRecommendedTutorsTabClick = () => {
+        setChosenTab(4);
+        navigate("/recommended-tutors/");
     };
 
     const [open, setOpen] = useState(false);
@@ -101,6 +109,7 @@ function THomeHeader(props) {
                     <Tab label="My Courses" onClick={handleMyCoursesTabClick} />
                     <Tab label="Archived Courses" onClick={handleArchivedCoursesTabClick} />
                     <Tab label="Recommended Courses" onClick={handleRecommendedCoursesTabClick} />
+                    <Tab label="Recommended Tutors" onClick={handleRecommendedTutorsTabClick} />
                 </Tabs>
             </AppBar>
         </>

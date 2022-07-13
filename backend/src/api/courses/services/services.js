@@ -2,17 +2,18 @@ const Course = require("../models/course");
 const Student = require("../../students/models/student");
 
 const getAllCourses = async () => {
-    return await Course.find({});
+    return await Course.find({}).populate('tutor');
 }
 
 const createCourse = async (course) => {
-    const course_ = await new Course(course);
+    console.log(course)
+    const course_ = await Course(course);
     await course_.save();
     return course_;
 }
 
 const getSpecificCourse = async (id) => {
-    return await Course.find({_id : id});
+    return await Course.find({_id : id}).populate('tutor');
 }
 
 const updateCourse = async (id, course) => {
@@ -27,14 +28,9 @@ const deleteCourse = async(id) => {
 }
 
 const getAllStudents = async (id) => {
-    const studentIds =  (await Course.find({_id : id})).students;
-    const students = []
-    studentIds.map(async studentId => {
-        const student = await Student.findOne({_id : studentId })
-        if(student){
-            students.push(student);
-        }
-    })
+    const courseObj =  (await Course.findOne({_id : id}));
+    const studentIds = courseObj?.students?courseObj.students:[]
+    const students = Promise.all(studentIds.map(async (studentId) => {return (await Student.findOne({_id : studentId }))}))
     return students;
 }
 

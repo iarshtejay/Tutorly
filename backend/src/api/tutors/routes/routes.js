@@ -37,8 +37,8 @@ router.get("/all", async (req, res) => {
     try {
         const tutor = req.body.tutor;
         if(!tutor){
-            Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
-                param: Object.keys(Tutor.toObject())
+            return Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: Object.keys(Tutor.schema.tree)
             }});
         }
         const newTutor = await Service.createTutor(tutor);
@@ -64,16 +64,22 @@ router.get("/all", async (req, res) => {
  */
  router.put("/update/:id", async (req, res) => {
     try {
-        const tutorId = req.params.id;
-        if(!tutorId){
-            Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
-                param: id
+        const rawTutorId = req.params.id;
+        if(!rawTutorId){
+            return Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: "id"
             }});
         }
+        if(!Utils.isValidObjectId(rawTutorId)){
+            return Utils.idNotValidBsonObjectId(res, "tutor", {tutor: {
+                param: "id"
+            }});
+        }
+        const tutorId = rawTutorId;
         const tutor = req.body.tutor;
         if(!tutor){
-            Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
-                param: Object.keys(Tutor.toObject())
+            return Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: Object.keys(Tutor.schema.tree)
             }});
         }
         const updatedTutor = await Service.updateTutor(tutorId, tutor);
@@ -99,13 +105,20 @@ router.get("/all", async (req, res) => {
  */
  router.get("/:id", async (req, res) => {
     try {
-        const tutorId = req.params.id;
-        if(!tutorId){
-            Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
-                param: id
+        const rawTutorId = req.params.id;
+        if(!rawTutorId){
+            return Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: "id"
             }});
         }
+        if(Utils.isValidObjectId(rawTutorId) === false){
+            return Utils.idNotValidBsonObjectId(res, "tutor", {tutor: {
+                param: "id"
+            }});
+        }
+        const tutorId = rawTutorId;
         const tutor = await Service.getSpecificTutor(tutorId);
+        console.log(tutor)
         return res.status(200).json({
             message: "Obtained the specific tutor",
             success: true,
@@ -128,18 +141,33 @@ router.get("/all", async (req, res) => {
  */
  router.delete("/delete/:id", async (req, res) => {
     try {
-        const tutorId = req.params.id;
-        if(!tutorId){
-            Utils.requiredRequestParamNotFound(res, "tutor", {tutor: {
-                param: id
+        const rawTutorId = req.params.id;
+        if(!rawTutorId){
+            return Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: "id"
             }});
         }
-        await Service.deleteTutor(tutorId);
-        return res.status(200).json({
-            message: "Deleted the specific tutor",
-            success: true,
-            data: tutorId,
-        });
+        if(Utils.isValidObjectId(rawTutorId) === false){
+            return Utils.idNotValidBsonObjectId(res, "tutor", {tutor: {
+                param: "id"
+            }});
+        }
+        const tutorId = rawTutorId;
+        const result = await Service.deleteTutor(tutorId);
+        if(result && result.deletedCount === 0){
+            return res.status(200).json({
+                message: "No matching records found",
+                success: true,
+                data: tutorId,
+            });
+        }else{
+            return res.status(200).json({
+                message: "Deleted the specific tutor",
+                success: true,
+                data: tutorId,
+            });
+        }
+        
     } catch (err) {
         console.log(err);
         return res.status(500).json({
@@ -158,13 +186,19 @@ router.get("/all", async (req, res) => {
  */
  router.get("/:id/courses", async (req, res) => {
     try {
-        const tutorId = req.params.id;
-        if(!tutorId){
-            Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
-                param: id
+        const rawTutorId = req.params.id;
+        if(!rawTutorId){
+            return Utils.requiredRequestBodyNotFound(res, "tutor", {tutor: {
+                param: "id"
             }});
         }
-        const courses = await Service.getAllCoursesByTutor(tutorId);
+        if(Utils.isValidObjectId(rawTutorId) === false){
+            return Utils.idNotValidBsonObjectId(res, "tutor", {tutor: {
+                param: "id"
+            }});
+        }
+        const tutorId = rawTutorId;
+        const { courses } = await Service.getAllCoursesByTutor(tutorId);
         return res.status(200).json({
             message: "Obtained all the courses offered by tutor",
             success: true,
@@ -185,7 +219,7 @@ router.get("/all", async (req, res) => {
  * @params req, res
  * @return students
  */
- router.get("/student/recommendations", async (req, res) => {
+ router.post("/student/recommendations", async (req, res) => {
     try {
         const { id: tutorId } = req.body.tutor;
         const courses = await Service.recommendStudents(tutorId);

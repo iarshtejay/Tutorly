@@ -6,22 +6,22 @@ const Utils = require("../../../utils/utils");
 
 /**
  * @author Arshdeep Singh
- * @description Get all learning paths from the database
+ * @description Get all learningPaths from the database
  * @params req, res
- * @return learning-paths
+ * @return learningPaths
  */
 router.get("/all", async (req, res) => {
     try {
         const learningPaths = await Service.getAllLearningPaths();
-        console.log("learning paths", learningPaths);
+        console.log("learningPaths", learningPaths);
         return res.status(200).json({
-            message: "Fetched all learning paths",
+            message: "Fetched all learningPaths",
             success: true,
             data: learningPaths,
         });
     } catch (err) {
         return res.status(500).json({
-            message: "Internal server error. Unable to retrieve learning paths.",
+            message: "Internal server error. Unable to retrieve learningPaths.",
             success: false,
         });
     }
@@ -29,23 +29,23 @@ router.get("/all", async (req, res) => {
 
 /**
  * @author Arshdeep Singh
- * @description Register a new learning path
+ * @description Register a new learningPath
  * @params req, res
- * @return learning-paths
+ * @return learningPaths
  */
  router.post("/add", async (req, res) => {
     try {
         const learningPath = req.body.learningPath;
         if(!learningPath){
-            Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
-                param: Object.keys(LearningPath.toObject())
+            return Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
+                param: Object.keys(LearningPath.schema.tree)
             }});
         }
-        const newlearningPath = await Service.createLearningPath(learningPath);
+        const newLearningPath = await Service.createLearningPath(learningPath);
         return res.status(200).json({
             message: "Added a new learningPath",
             success: true,
-            data: newlearningPath,
+            data: newLearningPath,
         });
     } catch (err) {
         console.log(err);
@@ -64,19 +64,25 @@ router.get("/all", async (req, res) => {
  */
  router.put("/update/:id", async (req, res) => {
     try {
-        const learningPathId = req.params.id;
-        if(!learningPathId){
-            Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
-                param: id
+        const rawLearningPathId = req.params.id;
+        if(!rawLearningPathId){
+            return Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
+                param: "id"
             }});
         }
+        if(!Utils.isValidObjectId(rawLearningPathId)){
+            return Utils.idNotValidBsonObjectId(res, "learningPath", {learningPath: {
+                param: "id"
+            }});
+        }
+        const learningPathId = rawLearningPathId;
         const learningPath = req.body.learningPath;
         if(!learningPath){
-            Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
-                param: Object.keys(LearningPath.toObject())
+            return Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
+                param: Object.keys(LearningPath.schema.tree)
             }});
         }
-        const updatedlearningPath = await Service.updateLearningPath(learningPathId, learningPath);
+        const updatedLearningPath = await Service.updateLearningPath(learningPathId, learningPath);
         return res.status(200).json({
             message: "Updated the learningPath",
             success: true,
@@ -99,13 +105,20 @@ router.get("/all", async (req, res) => {
  */
  router.get("/:id", async (req, res) => {
     try {
-        const learningPathId = req.params.id;
-        if(!learningPathId){
-            Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
-                param: id
+        const rawLearningPathId = req.params.id;
+        if(!rawLearningPathId){
+            return Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
+                param: "id"
             }});
         }
+        if(Utils.isValidObjectId(rawLearningPathId) === false){
+            return Utils.idNotValidBsonObjectId(res, "learningPath", {learningPath: {
+                param: "id"
+            }});
+        }
+        const learningPathId = rawLearningPathId;
         const learningPath = await Service.getSpecificLearningPath(learningPathId);
+        console.log(learningPath)
         return res.status(200).json({
             message: "Obtained the specific learningPath",
             success: true,
@@ -128,52 +141,37 @@ router.get("/all", async (req, res) => {
  */
  router.delete("/delete/:id", async (req, res) => {
     try {
-        const learningPathId = req.params.id;
-        if(!learningPathId){
-            Utils.requiredRequestParamNotFound(res, "learningPath", {learningPath: {
-                param: id
+        const rawLearningPathId = req.params.id;
+        if(!rawLearningPathId){
+            return Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
+                param: "id"
             }});
         }
-        await Service.deleteLearningPath(learningPathId);
-        return res.status(200).json({
-            message: "Deleted the specific learningPath",
-            success: true,
-            data: learningPathId,
-        });
+        if(Utils.isValidObjectId(rawLearningPathId) === false){
+            return Utils.idNotValidBsonObjectId(res, "learningPath", {learningPath: {
+                param: "id"
+            }});
+        }
+        const learningPathId = rawLearningPathId;
+        const result = await Service.deleteLearningPath(learningPathId);
+        if(result && result.deletedCount === 0){
+            return res.status(200).json({
+                message: "No matching records found",
+                success: true,
+                data: learningPathId,
+            });
+        }else{
+            return res.status(200).json({
+                message: "Deleted the specific learningPath",
+                success: true,
+                data: learningPathId,
+            });
+        }
+        
     } catch (err) {
         console.log(err);
         return res.status(500).json({
             message: "Internal server error. Unable to delete the learningPath.",
-            success: false,
-        });
-    }
-});
-
-
-/**
- * @author Arshdeep Singh
- * @description Get all courses taught by learningPath
- * @params req, res
- * @return courses
- */
- router.get("/:id/courses", async (req, res) => {
-    try {
-        const learningPathId = req.params.id;
-        if(!learningPathId){
-            Utils.requiredRequestBodyNotFound(res, "learningPath", {learningPath: {
-                param: id
-            }});
-        }
-        const courses = await Service.getAllCoursesByLearningPath(learningPathId);
-        return res.status(200).json({
-            message: "Obtained all the courses offered by learningPath",
-            success: true,
-            data: courses,
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            message: "Internal server error. Unable to retrieve the courses by learningPath.",
             success: false,
         });
     }
