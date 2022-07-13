@@ -16,8 +16,12 @@ import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import httpClient from "../lib/httpClient";
 import TagsInput from "./TagsInput";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getAllCourses } from "../views/pages/services/courses-rest";
 
 export default function NewCourseDialogue() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [registered, setRegistered] = useState(null);
@@ -45,7 +49,7 @@ export default function NewCourseDialogue() {
 
     const handleRegister = async () => {
         const res = await httpClient.post("/course/add", {
-            course: details,
+            course: { ...details, startDate: startDate, endDate:endDate}
         });
         if (res.data.data.success) {
             setRegisterFailed(false);
@@ -142,6 +146,10 @@ export default function NewCourseDialogue() {
             return { ...details, tags: items };
         });
     };
+
+    useEffect(() => {
+        dispatch(getAllCourses({ isTutor: false}));
+    }, [dispatch, registered]);
 
     return (
         <div>
