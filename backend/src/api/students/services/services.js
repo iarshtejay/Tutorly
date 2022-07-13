@@ -20,20 +20,21 @@ const checkIfCourseExistsAndUpdate = (student, courseId, archived) => {
 
 }
 
-const checkIfCourseExistsAndUnEnroll = (student, course) => {
-    student.courses = (student.courses).filter(course_ => course_._id !== course._id)
-    course.students = (course.students).filter(student_ => student_.id !== student.id)
-    return { student: student, course: course }
+const checkIfCourseExistsAndUnEnroll = (oldStudent, oldCourse) => {
+    oldStudent.courses = (oldStudent.courses).filter(c_ => c_.course.valueOf() !== oldCourse._id.valueOf())
+    oldCourse.students = (oldCourse.students).filter(s_ => s_._id.valueOf() !== oldStudent._id.valueOf())
+    return { oldStudent: oldStudent, oldCourse: oldCourse }
 }
 
-const checkIfCourseExistsAndEnroll = (student, course) => {
-    if ((student.courses).find(course_ => course_.id === course.id)) {
-        return { student: student, course: course }
+const checkIfCourseExistsAndEnroll = (oldStudent, oldCourse) => {
+    if ((oldStudent.courses).find(c_ => c_.course.valueOf() === oldCourse._id.valueOf())) {
+        return { oldStudent: oldStudent, oldCourse: oldCourse }
     }
-    (student.courses).push(course)
-        (course.students).push(student)
+    oldStudent.courses = [...(oldStudent.courses), {course:oldCourse._id, progress:0, archived:false}]
+    oldCourse.students = [...(oldCourse.students), oldStudent._id]
 
-    return { student: student, course: course }
+
+    return { oldStudent: oldStudent, oldCourse: oldCourse }
 }
 
 const courseProgressHandler = async (student, courseId, type, courseProgress) => {
@@ -120,16 +121,18 @@ const getAllArchivedCourses = async (studentId) => {
 }
 
 const enrollInACourse = async (studentId, courseId) => {
-    const student = await Student.findById({ _id: studentId });
-    const course = await Student.findById({ _id: courseId });
-    const { student: newStudent, course: newCourse } = checkIfCourseExistsAndEnroll(student, course);
+    const oldStudent = await Student.findById({ _id: studentId });
+    const oldCourse = await Course.findById({ _id: courseId });
+    const { oldStudent: newStudent, oldCourse: newCourse } = checkIfCourseExistsAndEnroll(oldStudent, oldCourse);
     return (await newStudent.save()) && (await newCourse.save());
 }
 
 const unenrollFromACourse = async (studentId, courseId) => {
-    const student = await Student.findById({ _id: studentId });
-    const course = await Student.findById({ _id: courseId });
-    const { student: newStudent, course: newCourse } = checkIfCourseExistsAndUnEnroll(student, course);
+    const oldStudent = await Student.findById({ _id: studentId });
+    const oldCourse = await Course.findById({ _id: courseId });
+    console.log("COURSEEEE",oldCourse)
+    console.log("COURSEEEE--IDDD",courseId)
+    const { oldStudent: newStudent, oldCourse: newCourse } = checkIfCourseExistsAndUnEnroll(oldStudent, oldCourse);
     return (await newStudent.save()) && (await newCourse.save());
 }
 
