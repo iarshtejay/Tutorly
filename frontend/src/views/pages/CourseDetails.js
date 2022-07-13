@@ -6,9 +6,10 @@ import CourseBanner from "../../components/CourseBanner";
 import { getAllCourses, getCourseDetails } from "./services/courses-rest";
 import { useDispatch, useSelector } from "react-redux";
 import { getEnrolledCourses } from "./services/courses-rest.js";
+import TutorCourseBanner from "../../components/TutorCourseBanner";
 
 export default function CourseDetails() {
-    const isTutor = localStorage.getItem("isTutor");
+    const isTutor = localStorage.getItem("isTutor")==='true'?true:false;
     const { id } = useParams();
     const dispatch = useDispatch();
     const courseDetail =  useSelector(state => state.course.courseDetail);
@@ -23,7 +24,7 @@ export default function CourseDetails() {
     return (
         <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden", padding: 2 }}>
             <CourseDetailsHeading title={courseDetail?.data[0]?.name}></CourseDetailsHeading>
-            <CourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} initialEnrollStatus={initialEnrollStatus} courseId={id}></CourseBanner>
+            {isTutor?(<TutorCourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} courseId={id}></TutorCourseBanner>):(<CourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} initialEnrollStatus={initialEnrollStatus} courseId={id}></CourseBanner>)}
         </Paper>
     );
 }

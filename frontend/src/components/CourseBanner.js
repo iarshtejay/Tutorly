@@ -15,6 +15,7 @@ import httpClient from "../lib/httpClient";
 import Alert from "@mui/material/Alert";
 import { useState, useEffect } from "react";
 import { getEnrolledCourses } from "../views/pages/services/courses-rest.js";
+import { EditCourseDialog } from "./EditCourseDialog";
 
 
 
@@ -61,7 +62,7 @@ const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tut
 
     useEffect(() => {
         dispatch(getEnrolledCourses({ isTutor: false, studentId: "62ca2f7a4f3727bc5d9a3e98" }));
-    }, [dispatch]);
+    }, [dispatch, action]);
 
 
     return (
