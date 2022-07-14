@@ -9,58 +9,55 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import background from "../images/image.svg";
-
-import { useNavigate } from "react-router-dom";
 import { theme } from "../theme/theme";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function SignUp() {
     const navigate = useNavigate();
     // Defining form validation
     const validationSchema = yup.object({
+        // First name is required
+        code: yup
+            .string("Enter Verification Code")
+            .matches(/^[A-Za-z0-9 ]*$/, "Please enter valid code")
+            .required("Verification Code is required"),
         // Email is required and should be in proper format
         email: yup.string("Enter your email").email("Enter a valid email").required("Email is required"),
-        // Password is required and should be of min of 8 characters containing one uppercase, one lower case and one special character
-        password: yup.string("Enter your password").required("Password is required"),
     });
     const formik = useFormik({
         initialValues: {
+            code: "",
             email: "",
-            password: "",
         },
         validationSchema: validationSchema,
-        onSubmit: async (values) => {
-            const email = values.email
-            const password = values.password
-            fetch(`${process.env.BACKEND_BASE_URL}/user/login`, {
-                method: 'POSt',
+        onSubmit: (values) => {
+            console.log(values);
+            fetch(`${process.env.BACKEND_BASE_URL}/user/verifyEmail`, {
+                method: 'POST',
                 headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: values.email,
-                    password: values.password
+                code: values.code,
+                email:values.email
                 })
             }).then(async (response) => {
                 const body = await response.json();
                 if (response.status === 200) {
-                    console.log(body.data[0].accessToken)
-                    if (body.data[0].accessToken) {
-                        localStorage.setItem("user", JSON.stringify(body.data[0]));
-                    }
-                    alert(body.message)
-
-                    navigate('/', { state: values })
+                alert(body.message)
+                navigate('/landing', { state: values })
                 } else {
-                    alert(body.message)
+                alert(body.message)
                 }
             })
         },
     });
+
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: "100vh" }}>
@@ -88,13 +85,27 @@ export default function Login() {
                         }} // Importing Lock Icon
                     >
                         <Avatar className="mx-auto mt-3 lock_icon" sx={{ backgroundColor: "primary.main" }}>
-                            <LoginRoundedIcon />
+                            <LockOutlinedIcon />
                         </Avatar>
-                        <Typography align="center" variant="h5" marginTop="20px">
-                            LOGIN
+                        <Typography align="center" variant="h5">
+                            Verify Email
                         </Typography>
                         <Paper elevation={20} style={{ padding: "30px 20px", maxWidth: 400, margin: "20px auto" }}>
                             <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 1 }} borderRadius="50%">
+                                <TextField // Input field for First Name
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="code"
+                                    label="Verification Code"
+                                    name="code"
+                                    autoComplete="code"
+                                    autoFocus
+                                    value={formik.values.code}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.code && Boolean(formik.errors.code)}
+                                    helperText={formik.touched.code && formik.errors.code}
+                                />
                                 <TextField // Input field for Email Address
                                     margin="normal"
                                     required
@@ -103,50 +114,22 @@ export default function Login() {
                                     label="Email"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
                                     error={formik.touched.email && Boolean(formik.errors.email)}
                                     helperText={formik.touched.email && formik.errors.email}
                                 />
 
-                                <TextField // Input field for Password
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                    value={formik.values.password}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.password && Boolean(formik.errors.password)}
-                                    helperText={formik.touched.password && formik.errors.password}
-                                />
                                 <Button // SignUp Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                // component={RouterLink} to="/profile"
-                                // onClick={() => navigate("/home")}
                                 >
-                                    LOGIN
+                                    Submit
                                 </Button>
-
                                 <Grid container>
-                                    <Grid item xs>
-                                        Don't have an account?
-                                        <Link href="/signup" variant="body2">
-                                            Register
-                                        </Link>
-                                    </Grid>
-                                    <Grid item>
-                                        <Link href="/forgotPassword" variant="body2">
-                                            {"Forgot Password?"}
-                                        </Link>
-                                    </Grid>
+                                    
                                 </Grid>
                             </Box>
                         </Paper>

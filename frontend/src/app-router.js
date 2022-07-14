@@ -31,6 +31,7 @@ import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import QuizAttempt from "./components/QuizAttempt";
 import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
+import VerifyEmail from "./components/VerifyEmail"
 
 const AppRoutes = (props) => {
     return (
@@ -40,6 +41,7 @@ const AppRoutes = (props) => {
                 <Route path="signup" element={<Signup />} />
                 <Route path="forgotPassword" element={<ForgotPassword />} />
                 <Route path="resetPassword" element={<ResetPassword />} />
+                <Route path="verifyEmail" element={<VerifyEmail />} />
                 <Route path="landing" element={<LangingPage />}></Route>
                 <Route path="/" element={<MasterLayout />}>
                     <Route index element={<HomeDashboard />} />
