@@ -28,6 +28,7 @@ node_modules/
 .strapi-updater.json
 .env
 .strapi-updater.json
+package-lock.json
 
 gihub-data.json
 
