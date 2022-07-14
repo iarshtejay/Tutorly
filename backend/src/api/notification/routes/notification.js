@@ -1,3 +1,6 @@
+/*
+Author: Parampal Singh
+*/
 const express = require('express')
 const router = express.Router()
 const {getNotifications, 
@@ -18,7 +21,7 @@ router.post('/', sendNotifications)
 // Fetch notification details of a user ( id is user id)
 router.get('/details/:id', getUserNotificationDetails)
 
-// Add notification details of a user ( id is user id)
+// Add notification details of a user 
 router.post('/details/', setUserNotificationDetails)
 
 // Update user choice enable or disable notification ( id is user id)
