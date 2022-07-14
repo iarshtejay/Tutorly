@@ -25,8 +25,9 @@ export default function AddNotification(props) {
         props.setSendNotify(true);
         props.setToastMsg("Notification sent successfully!")
         // API to save the data
-        const user = localStorage.getItem('user');
-        const response = await axios.post(url +"/api/notifications/", { user: user ? user : '110965', text: text, type: notificationType });
+        const user=JSON.parse(localStorage.getItem("user"))
+        console.log(user.id)
+        const response = await axios.post(url +"/api/notifications/", { user: user.id , text: text, type: notificationType });
 
         socket.emit("send_notification", {
             notificationInfo: response?.data?.notification
