@@ -14,6 +14,7 @@ exports.signup = (req, res) => {
         lastname: req.body.lastName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
+        mode: "offline",
         confirmationCode: code,
         role: req.body.roles,
         resetpasswordOTP: ""
@@ -51,7 +52,7 @@ exports.verifyEmail = async (req, res) => {
 exports.login = async (req, res) => {
     await db.findOne({
         email: req.body.email
-    }).exec((err, user) => {
+    }).exec(async (err, user) => {
         if (err) {
             return;
         }
@@ -74,6 +75,7 @@ exports.login = async (req, res) => {
         var token = jwt.sign({ id: user.id, email: user.email }, 'secret', {
             expiresIn: '5h'
         });
+        await db.updateOne({ email: user.email }, { $set: { mode: "online" } })
         var data = []
         data.push({ id: user._id, email: user.email, role: user.role, accessToken: token, firstName: user.firstname, lastName: user.lastname })
         return res.status(200).json({
@@ -145,6 +147,16 @@ exports.updateProfile = (req, res) => {
             })
         }
 
+    } catch (e) {
+        return e;
+    }
+};
+
+exports.logout = async (req, res) => {
+    try {
+        await db.updateOne({ _id: req.params.id }, { $set: { mode: "offline" } }).then(data => {
+            return data;
+        })
     } catch (e) {
         return e;
     }
