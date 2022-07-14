@@ -170,6 +170,28 @@ router.put("/updateProfile/:id", async (req, res) => {
     }
 });
 
+/**
+ * @author Manasvi
+ * @description Logout
+ * @params req, res
+ */
+ router.put("/logout/:id", async (req, res) => {
+    try {
+
+        const users = await services.logout(req, res);
+        return res.status(200).json({
+            message: "User LoggedOut successfully!",
+            success: true,
+        });
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+            message: "Internal server error.",
+            success: false,
+        });
+    }
+});
+
 
 
 module.exports = router;
