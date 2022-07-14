@@ -21,7 +21,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
     height: 10,
     borderRadius: 5,
 }));
-export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress }) {
+export default function TCourseCard({ courseId, courseName, tutorName, description, cost, rating, imageURL, showProgress, progress }) {
     const [favorite, setFavorite] = React.useState(false);
     const navigate = useNavigate();
     const handleFavoriteClick = () => {
@@ -35,11 +35,11 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
         navigate(`/courses/${courseId}`);
     };
     return (
-        <Card sx={{ maxWidth: 350 }}>
+        <Card sx={{ maxWidth: 350}}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {tutorName[0]}
+                        {tutorName? tutorName.substring(0,1) : ""}
                     </Avatar>
                 }
                 action={
@@ -52,27 +52,34 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
             />
             <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
             <CardContent>
-                <Rating name="half-rating" defaultValue={rating} precision={0.5} readOnly />
+                <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
-                    {description}
+                    {description? description?.substring(0, 120) + "..." : ""}
                 </Typography>
                 <br />
-                {showProgress && <BorderLinearProgress theme={theme} variant="determinate" value={50} />}
             </CardContent>
+            {showProgress && <BorderLinearProgress style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }} theme={theme} variant="determinate" value={progress?.$numberDecimal} />}
             <CardActions disableSpacing>
-                <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                <Grid container spacing={1}>
+                    <Grid item xs={1.5}>
                         <IconButton aria-label="add to favorites">
                             <FavoriteIcon style={{ color: favorite ? "#009688" : "grey" }} onClick={handleFavoriteClick} />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1.5}>
                         <IconButton aria-label="share">
                             <ShareIcon />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={8} style={{ textAlign: "right" }}>
+                    <Grid item xs={3}>
+                        <Button>
+                            <Typography color="text.secondary" style={{ fontWeight: "bold" }}>
+                                {cost?.$numberDecimal}
+                            </Typography>
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6} style={{ textAlign: "right" }}>
                         <Button onClick={handleOnClick}>GO TO COURSE</Button>
                     </Grid>
                 </Grid>

@@ -28,6 +28,7 @@ node_modules/
 .strapi-updater.json
 .env
 .strapi-updater.json
+package-lock.json
 
 gihub-data.json
 
@@ -36,3 +37,5 @@ build/
 .cache/
 src/api/commit-smell-report/controllers/designiteData.json
 src/api/refactoring-report/controllers/output
+
+webdev-352218-d35c66334ff1.json

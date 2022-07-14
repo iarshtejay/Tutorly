@@ -22,6 +22,11 @@ import Grid from "@mui/material/Grid";
 import AddNotification from './AddNotification';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import axios from 'axios';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import moment from 'moment'
+import io from 'socket.io-client';
+const socket = io.connect("http://localhost:8000");
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -62,14 +67,132 @@ function NotificationDialog(props) {
         setSendNotify(false);
     };
 
+    const url = "http://localhost:8000/api/notifications/110987";
+    const url2 = "http://localhost:8000/api/notifications/favorite/110987"
+    const url3 = "http://localhost:8000/api/notifications/details/110987"
+    const url6 = "http://localhost:8000/api/notifications/tutor/110987"
+
+    const [allNotifications, setAllNotifications] = React.useState([])
+    const [favNotifications, setAllFavoriteNotifications] = React.useState([])
+    const [sentNotifications, setAllSentNotifications] = React.useState([])
+    const [userNotificationDetails, setUserNotificationDetails] = React.useState([])
+    const [isNotificationOn, setIsNotificationOn] = React.useState(false)
+    const [isTutor, SetIsTutor] = React.useState(true); //Need to get from logged in user
+
+    let isTutorFromStore;
+    const getNotificationData = async () => {
+        const notifications = await axios.get(url);
+        if (isTutorFromStore === "true") {
+            const sentNotifications = await axios.get(url6);
+            setAllSentNotifications(sentNotifications.data.userSentNotifications);
+
+            const filteredNotifications = notifications.data.notification?.filter((el) => {
+                return !sentNotifications.data.userSentNotifications?.find((f) => {
+                    return f._id === el._id;
+                });
+            });
+
+            setAllNotifications(filteredNotifications)
+        }
+        else {
+            setAllNotifications(notifications.data.notification);
+        }
+
+        const starNotification = await axios.get(url2)
+        setAllFavoriteNotifications(starNotification.data.starNotifications)
+    }
+
+    const getData = async () => {
+        const userDetails = await axios.get(url3)
+        setUserNotificationDetails(userDetails.data.userNotificationDetails)
+        getNotificationData();
+        if (userDetails.data.userNotificationDetails.preference === "on") {
+            setIsNotificationOn(true);
+            getNotificationData();
+        }
+    };
+
+    React.useEffect(() => {
+        isTutorFromStore = localStorage.getItem('isTutor');
+        SetIsTutor(isTutorFromStore === "true");
+        getData();
+        socket.on("receive_notification", (data) => {
+            // if (isTutorFromStore === "false") {
+            //     getData();
+            // }
+            getData();
+        })
+    }, []);
+
+    const isNotificationFavorite = (id) => {
+        const favN = favNotifications.find(notification => notification?._id === id);
+        if (favN)
+            return true;
+
+        return false;
+    }
+
+    const updateFavouriteNotification = async (id) => {
+        const url5 = "http://localhost:8000/api/notifications/favorite/110987";
+        const favNotification = favNotifications.find((notification) => {
+            return notification._id === id;
+        });
+        if (favNotification) {
+            const filteredN = favNotifications.filter((notification) => {
+                return notification._id !== id;
+            });
+            setAllFavoriteNotifications([
+                ...filteredN
+            ]);
+            await axios.put(url5, { favorite: "false", notificationId: id });
+        } else {
+            const newNotification = allNotifications.find((notification) => {
+                return notification._id === id;
+            });
+            setAllFavoriteNotifications([
+                ...favNotifications,
+                newNotification
+            ]);
+            await axios.put(url5, { favorite: "true", notificationId: id });
+        }
+    }
+
+    const updateNotificationsList = (notification) => {
+        console.log("updateNotificationsList: ", notification);
+        setAllSentNotifications([
+            ...sentNotifications,
+            notification
+        ]);
+    }
+
+    const updatePreference = async (value) => {
+
+        setIsNotificationOn(!value)
+
+        var notificationState = !value ? "on" : "off";
+
+        if (!value)
+            getNotificationData()
+
+        //API call to change the value 
+        const url4 = "http://localhost:8000/api/notifications/preference/110987";
+        const updatePreference = await axios.put(url4, { preference: notificationState });
+        setUpdateNotification(true)
+    }
+
+    const [toastMsg, setToastMsg] = React.useState("");
+    const [hPosition, setHPosition] = React.useState("left")
+    const [msgType, setMsgType] = React.useState("success")
+
     return (
         <div>
-            <AddNotification open={open} handleClose={handleClose} setSendNotify={setSendNotify} />
+            <AddNotification open={open} handleClose={handleClose} setSendNotify={setSendNotify} setToastMsg = {setToastMsg} setHPosition = {setHPosition} setMsgType = {setMsgType} updateNotificationsList={updateNotificationsList} />
             <Snackbar
+                anchorOrigin={{vertical:'bottom', horizontal: hPosition}}
                 autoHideDuration={4000}
                 open={sendNotify}
                 onClose={handleCloseSendNotifySnackbar} >
-                <Alert color='primary' variant='filled' severity="success">Notification sent successfully!</Alert>
+                <Alert color='primary' variant='filled' severity={msgType}>{toastMsg}</Alert>
 
             </Snackbar>
             <Dialog
@@ -93,12 +216,14 @@ function NotificationDialog(props) {
                         </Typography>
                         <Typography>Off</Typography>
                         <Switch
-                            defaultChecked
+                            // defaultChecked
                             color="default"
-                            onChange={() => setUpdateNotification(true)}
+                            checked={isNotificationOn}
+                            onClick={() => updatePreference(isNotificationOn)}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
                         <Snackbar
+                    
                             autoHideDuration={4000}
                             open={updateNotification}
                             onClose={handleCloseSnackbar} >
@@ -107,13 +232,13 @@ function NotificationDialog(props) {
                         </Snackbar>
                         <Typography>On</Typography>
 
-                        <Grid item>
+                        {isTutor && <Grid item>
                             <Tooltip title="Create Notifications">
                                 <IconButton color="inherit" onClick={handleCreateNotification}>
                                     <NotificationAddIcon />
                                 </IconButton>
                             </Tooltip>
-                        </Grid>
+                        </Grid>}
                     </Toolbar>
                 </AppBar>
                 <TabContext value={tabValue}>
@@ -124,46 +249,76 @@ function NotificationDialog(props) {
                         sx={{ zIndex: 0 }}
                     >
                         <TabList onChange={handleTabChange} textColor="inherit">
+                            {/* {testFlag && <Tab label="All Notifications" value="1" />} */}
                             <Tab label="All Notifications" value="1" />
                             <Tab label="Starred" value="2" />
+                            {isTutor && <Tab label="Sent Notifications" value="3" />}
                         </TabList>
                     </AppBar>
-                    <TabPanel value="1">
-                        <List>
-                            <ListItem button>
-                                <ListItemText primary="Reminder" secondary="Last day to register for Maths course" />
-
-                                <Checkbox
-                                    checkedIcon={<StarIcon />}
-                                    icon={<StarBorderIcon />}
-                                />
-                            </ListItem>
-                            <Divider />
-                            <ListItem button>
-                                <ListItemText
-                                    primary="Promotion"
-                                    secondary="Maths Course at 50% off"
-                                />
-                                <Checkbox
-                                    checkedIcon={<StarIcon />}
-                                    icon={<StarBorderIcon />}
-                                />
-                            </ListItem>
-                        </List>
-                    </TabPanel>
+                    {isNotificationOn && <TabPanel value="1">
+                        {
+                            allNotifications.map((notification, index) => (
+                                <List>
+                                    <ListItem button>
+                                        <Checkbox
+                                            checkedIcon={<StarIcon />}
+                                            icon={<StarBorderIcon />}
+                                            checked={isNotificationFavorite(notification?._id)}
+                                            onClick={() => { updateFavouriteNotification(notification?._id) }}
+                                        />
+                                        <ListItemText primary={notification.type} secondary={notification.text} />
+                                        <ListItemSecondaryAction>
+                                            <Typography color="textSecondary" variant="body2">
+                                                {moment(notification.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                            </Typography>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <Divider />
+                                </List>
+                            ))
+                        }
+                    </TabPanel>}
                     <TabPanel value="2">
-                        <List>
-                            <ListItem button>
-                                <ListItemText primary="Reminder" secondary="Last day to register for Maths course" />
-                                <Checkbox
-                                    defaultChecked
-                                    checkedIcon={<StarIcon />}
-                                    icon={<StarBorderIcon />}
-                                />
-                            </ListItem>
-                            <Divider />
-                        </List>
+                        {
+                            favNotifications.map((notification, index) => (
+                                <List>
+                                    <ListItem button>
+                                        <Checkbox
+                                            checkedIcon={<StarIcon />}
+                                            icon={<StarBorderIcon />}
+                                            checked={isNotificationFavorite(notification?._id)}
+                                            onClick={() => { updateFavouriteNotification(notification?._id) }}
+                                        />
+                                        <ListItemText primary={notification.type} secondary={notification.text} />
+                                        <ListItemSecondaryAction>
+                                            <Typography color="textSecondary" variant="body2">
+                                                {moment(notification.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                            </Typography>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <Divider />
+                                </List>
+                            ))
+                        }
                     </TabPanel>
+                    {isTutor && <TabPanel value="3">
+                        {
+                            sentNotifications.map((notification, index) => (
+                                <List>
+                                    <ListItem button>
+
+                                        <ListItemText primary={notification.type} secondary={notification.text} />
+                                        <ListItemSecondaryAction>
+                                            <Typography color="textSecondary" variant="body2">
+                                                {moment(notification.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                            </Typography>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <Divider />
+                                </List>
+                            ))
+                        }
+                    </TabPanel>}
                 </TabContext>
             </Dialog>
         </div>)
