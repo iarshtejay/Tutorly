@@ -64,7 +64,6 @@ export default function EditCourseDialog({ courseId }) {
 
     const [errorType, setErrorType] = useState(null);
     const [errorEndDate, setErrorEndDate] = useState(null);
-    const [errorCost, setErrorCost] = useState(null);
     const [errorDescription, setErrorDescription] = useState(null)
 
     const handleChange = (prop, event) => {
@@ -73,14 +72,8 @@ export default function EditCourseDialog({ courseId }) {
             setDetails((details) => {
                 return { ...details, type: event.target.value };
             });
-        } else if (prop === "cost") {
-            validateCost(event);
-            setDetails((details) => {
-                return { ...details, cost: event.target.value };
-            });
         } else if (prop === "description") {
             validateDescription(event);
-            validateCost(event);
             setDetails((details) => {
                 return { ...details, description: event.target.value };
             });
@@ -98,7 +91,8 @@ export default function EditCourseDialog({ courseId }) {
 
     const handleSelecetedTags = (items) => {
         setDetails((details) => {
-            return { ...details, tags: [...details.tags, ...items] };
+            const currentTags = details?.tags?details.tags:[];
+            return { ...details, tags: [...currentTags, ...items] };
         });
     };
 
@@ -107,14 +101,6 @@ export default function EditCourseDialog({ courseId }) {
             setErrorType("Type cannot be empty");
         } else {
             setErrorType(null);
-        }
-    };
-
-    const validateCost = (event) => {
-        if (event.target.value.match("^[0-9]*$") === null) {
-            setErrorCost("Enter a valid price");
-        } else {
-            setErrorCost(null);
         }
     };
 
@@ -151,6 +137,7 @@ export default function EditCourseDialog({ courseId }) {
                                 label="Start Date"
                                 value={startDate}
                                 renderInput={(params) => <TextField {...params} helperText={"Cannot change start date after course creation"} disabled />}
+                                onChange={() => ""}
                             />
                         </LocalizationProvider>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -163,14 +150,14 @@ export default function EditCourseDialog({ courseId }) {
                                 renderInput={(params) => <TextField {...params} error={errorEndDate != null} helperText={errorEndDate} />}
                             />
                         </LocalizationProvider>
-                        <OutlinedInput id="outlined-adornment-amount" value={details?.cost?.$numberDecimal} onChange={(e) => handleChange("cost", e)} startAdornment={<InputAdornment position="start">$</InputAdornment>} placeholder={"Course Price"} helperText={"Cannot change cost after cost creation"} disabled />
+                        <OutlinedInput id="outlined-adornment-amount" value={details?.cost?.$numberDecimal} onChange={(e) => handleChange("cost", e)} startAdornment={<InputAdornment position="start">$</InputAdornment>} placeholder={"Course Price"} disabled />
                         {editStatus==="fail" && <Alert severity="error">Course was not updated! Please validate all details.</Alert>}
                         {editStatus==="success" && <Alert severity="success">Course have been been updated! Please click on finish to proceed.</Alert>}
                     </Stack>
                 </DialogContent>
                 <DialogActions>
                     {editStatus==="initiate" && (
-                        <Button onClick={handleEdit} disabled={!(errorType === null && errorCost === null && errorEndDate === null && errorDescription === null)}>
+                        <Button onClick={handleEdit} disabled={!(errorType === null && errorEndDate === null && errorDescription === null)}>
                             Apply
                         </Button>
                     )}
