@@ -1,3 +1,18 @@
 use("tutorly")
 
 db.messages.deleteMany({})
+
+
+db.conversations.deleteOne({_id: ObjectId("62c5fdcb36b27c69f1412c65")})
+
+db.users.insert({
+  "_id": ObjectId("62c5fb01e9c61bd62f27743c"),
+  "firstname": "Tony",
+  "lastname": "Mark",
+  "email": "tony.mark@gmail.com",
+  "password": "$2a$08$9KSVkyqhvihmar.kh/VC7ujOSFaubxHxjtZskC1rWG1Y/WAp5yy.6",
+  "status": "Pending",
+  "roles": [],
+  "confirmationCode": "abcd",
+  "__v": 0
+})
