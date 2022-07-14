@@ -1,3 +1,6 @@
+/*
+Author: Parampal Singh
+*/
 const mongoose = require('mongoose')
 
 const userNotificationDetailsSchema = mongoose.Schema({

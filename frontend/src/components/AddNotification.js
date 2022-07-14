@@ -1,3 +1,6 @@
+/*
+Author: Parampal Singh
+*/
 import React from 'react'
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -13,6 +16,7 @@ import FormLabel from '@mui/material/FormLabel';
 import axios from 'axios';
 import io from 'socket.io-client';
 let socket = null;
+const url = "http://localhost:8000";
 
 export default function AddNotification(props) {
 
@@ -21,9 +25,9 @@ export default function AddNotification(props) {
         props.setSendNotify(true);
         props.setToastMsg("Notification sent successfully!")
         // API to save the data
-        const url = "http://localhost:8000/api/notifications/";
-        const user = localStorage.getItem('user');
-        const response = await axios.post(url, { user: user ? user : '110965', text: text, type: notificationType });
+        const user=JSON.parse(localStorage.getItem("user"))
+        console.log(user.id)
+        const response = await axios.post(url +"/api/notifications/", { user: user.id , text: text, type: notificationType });
 
         socket.emit("send_notification", {
             notificationInfo: response?.data?.notification
@@ -35,7 +39,7 @@ export default function AddNotification(props) {
     React.useEffect(() => {
 
         if (!socket) {
-            socket = io.connect("http://localhost:8000");
+            socket = io.connect(url);
             socket.on("receive_notification", (data) => {
                 props.setSendNotify(true);
                 props.setToastMsg(data.notificationInfo.text)
