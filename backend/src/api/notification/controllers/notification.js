@@ -113,8 +113,8 @@ const setUserNotificationDetails = asyncHandler(async (req, res) => {
         if(!req.body.favorites){
             res.status(400)
             throw new Error('Please select a valid notification to favorite')       
-        }
-        const getUserNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.body.user}).exec()
+        }    
+        const getUserNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.body.user}).exec();
 
         if(getUserNotificationDetails === null)
         {

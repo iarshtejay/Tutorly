@@ -77,13 +77,15 @@ function NotificationDialog(props) {
     const [sentNotifications, setAllSentNotifications] = React.useState([])
     const [userNotificationDetails, setUserNotificationDetails] = React.useState([])
     const [isNotificationOn, setIsNotificationOn] = React.useState(false)
-    const [isTutor, SetIsTutor] = React.useState(true); //Need to get from logged in user
+    const [isTutor, SetIsTutor] = React.useState(false);
 
     let isTutorFromStore;
     const getNotificationData = async () => {
-        const notifications = await axios.get(url +"/api/notifications/110987");
+        const user=JSON.parse(localStorage.getItem("user"))
+
+        const notifications = await axios.get(url +"/api/notifications/" + user.id);
         if (isTutorFromStore === "true") {
-            const sentNotifications = await axios.get(url +"/api/notifications/tutor/110987");
+            const sentNotifications = await axios.get(url +"/api/notifications/tutor/" + user.id);
             setAllSentNotifications(sentNotifications.data.userSentNotifications);
 
             const filteredNotifications = notifications.data.notification?.filter((el) => {
@@ -98,12 +100,14 @@ function NotificationDialog(props) {
             setAllNotifications(notifications.data.notification);
         }
 
-        const starNotification = await axios.get(url +"/api/notifications/favorite/110987")
+        const starNotification = await axios.get(url +"/api/notifications/favorite/" + user.id)
         setAllFavoriteNotifications(starNotification.data.starNotifications)
     }
 
     const getData = async () => {
-        const userDetails = await axios.get(url +"/api/notifications/details/110987")
+        const user=JSON.parse(localStorage.getItem("user"))
+
+        const userDetails = await axios.get(url +"/api/notifications/details/" + user.id)
         setUserNotificationDetails(userDetails.data.userNotificationDetails)
         getNotificationData();
         if (userDetails.data.userNotificationDetails.preference === "on") {
@@ -113,8 +117,10 @@ function NotificationDialog(props) {
     };
 
     React.useEffect(() => {
-        isTutorFromStore = localStorage.getItem('isTutor');
-        SetIsTutor(isTutorFromStore === "true");
+        const user=JSON.parse(localStorage.getItem("user"))
+        isTutorFromStore = user.role === "tutor" ? "true" : "false";
+
+        SetIsTutor(user.role === "tutor");
         getData();
         socket.on("receive_notification", (data) => {
             getData();
@@ -130,6 +136,8 @@ function NotificationDialog(props) {
     }
 
     const updateFavouriteNotification = async (id) => {
+        const user=JSON.parse(localStorage.getItem("user"))
+
         const favNotification = favNotifications.find((notification) => {
             return notification._id === id;
         });
@@ -140,7 +148,7 @@ function NotificationDialog(props) {
             setAllFavoriteNotifications([
                 ...filteredN
             ]);
-            await axios.put(url +"/api/notifications/favorite/110987", { favorite: "false", notificationId: id });
+            await axios.put(url +"/api/notifications/favorite/" + user.id, { favorite: "false", notificationId: id });
         } else {
             const newNotification = allNotifications.find((notification) => {
                 return notification._id === id;
@@ -149,12 +157,11 @@ function NotificationDialog(props) {
                 ...favNotifications,
                 newNotification
             ]);
-            await axios.put(url +"/api/notifications/favorite/110987", { favorite: "true", notificationId: id });
+            await axios.put(url +"/api/notifications/favorite/" + user.id, { favorite: "true", notificationId: id });
         }
     }
 
     const updateNotificationsList = (notification) => {
-        console.log("updateNotificationsList: ", notification);
         setAllSentNotifications([
             ...sentNotifications,
             notification
@@ -171,7 +178,8 @@ function NotificationDialog(props) {
             getNotificationData()
 
         //API call to change the value 
-        const updatePreference = await axios.put("http://localhost:8000/api/notifications/preference/110987", { preference: notificationState });
+        const user=JSON.parse(localStorage.getItem("user"))
+        const updatePreference = await axios.put(url +"/api/notifications/preference/"+user.id, { preference: notificationState });
         setUpdateNotification(true)
     }
 
