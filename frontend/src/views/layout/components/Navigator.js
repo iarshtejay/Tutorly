@@ -114,6 +114,7 @@ export default function Navigator(props) {
                 ))}
                 <ListItem
                     onClick={() => {
+                        localStorage.removeItem("user");
                         navigate("/landing");
                     }}
                     sx={{ ...item, ...itemCategory }}
