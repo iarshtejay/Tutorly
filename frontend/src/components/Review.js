@@ -24,17 +24,16 @@ const formReducer = (state, event) => {
 
 const root = process.env.REACT_APP_DOMAIN;
 
-const username = JSON.parse(localStorage.getItem("user")).firstName;
+let username;
 let courseId;
 const getFeedback = async () => {
     
     const responseData = await axios({
         method: "GET",
         params: {
-            id: username,
-            id1: courseId
+            id: courseId
         },
-        url: `${root}/api/feedback/user/course/${username}/${courseId}`,
+        url: `${root}/api/feedback/course/${courseId}`,
         headers: {
             "Content-Type": "application/json",
         },
@@ -50,7 +49,7 @@ const getFeedback = async () => {
 export default function Review() {
     courseId = useParams().id;
     console.log("PARAM: ", useParams().id);
-
+    username = JSON.parse(localStorage.getItem("user")).firstName;
     const [feedbacks, setFeedbacks] = useState([]);
 
     useEffect(() => {
@@ -188,7 +187,7 @@ export default function Review() {
                 {feedbacks.map((feedback) => (
                     <p>
                     <Divider variant='middle' style={{marginTop: "1%", marginBottom: "1%"}}></Divider>
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{username}</Typography>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{feedback.userId}</Typography>
                         <Rating value={feedback.rating} readOnly></Rating>
                         <Typography variant="subtitle2" gutterBottom component="div">
                     <p>{feedback.feedback}</p>
