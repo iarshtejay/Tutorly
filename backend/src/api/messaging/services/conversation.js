@@ -14,8 +14,42 @@ const Messages = require("../schema/messages");
  * @return conversation Id
  */
 const createConversation = async (userId1, userId2) => {
+
+    let userOne = ""
+    let userTwo = ""
+
+    const user1 = await User.findOne({ _id: ObjectId(userId1)}).lean()
+    const user2 = await User.findOne({ _id: ObjectId(userId2)}).lean()
+
+
+
+    if(user1 == null){
+        const student = await User.findOne({ student: ObjectId(userId1)}).lean();
+        if(student == null){
+            const tutor = await User.findOne({ tutor: ObjectId(userId1)}).lean();
+            userOne = tutor._id.toString()
+        } else {
+            userOne = student._id.toString()
+        }
+    } else {
+        userOne = user1._id.toString()
+    }
+
+    if(user2 == null){
+        const student = await User.findOne({ student: ObjectId(userId2)}).lean();
+
+        if(student == null){
+            const tutor = await User.findOne({ tutor: ObjectId(userId2)}).lean();
+            userTwo  = tutor._id.toString()
+        } else {
+            userTwo  = student._id.toString()
+        }
+    } else {
+        userTwo = user2._id.toString()
+    }
+
     const response = await new Conversation({
-        users: [userId1, userId2],
+        users: [userOne, userTwo],
         status: "pending",
     }).save();
 
