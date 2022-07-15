@@ -31,7 +31,6 @@ import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import QuizAttempt from "./components/QuizAttempt";
 import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
-import QuizAttempt from "./components/QuizAttempt";
 import VerifyEmail from "./components/VerifyEmail";
 import { Connections } from "./components/Connections/Connections";
 
