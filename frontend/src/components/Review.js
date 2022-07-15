@@ -24,7 +24,6 @@ const formReducer = (state, event) => {
 
 const root = process.env.REACT_APP_DOMAIN;
 
-
 let courseId;
 const getFeedback = async () => {
     const responseData = await axios({
