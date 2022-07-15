@@ -1,16 +1,9 @@
-import React, {useReducer, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import StarIcon from '@mui/icons-material/Star';
-import SendIcon from '@mui/icons-material/Send';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { Container, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardActions, CardContent, Link, Rating, Box } from '@mui/material';
-import Rating_Tutor from './Rating';
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const formReducer = (state, event) => {
@@ -26,8 +19,41 @@ const formReducer = (state, event) => {
     }
 }
 
-export default function Review() {
+const courseId = "12kjfdbhj67jh";
+const userId = "qw67ertbj234n";
 
+const root = "http://localhost:8000";
+
+
+const getFeedback = async () => {
+
+    const responseData = await axios({
+        method: "GET",
+        params: {
+            id: userId,
+            id1: courseId
+        },
+        url: `${root}/api/feedback/user/course/${userId}/${courseId}`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    console.log("All feedbacks: ", responseData.data.data);
+    return responseData.data.data;
+}
+
+
+
+export default function Review() {
+    
+
+    const [feedbacks, setFeedbacks] = useState([]);
+
+    useEffect(() => {
+        getFeedback().then((feedbacks) => {
+            setFeedbacks(feedbacks);
+        });
+    }, []);
     const[formData, setFormData] = useReducer(formReducer, {
     });
     const [posting, setPosting] = useState(false);
@@ -51,14 +77,17 @@ export default function Review() {
         });
     }
 
+    
+const [ratingValue, setValue] = useState();
+
     const [feedback, setFeedback] = useState({
-        courseId_: "12kjfdbhj67jh",
-        userId_: "qw67ertbj234n",
-        rating_: '',
-        feedback_: "",
+        courseId: courseId,
+        userId: userId,
+        rating: "",
+        feedback: "",
     });
 
-    const root = "http://localhost:8000";
+    
     const handleFeedback = async () => {
 
     await axios({
@@ -69,8 +98,8 @@ export default function Review() {
         },
         data: {feedback}
     });
+    window.location.reload();
 };
-
 
 
 
@@ -140,59 +169,32 @@ export default function Review() {
         </Typography>
         <Card>
             <CardContent>
-            <form method='POST'>
+            <form>
                             <fieldset style={{border: "1px solid lightgray", padding: "10px"}}>
                                 <label>
-                                    <p>Rate the Module:<Rating_Tutor name='rating'  onClick={(e) => { setFeedback({ ...feedback , rating_: e.target.value });}}/></p>
+                                    <p><Rating value={ratingValue} onChange={(e, val) =>  { setFeedback({ ...feedback , rating: val })}}/></p>
                                     Review:<br />
-                                    <textarea name='review' id='review' style={{margin: "5px 5px", padding: "5px"}} placeholder='Post your Review...'  onChange={(e) => { setFeedback({ ...feedback , feedback_: e.target.value });}} ></textarea>
+                                    <textarea name='review' id='review' style={{margin: "5px 5px", padding: "5px"}} placeholder='Post your Review...'  onChange={(e) => { setFeedback({ ...feedback , feedback: e.target.value });}} ></textarea>
                                 </label>
                                 <div className='d-grid gap-2 d-md-flex justify-content-md-end' style={{marginRight: "10px", marginBottom: "10px"}}> 
                                     <button type='submit' className='btn btn-success' style={{width: "100px"}} onClick={handleFeedback}>Post</button>
                                 </div>
                             </fieldset>
                         </form>
-                        {posting && 
-                        <div class="card">
-                            <div class="row d-flex">
-                                
-                                <div class="d-flex flex-column">
-                                    <h6 class="user">Dhairya</h6>
-                                    <div>
-                                        <p class="text-left"><span class="text-muted">3.0</span> <span class="fa fa-star star-active ml-3"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-active"></span> <span class="fa fa-star star-inactive"></span> <span class="fa fa-star star-inactive"></span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row text-left">
-                            {Object.entries(formData).map(([name, value]) => (
-                                <p class="content" key={name}>{value.toString()}</p>
-                                ))}
-                            </div>
-                        </div> }
-                {/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Rate Module</Typography>
-                <StarIcon style={{color: "#F6BE00"}}/><StarIcon style={{color: "#F6BE00"}} /><StarBorderIcon /><StarBorderIcon /><StarBorderIcon />
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Review Module</Typography>
-                <TextField id="outlined-basic" label="Write Review" variant="outlined" />
-                <CardActions>
-                    <Button variant="contained" endIcon={<SendIcon />}>Post</Button>
-                </CardActions>
-                <Divider variant='middle' style={{marginTop: "1%", marginBottom: "1%"}}/>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Anna Mandyne</Typography>
-                <StarIcon style={{color: "#F6BE00"}}/><StarIcon style={{color: "#F6BE00"}} /><StarIcon style={{color: "#F6BE00"}}/><StarIcon style={{color: "#F6BE00"}} /><StarBorderIcon />
-                <Typography variant="subtitle2" gutterBottom component="div">
-                    "I know from first-hand experience that you can go in knowing zero, nothing, 
-                    and just get a grasp on everything as you go and start building right away."
-                </Typography>
-                <Divider variant='middle' style={{marginTop: "1%", marginBottom: "1%"}}/>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Matt Murwils</Typography>
-                <StarIcon style={{color: "#F6BE00"}}/><StarIcon style={{color: "#F6BE00"}} /><StarIcon style={{color: "#F6BE00"}}/><StarBorderIcon/><StarBorderIcon />
-                <Typography variant="subtitle2" gutterBottom component="div">
-                    "This course says learn from scratch but what i found is that it automatically 
-                    jumps in to coding without really explaining the definition of what you are doing. 
-                    This course feels more suited for people whom already have experience in python."
-                </Typography> */}
+                {feedbacks.map((feedback) => (
+                    <p>
+                    <Divider variant='middle' style={{marginTop: "1%", marginBottom: "1%"}}></Divider>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Anna Mandyne</Typography>
+                        <Rating value={feedback.rating} readOnly></Rating>
+                        <Typography variant="subtitle2" gutterBottom component="div">
+                    <p>{feedback.feedback}</p>
+                    </Typography>
+                    </p>
+                ))}
             </CardContent>
         </Card>
     </Container>
   );
 }
+
+getFeedback();
