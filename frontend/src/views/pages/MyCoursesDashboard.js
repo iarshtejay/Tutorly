@@ -69,13 +69,20 @@ export default function MyCoursesDashboard() {
             <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
                 <TSearchBar handleSearch={handleSearch} placeHolderText={"Search by course name or tutor name"}></TSearchBar>
                 <Grid container spacing={2} sx={{ padding: 2 }}>
-                    {showCourses.data.length > 0 ? (
+                    { isTutor && showCourses.data.length > 0 ? (
+                        showCourses.data.map((value, key) => (
+                            <Grid item xs={12} sm={6} md={4} key={key}>
+                                <TCourseCard key={key} courseId={value?._id} courseName={value?.courseName} tutorName={value?.tutor?.name} description={value?.description} cost={value?.cost} rating={value?.rating} imageURL={value?.imageURL} showProgress={true} progress={value?.progress}></TCourseCard>
+                            </Grid>
+                        ))
+                    ) : !isTutor && showCourses.data.length > 0 ? (
                         showCourses.data.map((value, key) => (
                             <Grid item xs={12} sm={6} md={4} key={key}>
                                 <TCourseCard key={key} courseId={value?.course?._id} courseName={value?.course?.courseName} tutorName={value?.course?.tutor?.name} description={value?.course?.description} cost={value?.course?.cost} rating={value?.course?.rating} imageURL={value?.course?.imageURL} showProgress={true} progress={value?.progress}></TCourseCard>
                             </Grid>
                         ))
-                    ) : (
+                    ) : 
+                    (
                         <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: "50vh" }}>
                             <Grid item xs={3}>
                                 <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">

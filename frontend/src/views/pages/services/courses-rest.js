@@ -22,7 +22,7 @@ export const getEnrolledCourses = createAsyncThunk("/course/enrolled", async ({ 
         ).data;
     } else {
         return (
-          await httpClient.post(`/${studentId}/courses`, {
+          await httpClient.get(`/tutor/${studentId}/courses`, {
             isTutor
           })
         ).data;
