@@ -25,7 +25,7 @@ const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tut
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
     const isTutor = localStorage.getItem("user")?.includes("tutor");
-    console.log("isTutor", isTutor)
+    const user=JSON.parse(localStorage.getItem("user"))
     
     const [isEnrolled, setIsEnrolled] = useState(initialEnrollStatus);
     const [action, setAction ] = useState(initialEnrollStatus === true ? "unenroll" : "enroll");
@@ -47,10 +47,10 @@ const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tut
 
     const handleEnrollment = async () => {
 
+        const id = user?.student?._id || "62ca2f7a4f3727bc5d9a3e98";     
         const res = await httpClient.post(`/student/course/${action}/${courseId}`, {
             student:{
-                //Placeholder: Get from redux state
-                id: "62ca2f7a4f3727bc5d9a3e98"
+                id: id
             }
         })
         if (res.data.success) {
@@ -62,7 +62,7 @@ const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tut
     };
 
     useEffect(() => {
-        dispatch(getEnrolledCourses({ isTutor: false, studentId: "62ca2f7a4f3727bc5d9a3e98" }));
+        dispatch(getEnrolledCourses({ isTutor: false, studentId: user?.student?._id || "62ca2f7a4f3727bc5d9a3e98" }));
     }, [dispatch, action]);
 
 

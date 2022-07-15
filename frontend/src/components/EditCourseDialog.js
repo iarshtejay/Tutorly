@@ -38,7 +38,6 @@ export default function EditCourseDialog({ courseId }) {
     });
 
     const isCourseCompleted = endDate > (new Date())?true:false;
-    // Placeholder: check if current user is course owner
     let isOwner;
     try{
         isOwner = tutor?.courses?.filter(course_ => course_.includes(courseId)).length>0?true:false; 
@@ -57,8 +56,7 @@ export default function EditCourseDialog({ courseId }) {
     };
 
     const handleEdit = async () => {
-        // Placeholder: Change the course Id
-        const res = await httpClient.put(`/course/update/${121212121212}`, {
+        const res = await httpClient.put(`/course/update/${courseId}`, {
             course: details,
         });
         if (res.data.success) {
