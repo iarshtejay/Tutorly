@@ -17,12 +17,16 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 import { theme } from "../theme/theme";
 import { useNavigate } from "react-router";
+import { addToContactList } from "./Messaging/services/messaging-rest";
+import { useDispatch } from "react-redux";
 const BorderLinearProgress = styled(LinearProgress)(() => ({
     height: 10,
     borderRadius: 5,
 }));
 export default function TTutorCard({ tutorId, tutorName, description, rating, imageURL, courses, expertise}) {
     const [favorite, setFavorite] = React.useState(false);
+    const dispatch = useDispatch();
+    const [studentId, setStudentId] = React.useState("");
     const navigate = useNavigate();
     const handleFavoriteClick = () => {
         if (favorite) {
@@ -31,6 +35,12 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
             setFavorite(true);
         }
     };
+
+    React.useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        setStudentId(user?.tutor?._id || user?.student?._id);
+    }, [])
+    
     const handleOnClick = () => {
         navigate(`/tutors/${tutorId}`);
     };
@@ -56,6 +66,9 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
             </CardContent>
             <CardActions disableSpacing>
                 <Grid container spacing={1}>
+                    <Grid item xs={3} style={{ textAlign: "right" }}>
+                        <Button onClick={dispatch(addToContactList({tutorId, studentId}))}>CHAT</Button>
+                    </Grid>
                     <Grid item xs={9} style={{ textAlign: "right" }}>
                         <Button onClick={handleOnClick}>GO TO TUTOR PAGE</Button>
                     </Grid>
