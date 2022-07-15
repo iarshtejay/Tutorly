@@ -109,7 +109,7 @@ function THomeHeader(props) {
                 <Tabs value={chosenTab} textColor="inherit">
                     <Tab label="Home" onClick={handleHomeTabClick} />
                     <Tab label="My Courses" onClick={handleMyCoursesTabClick} />
-                    <Tab label="Archived Courses" onClick={handleArchivedCoursesTabClick} />
+                    {isTutor===false <Tab label="Archived Courses" onClick={handleArchivedCoursesTabClick} />}
                     {isTutor===false && <Tab label="Recommended Courses" onClick={handleRecommendedCoursesTabClick} />}
                     {isTutor===false && <Tab label="Recommended Tutors" onClick={handleRecommendedTutorsTabClick} />}
                 </Tabs>
