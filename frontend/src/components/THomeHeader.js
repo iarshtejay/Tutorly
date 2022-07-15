@@ -20,6 +20,7 @@ function THomeHeader(props) {
     const navigate = useNavigate();
     const location = useLocation();
     const isTutor = localStorage.getItem("user")?.includes("tutor");
+    const user = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
         const route_path = location.pathname.split("/");
@@ -85,7 +86,7 @@ function THomeHeader(props) {
                         </Grid>
                         <Grid item xs>
                             <Typography color="inherit" variant="h6" component="h1">
-                                Welcome, John Doe!
+                                Welcome, {user?.firstName || "John"} {user?.lastName || "Doe"}
                             </Typography>
                         </Grid>
                         <Grid item xs />
