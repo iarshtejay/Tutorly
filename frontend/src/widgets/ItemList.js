@@ -32,10 +32,10 @@ export default function ItemList({ list, onSelect }) {
                       backgroundColor: blue[50],
                     },
                     backgroundColor:
-                      item.id === selectedId ? blue[50] : "white",
+                      item.conversation_id === selectedId ? blue[50] : "white",
                   }}
                   alignItems="flex-start"
-                  onClick={() => onSelectItem(item.id)}
+                  onClick={() => onSelectItem(item.conversation_id)}
                 >
                   <ListItemAvatar>
                     <Badge

@@ -31,7 +31,8 @@ import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import QuizAttempt from "./components/QuizAttempt";
 import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
-import VerifyEmail from "./components/VerifyEmail";
+import VerifyEmail from "./components/VerifyEmail"
+import { Connections } from "./components/Connections/Connections";
 
 const AppRoutes = (props) => {
     return (
@@ -56,6 +57,7 @@ const AppRoutes = (props) => {
                     <Route path="chat" element={<MessagingLayout />}>
                         <Route index element={<Messaging />} />
                         <Route path="messages" element={<Messaging />} />
+                        <Route path="connections" element={<Connections />} />
                     </Route>
                     <Route path="discussion" element={<DiscussionLayout />}>
                         <Route index element={<CourseSelector />} />
