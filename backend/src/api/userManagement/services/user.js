@@ -28,14 +28,6 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.deleteUsers = async (req, res) => {
-    console.log(req.body.id)
-    db.deleteMany({ _id: req.body.id }).then(data => {
-        return data;
-    })
-
-}
-
 exports.verifyEmail = async (req, res) => {
     const email = req.body.email;
     const code = req.body.code;
@@ -155,6 +147,16 @@ exports.updateProfile = (req, res) => {
 exports.logout = async (req, res) => {
     try {
         await db.updateOne({ _id: req.params.id }, { $set: { mode: "offline" } }).then(data => {
+            return data;
+        })
+    } catch (e) {
+        return e;
+    }
+};
+
+exports.delete = async (req, res) => {
+    try {
+        await db.deleteOne({ _id: req.params.id }).then(data => {
             return data;
         })
     } catch (e) {
