@@ -30,7 +30,7 @@ import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import moment from "moment";
 import io from "socket.io-client";
 
-const url = "http://localhost:8000";
+const url = process.env.REACT_APP_DOMAIN;
 const socket = io.connect(url);
 
 const Transition = React.forwardRef(function Transition(props, ref) {

@@ -746,17 +746,7 @@ chokidar@^3.5.2:
   dependencies:
     "fill-range" "^7.0.1"
 
-"bson@^4.6.2":
-  "version" "4.6.4"
-  dependencies:
-    "buffer" "^5.6.0"
-
-"bson@^4.6.3":
-  "version" "4.6.4"
-  dependencies:
-    "buffer" "^5.6.0"
-
-"bson@^4.6.5":
+"bson@^4.6.2", "bson@^4.6.3", "bson@^4.6.5":
   "integrity" "sha512-uqrgcjyOaZsHfz7ea8zLRCLe1u+QGUSzMZmvXqO24CDW7DWoW1qiN9folSwa7hSneTSgM2ykDIzF5kcQQ8cwNw=="
   "resolved" "https://registry.npmjs.org/bson/-/bson-4.6.5.tgz"
   "version" "4.6.5"
@@ -2130,6 +2120,11 @@ mongodb-connection-string-url@^2.5.2:
   "integrity" "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw=="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
