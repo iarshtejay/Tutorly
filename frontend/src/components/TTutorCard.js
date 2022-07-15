@@ -42,16 +42,11 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
                         {tutorName? tutorName.substring(0,1) : ""}
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
                 title={tutorName}
                 subheader={expertise}
             />
             <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
-            <CardContent style={{ maxHeight: 120 }}>
+            <CardContent style={{ maxHeight: 150 }}>
                 <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
@@ -61,16 +56,6 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
             </CardContent>
             <CardActions disableSpacing>
                 <Grid container spacing={1}>
-                    <Grid item xs={1.5}>
-                        <IconButton aria-label="add to favorites">
-                            <FavoriteIcon style={{ color: favorite ? "#009688" : "grey" }} onClick={handleFavoriteClick} />
-                        </IconButton>
-                    </Grid>
-                    <Grid item xs={1.5}>
-                        <IconButton aria-label="share">
-                            <ShareIcon />
-                        </IconButton>
-                    </Grid>
                     <Grid item xs={9} style={{ textAlign: "right" }}>
                         <Button onClick={handleOnClick}>GO TO TUTOR PAGE</Button>
                     </Grid>

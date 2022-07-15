@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 // Importing the required modules
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -26,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignUp() {
     const [open, setOpen] = React.useState(false);
     const currentUser=JSON.parse(localStorage.getItem("user"))
-    console.log(currentUser.id)
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     const navigate = useNavigate()
 
     const handleClickOpen = () => {
@@ -38,7 +42,7 @@ export default function SignUp() {
     };
 
     const handleCloseYes = () => {
-        fetch(`http://localhost:8000/api/user/delete/${currentUser.id}`, {
+        fetch(`${rootDomain}/user/delete/${currentUser.id}`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -51,7 +55,7 @@ export default function SignUp() {
             if (response.status === 200) {
 
                 localStorage.removeItem("user");
-                // navigate('/landing', { state: values })
+                navigate('/landing')
                 alert(body.message)
             } else {
                 alert(body.message)
@@ -94,7 +98,7 @@ export default function SignUp() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`http://localhost:8000/api/user/updateProfile/${currentUser.id}`, {
+            fetch(`${rootDomain}/user/updateProfile/${currentUser.id}`, {
                 method: 'PUT',
                 headers: {
                     Accept: 'application/json',

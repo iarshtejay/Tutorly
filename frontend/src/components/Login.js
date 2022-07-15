@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 // Importing the required modules
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
@@ -17,10 +21,11 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { theme } from "../theme/theme";
 
-const url = "http://localhost:8000";
+const url = process.env.REACT_APP_DOMAIN;;
 
 export default function Login() {
     const navigate = useNavigate();
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     // Defining form validation
     const validationSchema = yup.object({
         // Email is required and should be in proper format
@@ -41,7 +46,7 @@ export default function Login() {
         onSubmit: async (values) => {
             const email = values.email
             const password = values.password
-            fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/user/login`, {
+            fetch(`${rootDomain}/user/login`, {
                 method: 'POSt',
                 headers: {
                     Accept: 'application/json',
