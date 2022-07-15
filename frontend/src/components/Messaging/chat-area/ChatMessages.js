@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useEffect, useRef } from "react";

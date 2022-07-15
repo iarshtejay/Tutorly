@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { Avatar, Badge, Box, Typography } from "@mui/material"
 import { grey } from "@mui/material/colors"
 

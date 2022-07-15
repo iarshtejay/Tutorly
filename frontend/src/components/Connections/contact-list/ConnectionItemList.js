@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchOffIcon from "@mui/icons-material/SearchOff";

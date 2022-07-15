@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { createSlice, current } from "@reduxjs/toolkit";
 import { checkForNewMessage, fetchChats, fetchContactList } from "../services/messaging-rest";
 

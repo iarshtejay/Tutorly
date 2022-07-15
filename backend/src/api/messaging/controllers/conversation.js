@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 const Conversation = require("../schema/conversation");
 const { createConversation, getUserConversations, getPendingConversationRequest, actionOnConversationRequest } = require("../services/conversation");
 

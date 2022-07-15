@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { TextField } from "@mui/material";
 
 const SearchBar = ({ onChange }) => {
