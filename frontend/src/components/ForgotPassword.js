@@ -35,7 +35,7 @@ export default function ForgotPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`${rootDomain}/api/user/sendotp`, {
+            fetch(`${rootDomain}/user/sendotp`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

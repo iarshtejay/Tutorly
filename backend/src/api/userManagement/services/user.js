@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 const db = require("../models/user");
 var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
