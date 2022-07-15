@@ -4,29 +4,6 @@ const services = require("../services/user")
 
 /**
  * @author Manasvi
- * @description Delete User
- * @params req, res
- * @return users
- */
-router.put("/deleteUser/:id", async (req, res) => {
-    try {
-        console.log("1")
-        const users = await services.deleteUsers();
-        return res.status(200).json({
-            message: "User deleted successfully",
-            success: true,
-        });
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json({
-            message: "Internal server error.",
-            success: false,
-        });
-    }
-});
-
-/**
- * @author Manasvi
  * @description Create User
  * @params req, res
  */
@@ -192,6 +169,27 @@ router.put("/updateProfile/:id", async (req, res) => {
     }
 });
 
+/**
+ * @author Manasvi
+ * @description Delete
+ * @params req, res
+ */
+ router.put("/delete/:id", async (req, res) => {
+    try {
+
+        const users = await services.delete(req, res);
+        return res.status(200).json({
+            message: "Account Deleted successfully!",
+            success: true,
+        });
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+            message: "Internal server error.",
+            success: false,
+        });
+    }
+});
 
 
 module.exports = router;
