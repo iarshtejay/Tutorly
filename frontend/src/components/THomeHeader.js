@@ -99,7 +99,7 @@ function THomeHeader(props) {
                         </Grid>
                         <Grid item>
                             <IconButton color="inherit" sx={{ p: 0.5 }} onClick={() => navigate("/profile")}>
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                                <Avatar/>
                             </IconButton>
                         </Grid>
                     </Grid>

@@ -28,7 +28,6 @@ export const checkForNewMessage = createAsyncThunk("messages/new-chat", async (c
 });
 
 export const sendChatMessage = createAsyncThunk("messages/post", async (payload, thunkAPI) => {
-    openSocket();
     const { message, conversation_id, sender_user_id, other_person } = payload;
 
     const receiver_user_id = other_person.user_id;
