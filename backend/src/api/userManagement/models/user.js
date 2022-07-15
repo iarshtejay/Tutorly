@@ -8,6 +8,7 @@ const User = mongoose.model(
     lastname: String,
     email: String,
     password: String,
+    mode:String,
     status: {
       type: String, 
       enum: ['Pending', 'Active'],

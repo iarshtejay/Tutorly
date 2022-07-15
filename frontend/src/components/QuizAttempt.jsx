@@ -31,17 +31,17 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Chip from "@mui/material/Chip";
 import Countdown from "react-countdown";
 import moment from "moment";
-
-const rootDomain = "http://localhost:8000";
+import { useParams } from "react-router-dom";
 
 const QuizAttempt = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
 
-    // const courseId = useParams().id;
-    const courseId = `62ca26bd2838cca760fed1ef`;
-    const quizId = location.pathname.split("/")[4];
-    const studentId = `62ca2f7a4f3727bc5d9a3e98`;
+    const courseId = useParams().id;
+    const quizId = useParams().quizId;
+    const studentId = user.id;
 
     const [quiz, setQuiz] = useState({});
     const [attempt, setAttempt] = useState({
@@ -52,7 +52,7 @@ const QuizAttempt = () => {
     const getQuiz = async () => {
         const response = await axios({
             method: "GET",
-            url: `${rootDomain}/api/course/${courseId}/quiz/${quizId}`,
+            url: `${rootDomain}/course/${courseId}/quiz/${quizId}`,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -83,7 +83,7 @@ const QuizAttempt = () => {
     const submitQuiz = async () => {
         await axios({
             method: "PUT",
-            url: `${rootDomain}/api/course/${courseId}/quiz/${quizId}/attempt`,
+            url: `${rootDomain}/course/${courseId}/quiz/${quizId}/attempt`,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -119,7 +119,6 @@ const QuizAttempt = () => {
                     <Button variant="contained" color="success" startIcon={<SaveIcon />} sx={{ mr: 2, mt: 3 }} onClick={submitQuiz}>
                         Submit Quiz
                     </Button>
-                    {/* <Chip label={`Time Remaining: `} variant="outlined" sx={{ mr: 2, mt: 3 }} /> */}
                 </Box>
 
                 <Box>

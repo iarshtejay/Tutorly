@@ -28,23 +28,22 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-
-const rootDomain = "http://localhost:8000";
+import { useParams } from "react-router-dom";
 
 const Quiz = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
 
-    // const courseId = useParams().id;
-    const courseId = `62ca26bd2838cca760fed1ef`;
-    const quizId = location.pathname.split("/")[4];
+    const courseId = useParams().id;
+    const quizId = useParams().quizId;
 
     const [quiz, setQuiz] = useState({});
 
     const getQuiz = async () => {
         const response = await axios({
             method: "GET",
-            url: `${rootDomain}/api/course/${courseId}/quiz/${quizId}`,
+            url: `${rootDomain}/course/${courseId}/quiz/${quizId}`,
             headers: {
                 "Content-Type": "application/json",
             },
@@ -55,7 +54,7 @@ const Quiz = () => {
     const deleteQuiz = async () => {
         await axios({
             method: "DELETE",
-            url: `${rootDomain}/api/course/${courseId}/quiz/${quizId}`,
+            url: `${rootDomain}/course/${courseId}/quiz/${quizId}`,
             headers: {
                 "Content-Type": "application/json",
             },
