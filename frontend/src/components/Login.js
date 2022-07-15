@@ -13,9 +13,11 @@ import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import background from "../images/image.svg";
-
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { theme } from "../theme/theme";
+
+const url = "http://localhost:8000";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -26,22 +28,46 @@ export default function Login() {
         // Password is required and should be of min of 8 characters containing one uppercase, one lower case and one special character
         password: yup.string("Enter your password").required("Password is required"),
     });
+    const setUserDetails = async (uid) =>{
+        const response = await axios.post(url +"/api/notifications/details", { favorites : [], preference: "on", user: uid });
+    }
+    
     const formik = useFormik({
         initialValues: {
             email: "",
             password: "",
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log(values);
-            // Sending alert once the form is submitted
-            // alert("Login Successful");
-            //navigate('/profile', {state:values});
-            // window.location.reload(); // Reloading Page
-            navigate("/");
+        onSubmit: async (values) => {
+            const email = values.email
+            const password = values.password
+            fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/user/login`, {
+                method: 'POSt',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password
+                })
+            }).then(async (response) => {
+                const body = await response.json();
+                if (response.status === 200) {
+                    console.log(body.data[0].accessToken)
+                    if (body.data[0].accessToken) {
+                        setUserDetails(body.data[0].id);
+                        localStorage.setItem("user", JSON.stringify(body.data[0]));
+                    }
+                    alert(body.message)
+
+                    navigate('/', { state: values })
+                } else {
+                    alert(body.message)
+                }
+            })
         },
     });
-
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: "100vh" }}>
@@ -110,8 +136,8 @@ export default function Login() {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                    // component={RouterLink} to="/profile"
-                                    // onClick={() => navigate("/home")}
+                                // component={RouterLink} to="/profile"
+                                // onClick={() => navigate("/home")}
                                 >
                                     LOGIN
                                 </Button>

@@ -19,11 +19,15 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function SignUp() {
     const [open, setOpen] = React.useState(false);
+    const currentUser=JSON.parse(localStorage.getItem("user"))
+    console.log(currentUser.id)
+    const navigate = useNavigate()
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -32,7 +36,29 @@ export default function SignUp() {
     const handleClose = () => {
         setOpen(false);
     };
-    //const navigate = useNavigate()
+
+    const handleCloseYes = () => {
+        fetch(`http://localhost:8000/api/user/delete/${currentUser.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            })
+        }).then(async (response) => {
+            const body = await response.json();
+            if (response.status === 200) {
+
+                localStorage.removeItem("user");
+                // navigate('/landing', { state: values })
+                alert(body.message)
+            } else {
+                alert(body.message)
+            }
+        })
+    };
+   
     // Defining form validation 
     const validationSchema = yup.object({
         // First name is required
@@ -57,23 +83,41 @@ export default function SignUp() {
             .matches(
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
                 "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-            )
-            .required('Password is required'),
+            ),
     });
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
+            firstName: currentUser.firstName,
+            lastName: currentUser.lastName,
+            email: currentUser.email,
             password: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values)
-            // Sending alert once the form is submitted
-            alert('Account created successfully! Please verify your email and then login!')
-            //navigate('/profile', {state:values});
-            window.location.reload(); // Reloading Page
+            fetch(`http://localhost:8000/api/user/updateProfile/${currentUser.id}`, {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    email: values.email,
+                    password: values.password
+                })
+            }).then(async (response) => {
+                const body = await response.json();
+                if (response.status === 200) {
+                    alert(body.message)
+                    localStorage.setItem("user", JSON.stringify({"id":currentUser.id,"accessToken":currentUser.accessToken,
+                    "role":currentUser.role,"firstName":values.firstName,"lastName":values.lastName,"email":values.email}));
+                    window.location.reload();
+                    navigate('/profile', { state: values })
+                } else {
+                    alert(body.message)
+                }
+            })
 
         },
 
@@ -136,6 +180,7 @@ export default function SignUp() {
                                     label="Email"
                                     name="email"
                                     autoComplete="email"
+                                    placeholder='mnsvi07@gmail.com'
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
                                     error={formik.touched.email && Boolean(formik.errors.email)}
@@ -144,7 +189,6 @@ export default function SignUp() {
 
                                 <TextField    // Input field for Password
                                     margin="normal"
-                                    required
                                     fullWidth
                                     name="password"
                                     label="Password"
@@ -187,7 +231,7 @@ export default function SignUp() {
                                                 </DialogContent>
                                                 <DialogActions>
                                                     <Button onClick={handleClose}>No</Button>
-                                                    <Button onClick={handleClose} autoFocus>
+                                                    <Button onClick={handleCloseYes} autoFocus>
                                                         Yes
                                                     </Button>
                                                 </DialogActions>

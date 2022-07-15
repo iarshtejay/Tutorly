@@ -15,6 +15,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import background from "../images/image.svg";
 import { theme } from "../theme/theme";
 import { useNavigate } from "react-router-dom";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 export default function SignUp() {
     const navigate = useNavigate();
@@ -51,15 +56,32 @@ export default function SignUp() {
             email: "",
             password: "",
             confirmPassword: "",
+            role: ""
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
-            // Sending alert once the form is submitted
-            alert("Account created successfully! Please verify your email and then login!");
-            //navigate('/profile', {state:values});
-            // window.location.reload(); // Reloading Page
-            navigate("/");
+            fetch(`http://localhost:8000/api/user/signup`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstName: values.firstName,
+                    lastName: values.lastName,
+                    email: values.email,
+                    password: values.password,
+                    roles: values.role
+                })
+            }).then(async (response) => {
+                const body = await response.json();
+                if (response.status === 200) {
+                    alert(body.message)
+                    navigate('/verifyEmail', { state: values })
+                } else {
+                    alert(body.message)
+                }
+            })
         },
     });
 
@@ -166,13 +188,25 @@ export default function SignUp() {
                                     error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                                     helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                                 />
+                                <FormControl>
+                                    <FormLabel id="role" name="role" margin="normal">Role</FormLabel>
+                                    <RadioGroup
+                                        row
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="role"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.role}
+                                    >
+                                        <FormControlLabel value="tutor" control={<Radio />} label="Tutor" required />
+                                        <FormControlLabel value="student" control={<Radio />} label="Student" required />
+                                    </RadioGroup>
+                                </FormControl>
 
                                 <Button // SignUp Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                    // component={RouterLink} to="/profile"
                                 >
                                     Register
                                 </Button>

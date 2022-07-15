@@ -17,6 +17,10 @@ export default function AppLayout() {
                     label: "Messages",
                     route: "chat/messages",
                 },
+                {
+                    label: "Connections",
+                    route: "chat/connections",
+                },
             ],
         },
         discussion: {

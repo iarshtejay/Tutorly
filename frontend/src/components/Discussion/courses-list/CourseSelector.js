@@ -27,7 +27,7 @@ const CourseSelector = () => {
   const isSearchPerformed = searchKey.length !== 0;
 
   useEffect(() => {
-    dispatch(fetchCourseList());
+    dispatch(fetchCourseList(JSON.parse(localStorage.getItem("user")).id));
   }, [dispatch]);
 
   const onSelectedHandler = (id) => {
@@ -96,10 +96,8 @@ const CourseSelector = () => {
                       key={data.id}
                       item
                       xs={12}
-                      sm={6}
+                      sm={12}
                       md={4}
-                      lg={3}
-                      xl={2}
                     >
                       <TCard data={data} onSelect={onSelectedHandler} />
                     </Grid>

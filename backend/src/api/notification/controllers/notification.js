@@ -1,3 +1,6 @@
+/*
+Author: Parampal Singh
+*/
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
 
@@ -110,18 +113,28 @@ const setUserNotificationDetails = asyncHandler(async (req, res) => {
         if(!req.body.favorites){
             res.status(400)
             throw new Error('Please select a valid notification to favorite')       
-        }
+        }    
+        const getUserNotificationDetails = await UserNotificationDetailsSchema.findOne({user: req.body.user}).exec();
 
-        const userNotificationDetails = await UserNotificationDetailsSchema.create({
-            favorites: req.body.favorites,
-            preference: req.body.preference,
-            user: req.body.user
-        })
+        if(getUserNotificationDetails === null)
+        {
+            const userNotificationDetails = await UserNotificationDetailsSchema.create({
+                favorites: req.body.favorites,
+                preference: req.body.preference,
+                user: req.body.user
+            })
+
+            res.status(200).json({
+                message: 'Get user notification details',
+                success: true,
+                userNotificationDetails: userNotificationDetails
+            });
+        }
 
         res.status(200).json({
             message: 'Get user notification details',
             success: true,
-            userNotificationDetails: userNotificationDetails
+            userNotificationDetails: getUserNotificationDetails
         });
     }
     catch (error) {

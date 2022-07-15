@@ -37,8 +37,8 @@ router.get("/all", async (req, res) => {
     try {
         const event = req.body.event;
         if(!event){
-            Utils.requiredRequestBodyNotFound(res, "event", {event: {
-                param: Object.keys(Event.toObject())
+            return Utils.requiredRequestBodyNotFound(res, "event", {event: {
+                param: Object.keys(Event.schema.tree)
             }});
         }
         const newEvent = await Service.createEvent(event);
@@ -64,16 +64,22 @@ router.get("/all", async (req, res) => {
  */
  router.put("/update/:id", async (req, res) => {
     try {
-        const eventId = req.params.id;
-        if(!eventId){
-            Utils.requiredRequestBodyNotFound(res, "event", {event: {
-                param: id
+        const rawEventId = req.params.id;
+        if(!rawEventId){
+            return Utils.requiredRequestBodyNotFound(res, "event", {event: {
+                param: "id"
             }});
         }
+        if(!Utils.isValidObjectId(rawEventId)){
+            return Utils.idNotValidBsonObjectId(res, "event", {event: {
+                param: "id"
+            }});
+        }
+        const eventId = rawEventId;
         const event = req.body.event;
         if(!event){
-            Utils.requiredRequestBodyNotFound(res, "event", {event: {
-                param: Object.keys(Event.toObject())
+            return Utils.requiredRequestBodyNotFound(res, "event", {event: {
+                param: Object.keys(Event.schema.tree)
             }});
         }
         const updatedEvent = await Service.updateEvent(eventId, event);
@@ -99,13 +105,20 @@ router.get("/all", async (req, res) => {
  */
  router.get("/:id", async (req, res) => {
     try {
-        const eventId = req.params.id;
-        if(!eventId){
-            Utils.requiredRequestBodyNotFound(res, "event", {event: {
-                param: id
+        const rawEventId = req.params.id;
+        if(!rawEventId){
+            return Utils.requiredRequestBodyNotFound(res, "event", {event: {
+                param: "id"
             }});
         }
+        if(Utils.isValidObjectId(rawEventId) === false){
+            return Utils.idNotValidBsonObjectId(res, "event", {event: {
+                param: "id"
+            }});
+        }
+        const eventId = rawEventId;
         const event = await Service.getSpecificEvent(eventId);
+        console.log(event)
         return res.status(200).json({
             message: "Obtained the specific event",
             success: true,
@@ -128,18 +141,33 @@ router.get("/all", async (req, res) => {
  */
  router.delete("/delete/:id", async (req, res) => {
     try {
-        const eventId = req.params.id;
-        if(!eventId){
-            Utils.requiredRequestParamNotFound(res, "event", {event: {
-                param: id
+        const rawEventId = req.params.id;
+        if(!rawEventId){
+            return Utils.requiredRequestBodyNotFound(res, "event", {event: {
+                param: "id"
             }});
         }
-        await Service.deleteEvent(eventId);
-        return res.status(200).json({
-            message: "Deleted the specific event",
-            success: true,
-            data: eventId,
-        });
+        if(Utils.isValidObjectId(rawEventId) === false){
+            return Utils.idNotValidBsonObjectId(res, "event", {event: {
+                param: "id"
+            }});
+        }
+        const eventId = rawEventId;
+        const result = await Service.deleteEvent(eventId);
+        if(result && result.deletedCount === 0){
+            return res.status(200).json({
+                message: "No matching records found",
+                success: true,
+                data: eventId,
+            });
+        }else{
+            return res.status(200).json({
+                message: "Deleted the specific event",
+                success: true,
+                data: eventId,
+            });
+        }
+        
     } catch (err) {
         console.log(err);
         return res.status(500).json({

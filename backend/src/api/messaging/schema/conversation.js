@@ -2,14 +2,11 @@ const mongoose = require("mongoose");
 
 const model = new mongoose.Schema({
     id: String,
-    status: {
-        type: Boolean,
-        default: Date.now,
-    },
+    status: String,
     users: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: "users",
+            ref: "User",
         },
     ],
     audit: {

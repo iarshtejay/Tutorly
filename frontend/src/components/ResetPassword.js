@@ -49,12 +49,26 @@ export default function ResetPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
-            // Sending alert once the form is submitted
-            // alert("Account created successfully! Please verify your email and then login!");
-            //navigate('/profile', {state:values});
-            // window.location.reload(); // Reloading Page
-            navigate("/login");
+            fetch(`http://localhost:8000/api/user/resetPassword`, {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                    otp:values.otp,
+                    password:values.password
+                })
+            }).then(async (response) => {
+                const body = await response.json();
+                if (response.status === 200) {
+                    alert(body.message)
+                    navigate('/login', { state: values })
+                } else {
+                    alert(body.message)
+                }
+            })
         },
     });
 

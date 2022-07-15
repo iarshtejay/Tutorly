@@ -18,7 +18,7 @@ const ContactList = () => {
   const isSearchPerformed = searchKey.length !== 0;
 
   useEffect(() => {
-    dispatch(fetchContactList());
+    dispatch(fetchContactList(JSON.parse(localStorage.getItem("user")).id));
   }, [dispatch]);
 
   const onSelectedHandler = (id) => {

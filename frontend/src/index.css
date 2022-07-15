@@ -19,3 +19,8 @@ code {
   font-family: "Roboto";
   src: url("./fonts/Roboto/Roboto-Regular.ttf") format("truetype"),
 }
+
+.MuiCard-root{
+  display: flex;
+  flex-direction: column;
+}

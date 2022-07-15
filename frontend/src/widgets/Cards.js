@@ -18,16 +18,16 @@ export default function TCard({ data, onSelect }) {
     >
       <CardMedia
         component="img"
-        width={200}
-        height={200}
+        width={512}
+        height={256}
         image={picture}
         alt={name}
       />
       <CardContent>
-        <Typography variant="h6" color="text.secondary">
+        <Typography variant="h4" color="text.secondary">
           {caption || name}
         </Typography>
-        <Typography fontStyle={"italic"} color="text.secondary">
+        <Typography mt={1} fontStyle={"italic"} color="text.secondary">
           {description}
         </Typography>
       </CardContent>

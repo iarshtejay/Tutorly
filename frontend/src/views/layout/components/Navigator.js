@@ -32,6 +32,7 @@ export default function Navigator(props) {
     const { ...other } = props;
 
     const navigate = useNavigate();
+    const currentUser = JSON.parse(localStorage.getItem("user"))
 
     const [categories, updateCategories] = useState([
         {
@@ -114,7 +115,23 @@ export default function Navigator(props) {
                 ))}
                 <ListItem
                     onClick={() => {
-                        navigate("/landing");
+                        fetch(`http://localhost:8000/api/user/logout/${currentUser.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                            })
+                        }).then(async (response) => {
+                            const body = await response.json();
+                            if (response.status === 200) {
+                                localStorage.removeItem("user");
+                                navigate('/landing')
+                            } else {
+                                alert(body.message)
+                            }
+                        })
                     }}
                     sx={{ ...item, ...itemCategory }}
                 >

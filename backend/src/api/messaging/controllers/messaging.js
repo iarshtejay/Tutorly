@@ -29,9 +29,9 @@ router.post("/", async (req, res) => {
         });
     }
 
-    const id = await postMessage(sender_user_id, receiver_user_id, conversation_id, message);
+    const response = await postMessage(sender_user_id, receiver_user_id, conversation_id, message);
 
-    return res.json({ id });
+    return res.json(response);
 });
 
 module.exports = router;
