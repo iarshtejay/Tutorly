@@ -36,6 +36,28 @@ export default function SignUp() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleCloseYes = () => {
+        fetch(`http://localhost:8000/api/user/delete/${currentUser.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            })
+        }).then(async (response) => {
+            const body = await response.json();
+            if (response.status === 200) {
+
+                localStorage.removeItem("user");
+                navigate('/landing', { state: values })
+                alert(body.message)
+            } else {
+                alert(body.message)
+            }
+        })
+    };
    
     // Defining form validation 
     const validationSchema = yup.object({
@@ -209,7 +231,7 @@ export default function SignUp() {
                                                 </DialogContent>
                                                 <DialogActions>
                                                     <Button onClick={handleClose}>No</Button>
-                                                    <Button onClick={handleClose} autoFocus>
+                                                    <Button onClick={handleCloseYes} autoFocus>
                                                         Yes
                                                     </Button>
                                                 </DialogActions>
