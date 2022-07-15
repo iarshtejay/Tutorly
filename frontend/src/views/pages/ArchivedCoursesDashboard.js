@@ -14,9 +14,10 @@ export default function ArchivedCoursesDashboard() {
     const allCourses =  useSelector(state => state.course.archivedCourses);
     const showCourses = useSelector(state => state.course.searchArchivedCourses);
     const [searchTerm, setSearchTerm] = useState("");
+    const user=JSON.parse(localStorage.getItem("user"))
 
     useEffect(() => {
-        dispatch(getArchivedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+        dispatch(getArchivedCourses({ isTutor: false, studentId: user?.student?._id ||"62cd82d3330b4e2f98aca2f7" }));
     }, [dispatch]);
 
     const handleSearch = (value) => {
@@ -39,7 +40,7 @@ export default function ArchivedCoursesDashboard() {
             });
             dispatch(updateArchivedCourses(selectedCourses));
         } else {
-            dispatch(getArchivedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+            dispatch(getArchivedCourses({ isTutor: false, studentId: user?.student?._id || "62cd82d3330b4e2f98aca2f7" }));
         }
     }, [searchTerm]);
 

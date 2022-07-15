@@ -19,6 +19,8 @@ function THomeHeader(props) {
     const [chosenTab, setChosenTab] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
+    const isTutor = localStorage.getItem("user")?.includes("tutor");
+    const user = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
         const route_path = location.pathname.split("/");
@@ -84,7 +86,7 @@ function THomeHeader(props) {
                         </Grid>
                         <Grid item xs>
                             <Typography color="inherit" variant="h6" component="h1">
-                                Welcome,{JSON.parse(localStorage.getItem("user")).firstName}!
+                                Welcome, {user?.firstName || "John"} {user?.lastName || "Doe"}
                             </Typography>
                         </Grid>
                         <Grid item xs />
@@ -107,9 +109,9 @@ function THomeHeader(props) {
                 <Tabs value={chosenTab} textColor="inherit">
                     <Tab label="Home" onClick={handleHomeTabClick} />
                     <Tab label="My Courses" onClick={handleMyCoursesTabClick} />
-                    <Tab label="Archived Courses" onClick={handleArchivedCoursesTabClick} />
-                    <Tab label="Recommended Courses" onClick={handleRecommendedCoursesTabClick} />
-                    <Tab label="Recommended Tutors" onClick={handleRecommendedTutorsTabClick} />
+                    {isTutor===false && <Tab label="Archived Courses" onClick={handleArchivedCoursesTabClick} />}
+                    {isTutor===false && <Tab label="Recommended Courses" onClick={handleRecommendedCoursesTabClick} />}
+                    {isTutor===false && <Tab label="Recommended Tutors" onClick={handleRecommendedTutorsTabClick} />}
                 </Tabs>
             </AppBar>
         </>
