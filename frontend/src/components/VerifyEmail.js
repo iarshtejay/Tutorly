@@ -36,7 +36,7 @@ export default function SignUp() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             console.log(values);
-            fetch(`${process.env.BACKEND_BASE_URL}/user/verifyEmail`, {
+            fetch(`http://localhost:8000/api/user/verifyEmail`, {
                 method: 'POST',
                 headers: {
                 Accept: 'application/json',
