@@ -1,8 +1,9 @@
 /**
  * @author Harsh Shah
  */
-import { Box, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { grey, red } from "@mui/material/colors";
 import { useEffect, useRef } from "react";
 import { theme } from "../../../theme/theme";
 
@@ -45,6 +46,8 @@ export const ChatMessages = ({ messages }) => {
             {messages.map((item) => (
                 <Box key={item.id} display={"flex"} flexDirection={"column"} my={1} mr={item.sender_user_id === logged_in_user ? 1 : 0} alignItems={item.sender_user_id === logged_in_user ? "end" : "start"} key={item.id}>
                     <Typography
+                        flexGrow={1}
+                        display={"inline-block"}
                         maxWidth={"45%"}
                         bgcolor={item.sender_user_id === logged_in_user ? theme.palette.primary.main : theme.palette.secondary.main}
                         color={"white"}
@@ -58,8 +61,10 @@ export const ChatMessages = ({ messages }) => {
                             hyphens: "auto",
                         }}
                     >
+                        {item.is_important && <PriorityHighIcon sx={{ color: red[700], verticalAlign: "middle" }} />}
                         {item.message}
                     </Typography>
+
                     <Typography maxWidth={"45%"} color={grey[500]} variant={"span"} fontSize={"0.7rem"} mx={"5px"} mt={"2px"}>
                         {`${new Date(item.timestamp).toLocaleDateString()} - ${new Date(item.timestamp).toLocaleTimeString()}`}
                     </Typography>

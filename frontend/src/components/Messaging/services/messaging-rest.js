@@ -28,7 +28,7 @@ export const checkForNewMessage = createAsyncThunk("messages/new-chat", async (c
 });
 
 export const sendChatMessage = createAsyncThunk("messages/post", async (payload, thunkAPI) => {
-    const { message, conversation_id, sender_user_id, other_person } = payload;
+    const { message, conversation_id, sender_user_id, other_person, is_important } = payload;
 
     const receiver_user_id = other_person.user_id;
 
@@ -36,6 +36,7 @@ export const sendChatMessage = createAsyncThunk("messages/post", async (payload,
         sender_user_id,
         receiver_user_id,
         conversation_id,
+        is_important,
         message,
     });
 
