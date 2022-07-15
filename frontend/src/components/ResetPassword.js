@@ -49,7 +49,7 @@ export default function ResetPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`${process.env.BACKEND_BASE_URL}/user/resetPassword`, {
+            fetch(`http://localhost:8000/api/user/resetPassword`, {
                 method: 'PUT',
                 headers: {
                     Accept: 'application/json',

@@ -41,7 +41,7 @@ export default function Login() {
         onSubmit: async (values) => {
             const email = values.email
             const password = values.password
-            fetch(`${process.env.BACKEND_BASE_URL}/user/login`, {
+            fetch(`http://localhost:8000/api/user/login`, {
                 method: 'POSt',
                 headers: {
                     Accept: 'application/json',

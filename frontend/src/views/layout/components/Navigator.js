@@ -115,7 +115,7 @@ export default function Navigator(props) {
                 ))}
                 <ListItem
                     onClick={() => {
-                        fetch(`${process.env.BACKEND_BASE_URL}/user/logout/${currentUser.id}`, {
+                        fetch(`http://localhost:8000/api/user/logout/${currentUser.id}`, {
                             method: 'PUT',
                             headers: {
                                 Accept: 'application/json',
