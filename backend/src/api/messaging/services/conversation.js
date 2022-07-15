@@ -115,4 +115,22 @@ const getUserConversations = async (userId) => {
     });
 };
 
-module.exports = { createConversation, getUserConversations, getPendingConversationRequest, actionOnConversationRequest };
+
+const deleteConversation = async (conversation_id) => {
+    
+    console.log(conversation_id)
+
+    if (!isValidObjectId(conversation_id)) {
+        return false;
+    }
+
+    await Conversation.deleteOne({
+            _id: ObjectId(conversation_id),
+        });
+
+    return true;
+};
+
+
+module.exports = { createConversation, getUserConversations, 
+    getPendingConversationRequest, actionOnConversationRequest, deleteConversation };

@@ -28,6 +28,10 @@ const ContactList = () => {
     dispatch(setActiveChat(id));
   };
 
+  const onDeleteHandler = (id) => {
+    
+  }
+
   const onChangeHandler = (key) => {
     setSearchKey(key);
   };
@@ -49,7 +53,7 @@ const ContactList = () => {
         {isFetching ? (
           <Loader />
         ) : (
-          <ItemList list={contacts} onSelect={onSelectedHandler} />
+          <ItemList list={contacts} onSelect={onSelectedHandler} onDelete={onDeleteHandler} />
         )}
       </Box>
     </Box>

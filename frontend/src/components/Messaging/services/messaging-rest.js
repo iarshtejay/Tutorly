@@ -3,7 +3,6 @@
  */
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../../lib/httpClient";
-import { openSocket, sendEvent } from "../../../socket";
 import { postMessage } from "../slice/MessageSlice";
 
 // dispatch(addToContactList({userId1, userId2}))
@@ -41,6 +40,11 @@ export const sendChatMessage = createAsyncThunk("messages/post", async (payload,
     });
 
     thunkAPI.dispatch(postMessage(response.data));
+});
 
-    sendEvent("new-message", response.data);
+
+export const deleteConversation = createAsyncThunk("messages/delete-contact", async (payload, thunkAPI) => {
+   
+
+
 });
