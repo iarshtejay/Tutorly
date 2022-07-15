@@ -7,7 +7,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 
-const QuizQuestion = ({ question }) => {
+const QuizQuestion = ({ question, type = "display", setAnswer }) => {
+    const getAnswer = () => {
+        return question.options.find((option) => option.isCorrect).option;
+    };
     return (
         <>
             <Grid item xs={12}>
@@ -17,11 +20,20 @@ const QuizQuestion = ({ question }) => {
             <Grid item xs={12}>
                 <FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">Your Answer</FormLabel>
-                    <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group">
-                        <FormControlLabel checked={question.options[0].isCorrect} value={question.options[0].option} control={<Radio />} label={question.options[0].option} />
-                        <FormControlLabel checked={question.options[1].isCorrect} value={question.options[1].option} control={<Radio />} label={question.options[1].option} />
-                        <FormControlLabel checked={question.options[2].isCorrect} value={question.options[2].option} control={<Radio />} label={question.options[2].option} />
-                        <FormControlLabel checked={question.options[3].isCorrect} value={question.options[3].option} control={<Radio />} label={question.options[3].option} />
+                    <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        defaultValue={type === "display" ? getAnswer : undefined}
+                        name="radio-buttons-group"
+                        onChange={(e) => {
+                            if (type === "attempt") {
+                                setAnswer(question.id, e.target.value);
+                            }
+                        }}
+                    >
+                        <FormControlLabel value={question.options[0].option} control={<Radio />} label={question.options[0].option} />
+                        <FormControlLabel value={question.options[1].option} control={<Radio />} label={question.options[1].option} />
+                        <FormControlLabel value={question.options[2].option} control={<Radio />} label={question.options[2].option} />
+                        <FormControlLabel value={question.options[3].option} control={<Radio />} label={question.options[3].option} />
                     </RadioGroup>
                 </FormControl>
             </Grid>

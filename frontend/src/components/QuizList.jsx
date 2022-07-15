@@ -33,23 +33,55 @@ const QuizList = () => {
     // const courseId = useParams().id;
     const courseId = `62ca26bd2838cca760fed1ef`;
 
-    const [userType, setUserType] = useState("tutor");
-    const [userId, setUserId] = useState("");
+    const studentId = `62ca2f7a4f3727bc5d9a3e98`;
+
+    const [userType, setUserType] = useState("student");
     const [quizzes, setQuizzes] = useState([]);
 
     const getQuizzes = async () => {
-        const response = await axios({
-            method: "GET",
-            url: `${rootDomain}/api/course/${courseId}/quiz/list`,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        if (userType === "tutor") {
+            const response = await axios({
+                method: "GET",
+                url: `${rootDomain}/api/course/${courseId}/quiz/list`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
-        if (response.data && response.data.data && response.data.data.length > 0) {
-            return response.data.data;
+            if (response.data && response.data.data && response.data.data.length > 0) {
+                return response.data.data;
+            } else {
+                return [];
+            }
         } else {
-            return [];
+            const response = await axios({
+                method: "GET",
+                url: `${rootDomain}/api/course/${courseId}/quiz/list/${studentId}`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.data && response.data.data && response.data.data.length > 0) {
+                return response.data.data;
+            } else {
+                return [];
+            }
+        }
+    };
+
+    const checkIfQuizIsActive = (quiz) => {
+        if (userType === "tutor") {
+            return true;
+        } else {
+            const now = moment();
+            const startDate = moment(quiz.startDate);
+            const endDate = moment(quiz.endDate);
+            if (now.isAfter(startDate) && now.isBefore(endDate)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
 
@@ -62,18 +94,20 @@ const QuizList = () => {
     return (
         <>
             <Container fixed>
-                <Box>
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        onClick={(e) => {
-                            const id = location.pathname.split("/")[2];
-                            navigate(`/courses/${id}/quiz/new`);
-                        }}
-                    >
-                        New Quiz
-                    </Button>
-                </Box>
+                {userType === "tutor" && (
+                    <Box>
+                        <Button
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            onClick={(e) => {
+                                const id = location.pathname.split("/")[2];
+                                navigate(`/courses/${id}/quiz/new`);
+                            }}
+                        >
+                            New Quiz
+                        </Button>
+                    </Box>
+                )}
                 <Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
@@ -92,10 +126,16 @@ const QuizList = () => {
                                                 key={quiz._id}
                                                 secondaryAction={
                                                     <IconButton
+                                                        style={quiz.score ? { display: "none" } : {}}
+                                                        disabled={!checkIfQuizIsActive(quiz)}
                                                         aria-label="Start"
                                                         onClick={(e) => {
                                                             const id = location.pathname.split("/")[2];
-                                                            navigate(`/courses/${id}/quiz/${quiz._id}`);
+                                                            if (userType === "tutor") {
+                                                                navigate(`/courses/${id}/quiz/${quiz._id}`);
+                                                            } else {
+                                                                navigate(`/courses/${id}/quiz/${quiz._id}/attempt`);
+                                                            }
                                                         }}
                                                     >
                                                         <KeyboardArrowRightRoundedIcon />
@@ -106,6 +146,7 @@ const QuizList = () => {
                                                     <FolderIcon />
                                                 </ListItemIcon>
                                                 <ListItemText primary={quiz.title} secondary={`Available On ${moment(quiz.startDate).format("llll")} Until ${moment(quiz.endDate).format("llll")}`} />
+                                                {quiz.score && `${Math.round(quiz.score)}%`}
                                             </ListItem>
                                         ))}
                                     </List>
