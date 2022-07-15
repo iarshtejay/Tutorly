@@ -21,6 +21,7 @@ const url = process.env.REACT_APP_DOMAIN;;
 
 export default function Login() {
     const navigate = useNavigate();
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     // Defining form validation
     const validationSchema = yup.object({
         // Email is required and should be in proper format
@@ -41,7 +42,7 @@ export default function Login() {
         onSubmit: async (values) => {
             const email = values.email
             const password = values.password
-            fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/user/login`, {
+            fetch(`${rootDomain}/user/login`, {
                 method: 'POSt',
                 headers: {
                     Accept: 'application/json',
