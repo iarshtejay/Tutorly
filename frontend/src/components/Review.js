@@ -1,3 +1,4 @@
+// Author: Created By: Dhairya Shah
 import React, {useEffect, useReducer, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -5,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Container, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardActions, CardContent, Link, Rating, Box } from '@mui/material';
 import axios from "axios";
+import { useParams } from 'react-router';
 
 const formReducer = (state, event) => {
     if(event.reset) {
@@ -19,16 +21,17 @@ const formReducer = (state, event) => {
     }
 }
 
-const courseId = "12kjfdbhj67jh";
+
 const root = process.env.REACT_APP_DOMAIN;
 
 const username = JSON.parse(localStorage.getItem("user")).firstName;
+let courseId;
 const getFeedback = async () => {
-
+    
     const responseData = await axios({
         method: "GET",
         params: {
-            id: userId,
+            id: username,
             id1: courseId
         },
         url: `${root}/api/feedback/user/course/${username}/${courseId}`,
@@ -36,6 +39,7 @@ const getFeedback = async () => {
             "Content-Type": "application/json",
         },
     })
+    
     console.log("All feedbacks: ", responseData.data.data);
     
     return responseData.data.data;
@@ -44,7 +48,8 @@ const getFeedback = async () => {
 
 
 export default function Review() {
-    
+    courseId = useParams().id;
+    console.log("PARAM: ", useParams().id);
 
     const [feedbacks, setFeedbacks] = useState([]);
 
@@ -77,8 +82,8 @@ export default function Review() {
     }
 
     
-const [ratingValue, setValue] = useState();
-
+    const [ratingValue, setValue] = useState();
+    
     const [feedback, setFeedback] = useState({
         courseId: courseId,
         userId: username,
