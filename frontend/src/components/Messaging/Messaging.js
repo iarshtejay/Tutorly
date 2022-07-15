@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { Grid } from "@mui/material";
 import ChatArea from "./chat-area/ChatArea";
 import ContactList from "./contact-list/ContactList";

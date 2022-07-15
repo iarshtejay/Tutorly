@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import ChatIcon from "@mui/icons-material/Chat";
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
