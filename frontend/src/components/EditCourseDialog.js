@@ -24,6 +24,7 @@ export default function EditCourseDialog({ courseId }) {
     const [open, setOpen] = useState(false);
     const [editStatus, setEditStatus] = useState("initiate");
     const dispatch = useDispatch();
+    const tutor = JSON.parse(localStorage.getItem("tutor"));
 
     const allCourses = useSelector(state => state.course.allCourses).data;
     const currentCourse = allCourses.filter(course_ => course_._id === courseId)[0]
@@ -36,9 +37,15 @@ export default function EditCourseDialog({ courseId }) {
         ...currentCourseDetails
     });
 
-    //const isCourseCompleted = endDate > (new Date())?true:false;
-    const isCourseCompleted = false;
-    const isOwner = true; // Placeholder: check if current user is course owner
+    const isCourseCompleted = endDate > (new Date())?true:false;
+    // Placeholder: check if current user is course owner
+    let isOwner;
+    try{
+        isOwner = tutor?.courses?.filter(course_ => course_.includes(courseId)).length>0?true:false; 
+    } catch (err){
+        isOwner = true;
+    }
+    
 
     const handleClickOpen = () => {
         setOpen(true);
