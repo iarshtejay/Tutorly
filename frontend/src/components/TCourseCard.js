@@ -42,16 +42,21 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
                         {tutorName? tutorName.substring(0,1) : ""}
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
                 title={courseName}
                 subheader={tutorName}
+                style={{
+                    height: "100px"
+                }}
             />
-            <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" />
-            <CardContent>
+            <CardMedia component="img" height="194" image={imageURL} alt="Paella dish" style={{
+                    width: "auto",
+                    maxHeight: "200px",
+                    objectFit: "contain",
+                    background: "#F1F1F1"
+                  }}/>
+            <CardContent style={{
+                height: "150px"
+            }}>
                 <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
@@ -62,16 +67,6 @@ export default function TCourseCard({ courseId, courseName, tutorName, descripti
             {showProgress && <BorderLinearProgress style={{ marginTop: 15, marginLeft: 15, marginRight: 15 }} theme={theme} variant="determinate" value={progress?.$numberDecimal} />}
             <CardActions disableSpacing>
                 <Grid container spacing={1}>
-                    <Grid item xs={1.5}>
-                        <IconButton aria-label="add to favorites">
-                            <FavoriteIcon style={{ color: favorite ? "#009688" : "grey" }} onClick={handleFavoriteClick} />
-                        </IconButton>
-                    </Grid>
-                    <Grid item xs={1.5}>
-                        <IconButton aria-label="share">
-                            <ShareIcon />
-                        </IconButton>
-                    </Grid>
                     <Grid item xs={3}>
                         <Button>
                             <Typography color="text.secondary" style={{ fontWeight: "bold" }}>
