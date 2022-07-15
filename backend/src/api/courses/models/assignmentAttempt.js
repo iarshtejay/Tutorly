@@ -1,3 +1,7 @@
+/*
+    Author: Parth Shah
+*/
+
 const mongoose = require("mongoose");
 
 const AssignmentAttempt = new mongoose.Schema({
