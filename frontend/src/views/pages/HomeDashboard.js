@@ -17,7 +17,7 @@ export default function HomeDashboard() {
     const [searchTerm, setSearchTerm] = useState("");
   
     useEffect(() => {
-      dispatch(getAllCourses({ isTutor: false }));
+      dispatch(getAllCourses({ isTutor: true }));
       dispatch(getAllTutors());
     }, [dispatch]);
 
@@ -40,7 +40,7 @@ export default function HomeDashboard() {
             });
             dispatch(updateSearchCourses(selectedCourses));
         } else {
-            dispatch(getAllCourses({ isTutor: false }));
+            dispatch(getAllCourses({ isTutor: true }));
         }
     }, [searchTerm]);
 

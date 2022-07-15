@@ -62,7 +62,7 @@ const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tut
     };
 
     useEffect(() => {
-        dispatch(getEnrolledCourses({ isTutor: false, studentId: user?.student?._id || "62ca2f7a4f3727bc5d9a3e98" }));
+        dispatch(getEnrolledCourses({ isTutor: isTutor, studentId: user?.tutor?._id || user?.student?._id || "62ca2f7a4f3727bc5d9a3e98" }));
     }, [dispatch, action]);
 
 
