@@ -30,10 +30,10 @@ const QuizQuestion = ({ question, type = "display", setAnswer }) => {
                             }
                         }}
                     >
-                        <FormControlLabel value={question.options[0].option} control={<Radio />} label={question.options[0].option} />
-                        <FormControlLabel value={question.options[1].option} control={<Radio />} label={question.options[1].option} />
-                        <FormControlLabel value={question.options[2].option} control={<Radio />} label={question.options[2].option} />
-                        <FormControlLabel value={question.options[3].option} control={<Radio />} label={question.options[3].option} />
+                        <FormControlLabel value={question.options[0].option} control={<Radio disabled={type === "display"} />} label={question.options[0].option} />
+                        <FormControlLabel value={question.options[1].option} control={<Radio disabled={type === "display"} />} label={question.options[1].option} />
+                        <FormControlLabel value={question.options[2].option} control={<Radio disabled={type === "display"} />} label={question.options[2].option} />
+                        <FormControlLabel value={question.options[3].option} control={<Radio disabled={type === "display"} />} label={question.options[3].option} />
                     </RadioGroup>
                 </FormControl>
             </Grid>

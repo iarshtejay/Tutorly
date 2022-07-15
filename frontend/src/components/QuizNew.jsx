@@ -27,8 +27,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-
-const rootDomain = "http://localhost:8000";
+import moment from "moment";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -38,13 +37,13 @@ const QuizNew = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // const courseId = useParams().id;
-    const courseId = `62ca26bd2838cca760fed1ef`;
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
+    const courseId = useParams().id;
 
     const [quiz, setQuiz] = useState({
         title: "",
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: moment().subtract(1, "days").toDate(),
+        endDate: moment().add(7, "days").toDate(),
         timeAllowed: 0,
         questions: [
             {
@@ -119,12 +118,12 @@ const QuizNew = () => {
         const emptyQuestions = quiz.questions.filter((question) => {
             return question.question === "" || question.options.some((option) => option.option === "");
         });
-        if (emptyQuestions.length > 0) {
+        if (emptyQuestions.length > 0 || quiz.title === "" || quiz.timeAllowed === 0) {
             handleClick();
         } else {
             await axios({
                 method: "PUT",
-                url: `${rootDomain}/api/course/${courseId}/quiz/new`,
+                url: `${rootDomain}/course/${courseId}/quiz/new`,
                 headers: {
                     "Content-Type": "application/json",
                 },

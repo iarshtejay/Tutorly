@@ -20,8 +20,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 
-const rootDomain = "http://localhost:8000";
-
 const Demo = styled("div")(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
@@ -29,20 +27,20 @@ const Demo = styled("div")(({ theme }) => ({
 const QuizList = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
 
-    // const courseId = useParams().id;
-    const courseId = `62ca26bd2838cca760fed1ef`;
+    const courseId = useParams().id;
+    const studentId = user.id;
 
-    const studentId = `62ca2f7a4f3727bc5d9a3e98`;
-
-    const [userType, setUserType] = useState("student");
+    const [userType, setUserType] = useState(user.role);
     const [quizzes, setQuizzes] = useState([]);
 
     const getQuizzes = async () => {
         if (userType === "tutor") {
             const response = await axios({
                 method: "GET",
-                url: `${rootDomain}/api/course/${courseId}/quiz/list`,
+                url: `${rootDomain}/course/${courseId}/quiz/list`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -56,7 +54,7 @@ const QuizList = () => {
         } else {
             const response = await axios({
                 method: "GET",
-                url: `${rootDomain}/api/course/${courseId}/quiz/list/${studentId}`,
+                url: `${rootDomain}/course/${courseId}/quiz/list/${studentId}`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -126,7 +124,7 @@ const QuizList = () => {
                                                 key={quiz._id}
                                                 secondaryAction={
                                                     <IconButton
-                                                        style={quiz.score ? { display: "none" } : {}}
+                                                        style={quiz.score !== undefined ? { display: "none" } : {}}
                                                         disabled={!checkIfQuizIsActive(quiz)}
                                                         aria-label="Start"
                                                         onClick={(e) => {
