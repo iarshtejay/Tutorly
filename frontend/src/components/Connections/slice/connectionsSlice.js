@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { createSlice, current } from "@reduxjs/toolkit";
 import { getPendingConversationRequest } from "../services/connection-rest";
 
