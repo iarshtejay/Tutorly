@@ -31,7 +31,7 @@ import MyCoursesDashboard from "./views/pages/MyCoursesDashboard";
 import RecommendedCoursesDashboard from "./views/pages/RecommendedCoursesDashboard";
 import QuizAttempt from "./components/QuizAttempt";
 import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
-import VerifyEmail from "./components/VerifyEmail"
+import VerifyEmail from "./components/VerifyEmail";
 
 const AppRoutes = (props) => {
     return (
@@ -70,8 +70,8 @@ const AppRoutes = (props) => {
                     {/* <Route index path="quiz" element={<QuizList />} /> */}
                     <Route path=":id/quiz" element={<QuizList />} />
                     <Route path=":id/quiz/new" element={<QuizNew />} />
-                    <Route path=":id/quiz/:id/attempt" element={<QuizAttempt />} />
-                    <Route path=":id/quiz/:id" element={<Quiz />} />
+                    <Route path=":id/quiz/:quizId/attempt" element={<QuizAttempt />} />
+                    <Route path=":id/quiz/:quizId" element={<Quiz />} />
                     <Route path=":id/assignments" element={<AssignmentList />} />
                     <Route path=":id/leaderboard" element={<Board />} />
                     <Route path=":id/review" element={<Review />} />

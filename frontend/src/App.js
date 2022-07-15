@@ -6,14 +6,14 @@ import { store } from "./store";
 import { theme } from "./theme/theme";
 
 function App() {
-  return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppRoutes />
-      </ThemeProvider>
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <AppRoutes />
+            </ThemeProvider>
+        </Provider>
+    );
 }
 
 export default App;
