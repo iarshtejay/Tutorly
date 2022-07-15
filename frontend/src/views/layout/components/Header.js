@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 function Header({ tabs, onDrawerToggle }) {
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -38,7 +39,7 @@ function Header({ tabs, onDrawerToggle }) {
                         </Grid>
                         <Grid item xs>
                             <Typography color="inherit" variant="h6" component="h1">
-                            Welcome, John Doe!
+                                Welcome, {user?.firstName || "John"} {user?.lastName || "Doe"}
                             </Typography>
                         </Grid>
                         <Grid item xs />

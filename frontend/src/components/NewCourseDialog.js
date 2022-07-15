@@ -26,6 +26,7 @@ export default function NewCourseDialogue() {
     const [open, setOpen] = useState(false);
     const [registered, setRegistered] = useState(null);
     const [registerFailed, setRegisterFailed] = useState(null);
+    const user=JSON.parse(localStorage.getItem("user"))
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -33,7 +34,7 @@ export default function NewCourseDialogue() {
     const [details, setDetails] = useState({
         name: "",
         type: "",
-        tutor: "62cd523d5f8539afeb85aeaf", //Placeholder: Get from redux state
+        tutor:  user?.tutor?._id || "62cd523d5f8539afeb85aeaf",
         cost: 0,
         description: "",
         tags: [],

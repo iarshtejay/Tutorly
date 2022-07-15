@@ -1,5 +1,6 @@
 const Course = require("../models/course");
 const Student = require("../../students/models/student");
+const Tutor = require("../../tutors/models/tutor");
 
 const getAllCourses = async () => {
     return await Course.find({}).populate("tutor");
@@ -8,7 +9,15 @@ const getAllCourses = async () => {
 const createCourse = async (course) => {
     console.log(course);
     const course_ = await Course(course);
-    await course_.save();
+    const savedCourse = await course_.save();
+    try{
+        const tutor_ = await Tutor.findOne({ _id: course?.tutor });
+        tutor_.courses.push(savedCourse.id)
+        await tutor_.save();
+    } catch (err){
+        console.log(err)
+    }
+    ;
     return course_;
 };
 

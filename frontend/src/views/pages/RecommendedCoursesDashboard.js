@@ -14,9 +14,10 @@ export default function RecommendedCoursesDashboard() {
     const allCourses =  useSelector(state => state.course.recommendedCourses);
     const showCourses = useSelector(state => state.course.searchRecommendedCourses);
     const [searchTerm, setSearchTerm] = useState("");
+    const user=JSON.parse(localStorage.getItem("user"))
 
     useEffect(() => {
-        dispatch(getRecommendedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+        dispatch(getRecommendedCourses({ isTutor: false, studentId: user?.student?._id || "62cd82d3330b4e2f98aca2f7" }));
     }, [dispatch]);
 
     const handleSearch = (value) => {
@@ -38,7 +39,7 @@ export default function RecommendedCoursesDashboard() {
             });
             dispatch(updateRecommendedCourses(selectedCourses));
         } else {
-            dispatch(getRecommendedCourses({ isTutor: false, studentId: "62cd82d3330b4e2f98aca2f7" }));
+            dispatch(getRecommendedCourses({ isTutor: false, studentId: user?.student?._id || "62cd82d3330b4e2f98aca2f7" }));
         }
     }, [searchTerm]);
 
