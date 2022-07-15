@@ -16,7 +16,7 @@ import FormLabel from '@mui/material/FormLabel';
 import axios from 'axios';
 import io from 'socket.io-client';
 let socket = null;
-const url = "http://localhost:8000";
+const url = process.env.REACT_APP_DOMAIN;
 
 export default function AddNotification(props) {
 

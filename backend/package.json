@@ -5,7 +5,7 @@
     "description": "",
     "scripts": {
         "develop": "NODE_ENV=development nodemon index.js",
-        "serve": "node index.js"
+        "start": "NODE_ENV=production node index.js"
     },
     "dependencies": {
         "@google-cloud/storage": "^6.2.2",

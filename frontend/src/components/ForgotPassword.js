@@ -19,6 +19,7 @@ import { theme } from "../theme/theme";
 
 export default function ForgotPassword() {
     const navigate = useNavigate();
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     // Defining form validation
     const validationSchema = yup.object({
         // Email is required and should be in proper format
@@ -30,7 +31,7 @@ export default function ForgotPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`http://localhost:8000/api/user/sendotp`, {
+            fetch(`${rootDomain}/api/user/sendotp`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
