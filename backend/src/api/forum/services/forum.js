@@ -45,6 +45,8 @@ const getForums = async (user_id) => {
     return await Forum.find({
         course_id,
         status: "active",
-    }).lean();
+    })
+        .populate("course_id")
+        .lean();
 };
 module.exports = { createForum, getForums };
