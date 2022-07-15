@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 const { createForum, getForums } = require("../services/forum");
 
 const router = require("express").Router();

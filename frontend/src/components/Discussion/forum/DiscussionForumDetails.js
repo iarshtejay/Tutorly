@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { default as ExpandMore, default as ExpandMoreIcon } from "@mui/icons-material/ExpandMore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Avatar, Box, Card, CardActions, CardContent, CardHeader, Checkbox, Collapse, IconButton, Typography } from "@mui/material";

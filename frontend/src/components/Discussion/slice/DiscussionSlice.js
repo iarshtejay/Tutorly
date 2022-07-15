@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { faker } from "@faker-js/faker";
 import { createSlice, current } from "@reduxjs/toolkit";
 import { fetchCourseList, fetchForumPost, fetchPostDetails } from "../services/discussion-rest";

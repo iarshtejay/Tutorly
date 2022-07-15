@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { Grid } from "@mui/material";
 import ContactList from "./contact-list/ContactList";
 

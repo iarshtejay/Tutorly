@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 // Importing the required modules
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';

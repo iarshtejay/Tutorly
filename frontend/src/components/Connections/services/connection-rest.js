@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../../lib/httpClient";
 
