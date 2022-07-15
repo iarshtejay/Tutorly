@@ -51,7 +51,7 @@ export default function SignUp() {
             if (response.status === 200) {
 
                 localStorage.removeItem("user");
-                navigate('/landing', { state: values })
+                // navigate('/landing', { state: values })
                 alert(body.message)
             } else {
                 alert(body.message)
