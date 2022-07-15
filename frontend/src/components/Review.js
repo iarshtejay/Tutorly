@@ -184,7 +184,7 @@ export default function Review() {
                         <p>
                             <Divider variant="middle" style={{ marginTop: "1%", marginBottom: "1%" }}></Divider>
                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                {username}
+                                {feedback.userId}
                             </Typography>
                             <Rating value={feedback.rating} readOnly></Rating>
                             <Typography variant="subtitle2" gutterBottom component="div">
