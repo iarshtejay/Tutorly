@@ -84,7 +84,7 @@ function THomeHeader(props) {
                         </Grid>
                         <Grid item xs>
                             <Typography color="inherit" variant="h6" component="h1">
-                                Welcome, John Doe!
+                                Welcome,{JSON.parse(localStorage.getItem("user")).firstName}!
                             </Typography>
                         </Grid>
                         <Grid item xs />
@@ -97,7 +97,7 @@ function THomeHeader(props) {
                         </Grid>
                         <Grid item>
                             <IconButton color="inherit" sx={{ p: 0.5 }} onClick={() => navigate("/profile")}>
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                                <Avatar/>
                             </IconButton>
                         </Grid>
                     </Grid>

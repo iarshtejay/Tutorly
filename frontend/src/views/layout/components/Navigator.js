@@ -28,6 +28,8 @@ const itemCategory = {
     px: 3,
 };
 
+const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
+
 export default function Navigator(props) {
     const { ...other } = props;
 
@@ -115,7 +117,7 @@ export default function Navigator(props) {
                 ))}
                 <ListItem
                     onClick={() => {
-                        fetch(`http://localhost:8000/api/user/logout/${currentUser.id}`, {
+                        fetch(`${rootDomain}/user/logout/${currentUser.id}`, {
                             method: 'PUT',
                             headers: {
                                 Accept: 'application/json',
