@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 const mongoose = require("mongoose");
 
 const User = mongoose.model(
