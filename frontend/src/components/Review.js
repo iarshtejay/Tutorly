@@ -20,11 +20,9 @@ const formReducer = (state, event) => {
 }
 
 const courseId = "12kjfdbhj67jh";
-const userId = "qw67ertbj234n";
+const root = process.env.REACT_APP_DOMAIN;
 
-const root = "http://localhost:8000";
-
-
+const username = JSON.parse(localStorage.getItem("user")).firstName;
 const getFeedback = async () => {
 
     const responseData = await axios({
@@ -33,12 +31,13 @@ const getFeedback = async () => {
             id: userId,
             id1: courseId
         },
-        url: `${root}/api/feedback/user/course/${userId}/${courseId}`,
+        url: `${root}/api/feedback/user/course/${username}/${courseId}`,
         headers: {
             "Content-Type": "application/json",
         },
     })
     console.log("All feedbacks: ", responseData.data.data);
+    
     return responseData.data.data;
 }
 
@@ -82,7 +81,7 @@ const [ratingValue, setValue] = useState();
 
     const [feedback, setFeedback] = useState({
         courseId: courseId,
-        userId: userId,
+        userId: username,
         rating: "",
         feedback: "",
     });
@@ -184,7 +183,7 @@ const [ratingValue, setValue] = useState();
                 {feedbacks.map((feedback) => (
                     <p>
                     <Divider variant='middle' style={{marginTop: "1%", marginBottom: "1%"}}></Divider>
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Anna Mandyne</Typography>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{username}</Typography>
                         <Rating value={feedback.rating} readOnly></Rating>
                         <Typography variant="subtitle2" gutterBottom component="div">
                     <p>{feedback.feedback}</p>

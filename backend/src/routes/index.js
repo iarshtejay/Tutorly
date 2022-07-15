@@ -10,11 +10,8 @@ router.use('/student', require('../api/students/routes/routes'));
 router.use('/tutor', require('../api/tutors/routes/routes'));
 router.use('/learningpath', require('../api/learning-paths/routes/routes'));
 router.use('/event', require('../api/events/routes/routes'));
-<<<<<<< HEAD
 router.use('/feedback',require('../api/feedback/routes/routes'))
-=======
 router.use('/user',require('../api/userManagement/controllers/user'));
 router.use('/forum',require('../api/forum/controllers/forum'));
->>>>>>> 41b0d0cf9bd3dad7e333b58086c1eb9fe8829dfc
 
 module.exports = router;
