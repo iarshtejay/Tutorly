@@ -1,5 +1,5 @@
 const Conversation = require("../schema/conversation");
-const { createConversation, getUserConversations } = require("../services/conversation");
+const { createConversation, getUserConversations, getPendingConversationRequest, actionOnConversationRequest } = require("../services/conversation");
 
 const router = require("express").Router();
 
@@ -9,12 +9,53 @@ const router = require("express").Router();
  * @params req, res
  * @return conversations
  */
-router.get("/user/:id", async (req, res) => {
+router.get("/user/request", async (req, res) => {
+    const userId = req.query.user_id;
+    if (userId === undefined) {
+        return res.status(400).json({
+            message: "Some required fields are missing: [user_id]",
+        });
+    }
 
+    res.json(await getPendingConversationRequest(userId));
+});
+
+/**
+ * @author Harsh Shah
+ * @description
+ * @params req, res
+ * @return conversations
+ */
+router.post("/user/request", async (req, res) => {
+    const { conversation_id, status } = req.body;
+
+    if (conversation_id === undefined || status === undefined) {
+        return res.status(400).json({
+            message: "Some required fields are missing: [conversation_id, status]",
+        });
+    }
+
+    const response = await actionOnConversationRequest(conversation_id, status);
+
+    res.json({ status: response });
+});
+
+/**
+ * @author Harsh Shah
+ * @description
+ * @params req, res
+ * @return conversations
+ */
+router.get("/user/:id", async (req, res) => {
     const { id: userId } = req.params;
 
-    res.json(await getUserConversations(userId))
+    if (userId === undefined) {
+        return res.status(400).json({
+            message: "Some required fields are missing: [id]",
+        });
+    }
 
+    res.json(await getUserConversations(userId));
 });
 
 /**
@@ -25,16 +66,16 @@ router.get("/user/:id", async (req, res) => {
  */
 router.post("/", async (req, res) => {
     const { userId1, userId2 } = req.body;
-    
-    if(userId1 === undefined || userId2 === undefined){
+
+    if (userId1 === undefined || userId2 === undefined) {
         return res.status(400).json({
-            message: "Some required fields are missing: [userId1, userId2]"
-        })        
+            message: "Some required fields are missing: [userId1, userId2]",
+        });
     }
 
     const id = await createConversation(userId1, userId2);
 
-    return res.json({ id })
+    return res.json({ id });
 });
 
 module.exports = router;

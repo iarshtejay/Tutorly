@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessage } from "../services/messaging-rest";
 
 const ChatEditor = () => {
-    const { id: conversation_id, person: other_person} = useSelector(state => state.messages.activeChat)
+    const { id: conversation_id, person: other_person } = useSelector((state) => state.messages.activeChat);
     const [message, messageHandler] = useState("");
     const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const ChatEditor = () => {
             return;
         }
 
-        dispatch(sendChatMessage({conversation_id, other_person, message}));
+        dispatch(sendChatMessage({ conversation_id, other_person, message, sender_user_id: JSON.parse(localStorage.getItem("user")).id }));
         messageHandler("");
     };
 

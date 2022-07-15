@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "description": "",
     "scripts": {
-        "develop": "NODE_ENV=development nodemon index.js",
+        "develop": "nodemon index.js",
         "serve": "node index.js"
     },
     "dependencies": {

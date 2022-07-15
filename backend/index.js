@@ -48,11 +48,17 @@ const io = new Server(server, {
   });
   
   io.on("connection", (socket) => {
-      console.log(`User Connected: ${socket.id}`)
+      console.log(`Socket Connected: ${socket.id}`)
   
       socket.on("send_notification", (data) => {
           socket.broadcast.emit("receive_notification", data);
       });
+
+      socket.on("new-message", (data) => {
+        console.log(data)
+        socket.broadcast.emit("new-message", data);
+      });
+
   });
 
 db.on("connected", () => {

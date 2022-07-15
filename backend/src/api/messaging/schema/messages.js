@@ -9,11 +9,11 @@ const model = new mongoose.Schema({
     },
     sender_user_id: {
         type: mongoose.Schema.ObjectId,
-        ref: "users",
+        ref: "User",
     },
     receiver_user_id: {
         type: mongoose.Schema.ObjectId,
-        ref: "users",
+        ref: "User",
     },
     status: {
         type: String,

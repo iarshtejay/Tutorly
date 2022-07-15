@@ -11,8 +11,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import axios from 'axios';
-import io from 'socket.io-client';
-let socket = null;
+// import io from 'socket.io-client';
+// let socket = null;
 
 export default function AddNotification(props) {
 
@@ -25,24 +25,24 @@ export default function AddNotification(props) {
         const user = localStorage.getItem('user');
         const response = await axios.post(url, { user: user ? user : '110965', text: text, type: notificationType });
 
-        socket.emit("send_notification", {
-            notificationInfo: response?.data?.notification
-        });
+        // socket.emit("send_notification", {
+        //     notificationInfo: response?.data?.notification
+        // });
         props.updateNotificationsList(response?.data?.notification);
         props.handleClose();
     };
 
     React.useEffect(() => {
 
-        if (!socket) {
-            socket = io.connect("http://localhost:8000");
-            socket.on("receive_notification", (data) => {
-                props.setSendNotify(true);
-                props.setToastMsg(data.notificationInfo.text)
-                props.setHPosition("right")
-                props.setMsgType("info")
-            })
-        }
+        // if (!socket) {
+        //     socket = io.connect("http://localhost:8000");
+        //     socket.on("receive_notification", (data) => {
+        //         props.setSendNotify(true);
+        //         props.setToastMsg(data.notificationInfo.text)
+        //         props.setHPosition("right")
+        //         props.setMsgType("info")
+        //     })
+        // }
     }, [])
 
     const [text, setText] = React.useState();

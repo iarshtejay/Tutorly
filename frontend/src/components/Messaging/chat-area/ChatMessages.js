@@ -3,8 +3,8 @@ import { grey } from "@mui/material/colors";
 import { useEffect, useRef } from "react";
 import { theme } from "../../../theme/theme";
 
-const ChatMessages = ({ messages }) => {
-    const logged_in_user = "62c5fb01e9c61bd62f27743c";
+export const ChatMessages = ({ messages }) => {
+    const logged_in_user = JSON.parse(localStorage.getItem("user")).id;
 
     const isScrollNotAtBottom = (element) => {
         return element ? element.scrollHeight - Math.round(element.scrollTop) !== element.clientHeight : false;
@@ -40,7 +40,7 @@ const ChatMessages = ({ messages }) => {
             }}
         >
             {messages.map((item) => (
-                <Box display={"flex"} flexDirection={"column"} my={1} mr={item.sender_user_id === logged_in_user ? 1 : 0} alignItems={item.sender_user_id === logged_in_user ? "end" : "start"} key={item.id}>
+                <Box key={item.id} display={"flex"} flexDirection={"column"} my={1} mr={item.sender_user_id === logged_in_user ? 1 : 0} alignItems={item.sender_user_id === logged_in_user ? "end" : "start"} key={item.id}>
                     <Typography
                         maxWidth={"45%"}
                         bgcolor={item.sender_user_id === logged_in_user ? theme.palette.primary.main : theme.palette.secondary.main}
@@ -58,12 +58,10 @@ const ChatMessages = ({ messages }) => {
                         {item.message}
                     </Typography>
                     <Typography maxWidth={"45%"} color={grey[500]} variant={"span"} fontSize={"0.7rem"} mx={"5px"} mt={"2px"}>
-                        {item.timestamp}
+                        {`${new Date(item.timestamp).toLocaleDateString()} - ${new Date(item.timestamp).toLocaleTimeString()}`}
                     </Typography>
                 </Box>
             ))}
         </Box>
     );
 };
-
-export default ChatMessages;

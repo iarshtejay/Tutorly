@@ -1,6 +1,5 @@
-import { faker } from "@faker-js/faker";
 import { createSlice, current } from "@reduxjs/toolkit";
-import { fetchChats, fetchContactList } from "../services/messaging-rest";
+import { checkForNewMessage, fetchChats, fetchContactList } from "../services/messaging-rest";
 
 const initialState = {
     contacts: {
@@ -51,8 +50,10 @@ export const messageSlice = createSlice({
                 });
         },
         postMessage: (state, action) => {
-            state.chat.list.push(action.payload);
-        }
+            if (state.activeChat.id === action.payload.conversation_id) {
+                state.chat.list.push(action.payload);
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchContactList.fulfilled, (state, action) => {
@@ -69,6 +70,12 @@ export const messageSlice = createSlice({
         });
         builder.addCase(fetchChats.pending, (state) => {
             state.chat.isFetching = true;
+        });
+
+        builder.addCase(checkForNewMessage.fulfilled, (state, action) => {
+            if (current(state.chat.list).length !== action.payload.length) {
+                state.chat.list = action.payload;
+            }
         });
     },
 });
