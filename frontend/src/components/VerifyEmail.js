@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
     const navigate = useNavigate();
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     // Defining form validation
     const validationSchema = yup.object({
         // First name is required
@@ -36,7 +37,7 @@ export default function SignUp() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             console.log(values);
-            fetch(`http://localhost:8000/api/user/verifyEmail`, {
+            fetch(`${rootDomain}/user/verifyEmail`, {
                 method: 'POST',
                 headers: {
                 Accept: 'application/json',
