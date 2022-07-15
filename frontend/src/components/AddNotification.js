@@ -29,9 +29,9 @@ export default function AddNotification(props) {
         console.log(user.id)
         const response = await axios.post(url +"/api/notifications/", { user: user.id , text: text, type: notificationType });
 
-        socket.emit("send_notification", {
-            notificationInfo: response?.data?.notification
-        });
+        // socket.emit("send_notification", {
+        //     notificationInfo: response?.data?.notification
+        // });
         props.updateNotificationsList(response?.data?.notification);
         props.handleClose();
     };
