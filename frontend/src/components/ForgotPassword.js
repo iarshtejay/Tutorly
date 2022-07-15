@@ -30,11 +30,24 @@ export default function ForgotPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // Sending alert once the form is submitted
-            // alert("OTP has been sent to your email! Please verify your email and then login!");
-            //navigate('/profile', {state:values});
-            // window.location.reload(); // Reloading Page
-            navigate("/resetPassword");
+            fetch(`${process.env.BACKEND_BASE_URL}/user/sendotp`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: values.email
+                })
+            }).then(async (response) => {
+                const body = await response.json();
+                if (response.status === 200) {
+                    alert(body.message)
+                    navigate('/resetPassword', { state: values })
+                } else {
+                    alert(body.message)
+                }
+            })
         },
     });
 
