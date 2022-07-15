@@ -17,6 +17,7 @@ export default function MyCoursesDashboard() {
     const allCourses =  useSelector(state => state.course.enrolledCourses);
     const showCourses = useSelector(state => state.course.searchEnrolledCourses);
     const [searchTerm, setSearchTerm] = useState("");
+    const isTutor = localStorage.getItem("user")?.includes("tutor");
 
     useEffect(() => {
         dispatch(getEnrolledCourses({ isTutor: false, studentId: "62ca2f7a4f3727bc5d9a3e98" }));
@@ -54,7 +55,7 @@ export default function MyCoursesDashboard() {
                     <Grid container spacing={8}>
                         <Grid item xs={9} md={9} />
                         <Grid item xs={3} md={3}>
-                            <NewCourseDialog />
+                            {isTutor && <NewCourseDialog />}
                         </Grid>
                     </Grid>
                 </Box>

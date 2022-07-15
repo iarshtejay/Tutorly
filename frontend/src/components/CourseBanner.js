@@ -24,7 +24,8 @@ const CourseBanner = ({ courseImage, tutor, courseRating, courseDescription, tut
     const dispatch = useDispatch();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-    const isTutor = localStorage.getItem("isTutor") === 'true' ? true : false;
+    const isTutor = localStorage.getItem("user")?.includes("tutor");
+    console.log("isTutor", isTutor)
     
     const [isEnrolled, setIsEnrolled] = useState(initialEnrollStatus);
     const [action, setAction ] = useState(initialEnrollStatus === true ? "unenroll" : "enroll");

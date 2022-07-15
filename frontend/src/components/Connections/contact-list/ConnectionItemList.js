@@ -20,7 +20,7 @@ export default function ConnectionItemList({ list }) {
         dispatch(actionOnConversationRequest({ conversation_id, status }));
     };
 
-    const isTutor = localStorage.getItem("isTutor") === "true";
+    const isTutor = localStorage.getItem("user")?.includes("tutor");
 
     const colorShade = {
         pending: [blue[100], blue[900]],

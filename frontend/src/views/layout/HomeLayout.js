@@ -27,7 +27,7 @@ export default function HomeLayout() {
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   React.useEffect(()=> {
-    localStorage.setItem("isTutor", false);
+    //localStorage.setItem("isTutor", false);
   }, []);
 
   const handleDrawerToggle = () => {
