@@ -1,3 +1,7 @@
+/*
+    Author: Parth Shah
+*/
+
 const { Storage } = require("@google-cloud/storage");
 const { v4: uuidv4 } = require("uuid");
 const Assignment = require("../models/assignment");

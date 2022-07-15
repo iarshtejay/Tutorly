@@ -1,3 +1,7 @@
+/*
+    Author: Parth Shah
+*/
+
 const Quiz = require("../models/quiz");
 const QuizAttempt = require("../models/quizAttempt");
 
