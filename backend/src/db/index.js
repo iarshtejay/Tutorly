@@ -1,6 +1,7 @@
-require("dotenv").config();
+require("dotenv").config({ path: '.env.development' });
 const mongoose = require("mongoose");
 
+console.log("this is db uri",process.env.DATABASE_URI)
 mongoose.connect(process.env.DATABASE_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
