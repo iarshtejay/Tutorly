@@ -30,7 +30,7 @@ export default function ForgotPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`${process.env.BACKEND_BASE_URL}/user/sendotp`, {
+            fetch(`http://localhost:8000/api/user/sendotp`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

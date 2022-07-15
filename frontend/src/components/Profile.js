@@ -72,7 +72,7 @@ export default function SignUp() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`${process.env.BACKEND_BASE_URL}/user/updateProfile/${currentUser.id}`, {
+            fetch(`http://localhost:8000/api/user/updateProfile/${currentUser.id}`, {
                 method: 'PUT',
                 headers: {
                     Accept: 'application/json',

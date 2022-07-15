@@ -60,7 +60,7 @@ export default function SignUp() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            fetch(`${process.env.BACKEND_BASE_URL}/user/signup`, {
+            fetch(`http://localhost:8000/api/user/signup`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
