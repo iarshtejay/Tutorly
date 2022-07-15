@@ -118,9 +118,9 @@ function NotificationDialog(props) {
 
     React.useEffect(() => {
         const user=JSON.parse(localStorage.getItem("user"))
-        isTutorFromStore = user.role === "tutor" ? "true" : "false";
+        isTutorFromStore = user?.role === "tutor" ? "true" : "false";
 
-        SetIsTutor(user.role === "tutor");
+        SetIsTutor(user?.role === "tutor");
         getData();
         socket.on("receive_notification", (data) => {
             getData();
