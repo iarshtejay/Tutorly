@@ -27,7 +27,14 @@ const deleteTutor = async(id) => {
 }
 
 const getAllCoursesByTutor = async(id) => {
-    return (await Tutor.findOne({_id : id}))._doc;
+    return (await Tutor.findOne({_id : id}).populate({
+        path: 'courses',
+        model: 'Course',
+        populate: {
+            path: 'tutor',
+            model: 'Tutor'
+        }
+    }))._doc;
 }
 
 const recommendStudents = async (tutorId) => {

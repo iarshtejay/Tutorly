@@ -9,13 +9,13 @@ import { getEnrolledCourses } from "./services/courses-rest.js";
 import TutorCourseBanner from "../../components/TutorCourseBanner";
 
 export default function CourseDetails() {
-    const isTutor = localStorage.getItem('isTutor')
+    const isTutor = localStorage.getItem("user")?.includes("tutor");
     const { id } = useParams();
     const dispatch = useDispatch();
     const courseDetail =  useSelector(state => state.course.courseDetail);
   
     useEffect(() => {
-      dispatch(getCourseDetails({ isTutor: false, courseId: id }));
+      dispatch(getCourseDetails({ isTutor: true, courseId: id }));
     }, [dispatch]);
 
     const enrolledCourses = useSelector(state => state.course.enrolledCourses.data);

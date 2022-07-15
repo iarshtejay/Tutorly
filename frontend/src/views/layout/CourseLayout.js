@@ -23,7 +23,7 @@ export default function CourseLayout() {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
     React.useEffect(() => {
-        localStorage.setItem("isTutor", false);
+        //localStorage.setItem("isTutor", false);
     }, []);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
