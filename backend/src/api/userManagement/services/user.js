@@ -38,7 +38,7 @@ exports.signup = async (req, res) => {
 
     // Mapping role reference
     const userReference = await createRoleReferenceObject(req.body.roles, req.body.firstName, req.body.lastName);
-    
+
     console.log("userReference", userReference.id);
 
     let user_data = {
@@ -55,16 +55,16 @@ exports.signup = async (req, res) => {
     if (req.body.roles === "student") {
         user_data = {
             ...user_data,
-            student: userReference.id
-        }
+            student: userReference.id,
+        };
     } else if (req.body.roles === "tutor") {
         user_data = {
             ...user_data,
-            tutor: userReference.id
-        }
+            tutor: userReference.id,
+        };
     }
 
-    console.log('user_data', user_data);
+    console.log("user_data", user_data);
 
     let users = new db(user_data);
     users.save((err, user) => {
@@ -93,8 +93,8 @@ exports.login = async (req, res) => {
         .findOne({
             email: req.body.email,
         })
-        .populate('student')
-        .populate('tutor')
+        .populate("student")
+        .populate("tutor")
         .exec(async (err, user) => {
             if (err) {
                 return;

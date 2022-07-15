@@ -22,12 +22,12 @@ const User = mongoose.model(
             type: String,
         },
         tutor: {
-          type: mongoose.Schema.ObjectId,
-          ref: "Tutor",
+            type: mongoose.Schema.ObjectId,
+            ref: "Tutor",
         },
         student: {
-          type: mongoose.Schema.ObjectId,
-          ref: "Student",
+            type: mongoose.Schema.ObjectId,
+            ref: "Student",
         },
     })
 );
