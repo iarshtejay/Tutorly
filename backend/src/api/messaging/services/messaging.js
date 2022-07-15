@@ -11,11 +11,12 @@ const Messages = require("../schema/messages");
  * @params userId1, userId2
  * @return conversation Id
  */
-const postMessage = async (sender_user_id, receiver_user_id, conversation_id, message) => {
+const postMessage = async (sender_user_id, receiver_user_id, conversation_id, is_important, message) => {
     const response = (await new Messages({
         sender_user_id,
         receiver_user_id,
         conversation_id,
+        is_important,
         message,
     }).save()).toJSON();
 

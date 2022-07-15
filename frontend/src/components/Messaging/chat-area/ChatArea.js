@@ -24,14 +24,14 @@ const ChatArea = () => {
         }
     }, [dispatch, activeChat.id]);
 
-    useEffect(() => {
-        let id = setInterval(() => {
-            if (activeChat.id) {
-                dispatch(checkForNewMessage(activeChat.id));
-            }
-        }, 1500);
-        return () => clearInterval(id);
-    }, [dispatch, activeChat.id]);
+    // useEffect(() => {
+    //     let id = setInterval(() => {
+    //         if (activeChat.id) {
+    //             dispatch(checkForNewMessage(activeChat.id));
+    //         }
+    //     }, 2000);
+    //     return () => clearInterval(id);
+    // }, [dispatch, activeChat.id]);
 
     return (
         <Grid sx={{ height: "100%" }} container>
