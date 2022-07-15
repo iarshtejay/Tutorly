@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 const DiscussionForumEditor = () => {
     return (<> Works! </>)
 }

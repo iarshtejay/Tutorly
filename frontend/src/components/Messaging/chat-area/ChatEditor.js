@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import SendIcon from "@mui/icons-material/Send";
 import { Box, FormControl, IconButton, TextField, Typography } from "@mui/material";
 import { useState } from "react";

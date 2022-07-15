@@ -1,3 +1,6 @@
+/**
+ * @author Harsh Shah
+ */
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { Badge, Box, ListSubheader, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
