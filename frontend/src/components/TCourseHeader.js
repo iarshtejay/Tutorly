@@ -74,7 +74,7 @@ function TCourseHeader(props) {
                         </Grid>
                         <Grid item>
                             <IconButton color="inherit" sx={{ p: 0.5 }}>
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                                <Avatar  />
                             </IconButton>
                         </Grid>
                     </Grid>
