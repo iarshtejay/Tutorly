@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ItemList from "../../../widgets/ItemList";
 import Loader from "../../../widgets/Loader";
-import { fetchContactList } from "../services/messaging-rest";
+import { deleteConversation, fetchContactList } from "../services/messaging-rest";
 import { searchContact, setActiveChat } from "../slice/MessageSlice";
 import SearchBar from "./SearchBar";
 
@@ -27,6 +27,10 @@ const ContactList = () => {
   const onSelectedHandler = (id) => {
     dispatch(setActiveChat(id));
   };
+
+  const onDeleteHandler = (id) => {
+       dispatch(deleteConversation(id))
+  }
 
   const onChangeHandler = (key) => {
     setSearchKey(key);
@@ -49,7 +53,7 @@ const ContactList = () => {
         {isFetching ? (
           <Loader />
         ) : (
-          <ItemList list={contacts} onSelect={onSelectedHandler} />
+          <ItemList list={contacts} onSelect={onSelectedHandler} onDelete={onDeleteHandler} />
         )}
       </Box>
     </Box>

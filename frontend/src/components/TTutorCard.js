@@ -23,7 +23,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
     height: 10,
     borderRadius: 5,
 }));
-export default function TTutorCard({ tutorId, tutorName, description, rating, imageURL, courses, expertise}) {
+export default function TTutorCard({ tutorId, tutorName, description, rating, imageURL, courses, expertise }) {
     const [favorite, setFavorite] = React.useState(false);
     const dispatch = useDispatch();
     const [studentId, setStudentId] = React.useState("");
@@ -39,17 +39,17 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
     React.useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
         setStudentId(user?.tutor?._id || user?.student?._id);
-    }, [])
-    
+    }, []);
+
     const handleOnClick = () => {
         navigate(`/tutors/${tutorId}`);
     };
     return (
-        <Card sx={{ maxWidth: 350}}>
+        <Card sx={{ maxWidth: 350 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {tutorName? tutorName.substring(0,1) : ""}
+                        {tutorName ? tutorName.substring(0, 1) : ""}
                     </Avatar>
                 }
                 title={tutorName}
@@ -60,14 +60,14 @@ export default function TTutorCard({ tutorId, tutorName, description, rating, im
                 <Rating name="half-rating" defaultValue={rating?.$numberDecimal} precision={0.5} readOnly />
                 <br />
                 <Typography variant="body2" color="text.secondary">
-                    {description? description?.substring(0, 120) + "..." : ""}
+                    {description ? description?.substring(0, 120) + "..." : ""}
                 </Typography>
                 <br />
             </CardContent>
             <CardActions disableSpacing>
                 <Grid container spacing={1}>
                     <Grid item xs={3} style={{ textAlign: "right" }}>
-                        <Button onClick={dispatch(addToContactList({tutorId, studentId}))}>CHAT</Button>
+                        <Button onClick={() => dispatch(addToContactList({ userId1: tutorId, userId2: JSON.parse(localStorage.getItem("user")).id }))}>CHAT</Button>
                     </Grid>
                     <Grid item xs={9} style={{ textAlign: "right" }}>
                         <Button onClick={handleOnClick}>GO TO TUTOR PAGE</Button>
