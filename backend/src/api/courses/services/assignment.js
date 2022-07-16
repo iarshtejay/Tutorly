@@ -1,8 +1,13 @@
+/*
+    Author: Parth Shah
+*/
+
 const { Storage } = require("@google-cloud/storage");
 const { v4: uuidv4 } = require("uuid");
 const Assignment = require("../models/assignment");
 const AssignmentAttempt = require("../models/assignmentAttempt");
 
+// method to get the signed url for the assignment attachment
 const generateSignedUrlUpload = async () => {
     const id = uuidv4();
     const storage = new Storage();
@@ -22,15 +27,18 @@ const generateSignedUrlUpload = async () => {
     return { url, id };
 };
 
+// method to create a new assignment
 const createAssignment = async (assignment) => {
     const newAssignment = new Assignment(assignment);
     await newAssignment.save();
 };
 
+// method to delete an assignment
 const deleteAssignment = async (assignmentId) => {
     await Assignment.findByIdAndDelete(assignmentId);
 };
 
+// method to get assignments for a course
 const getAssignments = async (course) => {
     const assignments = await Assignment.find({ course }).lean();
     const storage = new Storage();
@@ -54,6 +62,7 @@ const getAssignments = async (course) => {
     return assignments;
 };
 
+// method to upload an assignment attempt
 const attemptAssignment = async (attempt) => {
     // prevent multiple attempts by the same student
     const existingAttempt = await AssignmentAttempt.findOne({
@@ -69,6 +78,7 @@ const attemptAssignment = async (attempt) => {
     await newAttempt.save();
 };
 
+// metohd to get the attempts for a student
 const getAttempts = async (assignmentId) => {
     const attempts = await AssignmentAttempt.find({ assignment: assignmentId }).lean();
     const storage = new Storage();
@@ -92,6 +102,7 @@ const getAttempts = async (assignmentId) => {
     return attempts;
 };
 
+// method to get the feedback for a student
 const submitFeedback = async (attemptId, feedback) => {
     const attempt = await AssignmentAttempt.findById(attemptId);
     if (!attempt) {
@@ -101,6 +112,7 @@ const submitFeedback = async (attemptId, feedback) => {
     await attempt.save();
 };
 
+// method to get attempts for a student
 const getStudentAttempts = async (courseId, studentId) => {
     const assignments = await Assignment.find({ course: courseId }).lean();
 

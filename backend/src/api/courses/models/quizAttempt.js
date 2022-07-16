@@ -1,5 +1,10 @@
+/*
+    Author: Parth Shah
+*/
+
 const mongoose = require("mongoose");
 
+// Define the schema for the assignment
 const QuizAttempt = new mongoose.Schema({
     quiz: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz" },
     student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
