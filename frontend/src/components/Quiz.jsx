@@ -44,6 +44,7 @@ const Quiz = () => {
 
     const [quiz, setQuiz] = useState({});
 
+    // The following method is used to get the quiz details from the server
     const getQuiz = async () => {
         const response = await axios({
             method: "GET",
@@ -55,6 +56,7 @@ const Quiz = () => {
         setQuiz(response.data.data);
     };
 
+    // The following method is used to delete the quiz from the server
     const deleteQuiz = async () => {
         await axios({
             method: "DELETE",

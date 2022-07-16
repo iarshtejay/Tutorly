@@ -53,6 +53,7 @@ const QuizAttempt = () => {
         answers: [],
     });
 
+    // The following method is used to get the quiz details from the server
     const getQuiz = async () => {
         const response = await axios({
             method: "GET",
@@ -64,6 +65,7 @@ const QuizAttempt = () => {
         setQuiz(response.data.data);
     };
 
+    // The following method is used to update the quiz state after the user changes an answer radio button
     const setAnswer = (questionId, attemptAnswer) => {
         // push to answers array, update if it already exists
         const currentAttemptState = attempt;
@@ -84,6 +86,7 @@ const QuizAttempt = () => {
         setAttempt(currentAttemptState);
     };
 
+    // The following method is used to submit the quiz attempt to the server
     const submitQuiz = async () => {
         await axios({
             method: "PUT",

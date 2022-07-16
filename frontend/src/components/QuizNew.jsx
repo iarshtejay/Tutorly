@@ -44,6 +44,7 @@ const QuizNew = () => {
     const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     const courseId = useParams().id;
 
+    // Declaring the quiz state
     const [quiz, setQuiz] = useState({
         title: "",
         startDate: moment().subtract(1, "days").toDate(),
@@ -75,6 +76,7 @@ const QuizNew = () => {
         ],
     });
 
+    // The following method is used to add a new question to the quiz state
     const addQuestion = () => {
         const newQuestions = [...quiz.questions];
         newQuestions.push({
@@ -101,6 +103,8 @@ const QuizNew = () => {
         });
         setQuiz({ ...quiz, questions: newQuestions });
     };
+
+    // The following method is used to update the quiz state on user input
     const updateField = (value, type, index, optionIndex = null) => {
         if (type === "question") {
             const currentQuestions = quiz.questions;
@@ -117,6 +121,7 @@ const QuizNew = () => {
         }
     };
 
+    // The following method is used to save the quiz state to the database
     const saveQuiz = async () => {
         // check if any questions or options are empty
         const emptyQuestions = quiz.questions.filter((question) => {

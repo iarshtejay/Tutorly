@@ -40,6 +40,7 @@ const QuizList = () => {
     const [userType, setUserType] = useState(user.role);
     const [quizzes, setQuizzes] = useState([]);
 
+    // The following method is used to get the quiz details from the server
     const getQuizzes = async () => {
         if (userType === "tutor") {
             const response = await axios({
@@ -72,6 +73,7 @@ const QuizList = () => {
         }
     };
 
+    // The following method is used to check if the quiz is already started
     const checkIfQuizIsActive = (quiz) => {
         if (userType === "tutor") {
             return true;

@@ -4,6 +4,7 @@
 
 const mongoose = require("mongoose");
 
+// Define the schema for the assignment
 const Assignment = new mongoose.Schema({
     course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
     title: { type: String, required: true },

@@ -5,25 +5,30 @@
 const Quiz = require("../models/quiz");
 const QuizAttempt = require("../models/quizAttempt");
 
+// method to create a new quiz
 const createQuiz = async (quiz) => {
     const newQuiz = new Quiz(quiz);
     await newQuiz.save();
 };
 
+// method to delete a quiz
 const deleteQuiz = async (quizId) => {
     await Quiz.findByIdAndDelete(quizId);
 };
 
+// method to get quizzes for a course
 const getAllQuizzes = async (course) => {
     const quizzes = await Quiz.find({ course });
     return quizzes;
 };
 
+// method to get a quiz by id
 const getQuiz = async (quizId) => {
     const quiz = await Quiz.findById(quizId);
     return quiz;
 };
 
+// method to update a quiz attempt
 const attemptQuiz = async (attempt) => {
     // prevent multiple attempts by the same student
     const existingAttempt = await QuizAttempt.findOne({
@@ -54,6 +59,7 @@ const attemptQuiz = async (attempt) => {
     return { score: attempt.score };
 };
 
+// method to get quiz attempts for a quiz
 const studentQuizzes = async (course, student) => {
     const quizzes = await Quiz.find({ course }).lean();
 
