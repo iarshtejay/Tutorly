@@ -1,3 +1,7 @@
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ */
+
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AppBar from "@mui/material/AppBar";
