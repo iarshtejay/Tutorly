@@ -18,6 +18,14 @@
 -   [Harsh Shah](harsh.shah@dal.ca) - _(Developer)_
 -   [Parth Shah](parthshahk@dal.ca) - _(Developer)_
 
+## Testing Credentials
+
+| Email  | Password | Role |
+| ------------- | ------------- | ------------- |
+| student1@gmail.com  | Password@1  | Student
+| tutor1@gmail.com  | Password@1  | Tutor |
+
+
 ## Deployment - GCP Cloud Run
 
 -   Hosted Frontend Url: [Tutorly-22](https://tutorly-gdhmctuboq-uc.a.run.app/landing)
