@@ -8,6 +8,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import React, { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function ItemList({ list, onSelect, onDelete }) {
     const [selectedId, updatedSelectedId] = useState(null);
@@ -18,8 +19,8 @@ export default function ItemList({ list, onSelect, onDelete }) {
     };
 
     const onDeleteItem = (id) => {
-      onDelete(id)
-    }
+        onDelete(id);
+    };
 
     return (
         <>
@@ -40,8 +41,15 @@ export default function ItemList({ list, onSelect, onDelete }) {
                                     alignItems="flex-start"
                                     onClick={() => onSelectItem(item.conversation_id)}
                                     secondaryAction={
-                                        <IconButton onClick={() => onDeleteItem(item.conversation_id)} variant="contained" color="error">
-                                           
+                                        <IconButton
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onDeleteItem(item.conversation_id);
+                                            }}
+                                            variant="contained"
+                                            color="error"
+                                        >
+                                            <DeleteIcon />
                                         </IconButton>
                                     }
                                 >

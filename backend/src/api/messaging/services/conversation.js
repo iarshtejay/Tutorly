@@ -48,6 +48,25 @@ const createConversation = async (userId1, userId2) => {
         userTwo = user2._id.toString()
     }
 
+    let exists = await Conversation.findOne({
+        users: [userOne, userTwo]
+    }).lean()
+
+    if(exists !== null){
+        return null
+    }
+
+    exists = await Conversation.findOne({
+        users: [userTwo, userOne]
+    })
+
+    if(exists !== null){
+        return null
+    }
+
+    console.log(exists)
+
+
     const response = await new Conversation({
         users: [userOne, userTwo],
         status: "pending",

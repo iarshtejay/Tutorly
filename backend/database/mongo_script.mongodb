@@ -29,4 +29,7 @@ db.conversations.insert({
 
 db.users.find({ tutor: ObjectId("62cd523d5f8539afeb85aeaf")})
 
-
+db.conversations.findOne({
+  users: [ObjectId("62c5fb01e9c61bd62f27743c"), 
+  ObjectId("62c5fb01e9c61bd62f27743d")]
+})
