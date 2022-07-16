@@ -1,3 +1,7 @@
+/**
+ * @author Arshdeep Singh
+ * @author Bharatwaaj Shankaranarayanan
+ */
 import React from "react";
 const CourseDetailsHeading = ({ title }) => {
     console.log("title", title)
