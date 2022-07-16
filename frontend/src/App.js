@@ -4,15 +4,20 @@ import { Provider } from "react-redux";
 import AppRoutes from "./app-router";
 import { store } from "./store";
 import { theme } from "./theme/theme";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     return (
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <AppRoutes />
-            </ThemeProvider>
-        </Provider>
+        <>
+            <ToastContainer />
+            <Provider store={store}>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <AppRoutes />
+                </ThemeProvider>
+            </Provider>
+        </>
     );
 }
 

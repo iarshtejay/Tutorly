@@ -2,7 +2,7 @@
  * @author Harsh Shah
  */
 const Conversation = require("../schema/conversation");
-const { createConversation, getUserConversations, getPendingConversationRequest, actionOnConversationRequest } = require("../services/conversation");
+const { createConversation, getUserConversations, getPendingConversationRequest, actionOnConversationRequest, deleteConversation } = require("../services/conversation");
 
 const router = require("express").Router();
 
@@ -79,6 +79,22 @@ router.post("/", async (req, res) => {
     const id = await createConversation(userId1, userId2);
 
     return res.json({ id });
+});
+
+router.delete("/", async (req, res) => {
+    const { conversation_id } = req.query;
+
+    console.log(conversation_id);
+
+    if (conversation_id === undefined) {
+        return res.status(400).json({
+            message: "Some required fields are missing: [conversation_id]",
+        });
+    }
+
+    const status = await deleteConversation(conversation_id);
+
+    return res.json({ status });
 });
 
 module.exports = router;

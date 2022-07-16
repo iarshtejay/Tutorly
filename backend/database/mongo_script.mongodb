@@ -16,3 +16,20 @@ db.users.insert({
   "confirmationCode": "abcd",
   "__v": 0
 })
+
+
+db.conversations.insert({
+  "_id": ObjectId("62d0d453cbc2a887368cba71"),
+  "users": [
+    ObjectId("62c5fb01e9c61bd62f27743c"),
+     ObjectId("62d0d3a269e8bc03586e4571")
+  ]
+})
+
+
+db.users.find({ tutor: ObjectId("62cd523d5f8539afeb85aeaf")})
+
+db.conversations.findOne({
+  users: [ObjectId("62c5fb01e9c61bd62f27743c"), 
+  ObjectId("62c5fb01e9c61bd62f27743d")]
+})
