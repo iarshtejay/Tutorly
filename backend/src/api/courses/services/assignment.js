@@ -19,7 +19,7 @@ const generateSignedUrlUpload = async () => {
         version: "v4",
         action: "write",
         expires: Date.now() + 1000 * 60 * 60, // one hour
-        contentType: "application/pdf",
+        contentType: "application/octet-stream",
     };
 
     const [url] = await file.getSignedUrl(options);
