@@ -1,3 +1,7 @@
+/**
+ * @author Arshdeep Singh
+ */
+
 import React from "react";
 import CourseDescription from "./CourseDescription";
 import useMediaQuery from "@mui/material/useMediaQuery";

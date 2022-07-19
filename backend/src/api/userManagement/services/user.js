@@ -103,6 +103,12 @@ exports.login = async (req, res) => {
             if (err) {
                 return;
             }
+            if (user.status==="Pending") {
+                return res.status(500).json({
+                    message: "Please verify your email first",
+                    success: false,
+                });
+            }
             if (!user) {
                 return res.status(404).json({
                     message: "User Not Found",

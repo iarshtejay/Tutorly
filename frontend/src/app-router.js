@@ -33,6 +33,8 @@ import QuizAttempt from "./components/QuizAttempt";
 import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard";
 import VerifyEmail from "./components/VerifyEmail";
 import { Connections } from "./components/Connections/Connections";
+import AssignmentNew from "./components/AssignmentNew";
+import AssignmentSubmissions from "./components/AssignmentSubmissions";
 
 const AppRoutes = (props) => {
     return (
@@ -62,9 +64,8 @@ const AppRoutes = (props) => {
                     <Route path="discussion" element={<DiscussionLayout />}>
                         <Route index element={<CourseSelector />} />
                         <Route path="courses" element={<CourseSelector />} />
-                        <Route path="forum" element={<DiscussionForum />} />
-                        <Route path="forum/editor" element={<DiscussionForumEditor />} />
-                        <Route path="forum/:id" element={<DiscussionForumDetails />} />
+                        <Route path="forums/posts" element={<DiscussionForum />} />
+                        <Route path="forums/posts/:id" element={<DiscussionForumDetails />} />
                     </Route>
                 </Route>
                 <Route path="courses" element={<CourseLayout />}>
@@ -75,6 +76,8 @@ const AppRoutes = (props) => {
                     <Route path=":id/quiz/:quizId/attempt" element={<QuizAttempt />} />
                     <Route path=":id/quiz/:quizId" element={<Quiz />} />
                     <Route path=":id/assignments" element={<AssignmentList />} />
+                    <Route path=":id/assignments/new" element={<AssignmentNew />} />
+                    <Route path=":id/assignments/:assId/submissions" element={<AssignmentSubmissions />} />
                     <Route path=":id/leaderboard" element={<Board />} />
                     <Route path=":id/review" element={<Review />} />
                 </Route>

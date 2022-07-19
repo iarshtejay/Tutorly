@@ -86,11 +86,11 @@ export const discussionSlice = createSlice({
 
         builder.addCase(fetchPostDetails.fulfilled, (state, action) => {
             state.postDetails.details = action.payload.data;
-            state.postDetails.responses = action.payload.responses;
-            state.posts.isFetching = false;
+            state.postDetails.responses = action.payload.data.responses || [];
+            state.postDetails.isFetching = false;
         });
         builder.addCase(fetchPostDetails.pending, (state) => {
-            state.posts.isFetching = true;
+            state.postDetails.isFetching = true;
         });
     },
 });

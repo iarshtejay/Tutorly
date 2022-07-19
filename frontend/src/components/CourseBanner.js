@@ -1,3 +1,8 @@
+/**
+ * @author Arshdeep Singh
+ * @author Bharatwaaj Shankaranarayanan
+ */
+
 import React from "react";
 import CourseDescription from "./CourseDescription";
 import useMediaQuery from "@mui/material/useMediaQuery";

@@ -2,13 +2,13 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { useState } from "react";
 import { Form, FormikProvider, useFormik } from "formik";
 import { toast } from "react-toastify";
-import { createForumPost } from "../services/discussion-rest";
+import { createForumPost, createPostResponse, updateForumPost } from "../services/discussion-rest";
 import { useDispatch } from "react-redux";
 
 /**
  * @author Harsh Shah
  */
-const DiscussionForumEditor = ({ open, forum_id, onClose }) => {
+const DiscussionForumResponseEditor = ({ open, post_id, onClose, editable, values }) => {
     const [isOpen, setOpen] = useState(open);
 
     const dispatch = useDispatch();
@@ -18,8 +18,8 @@ const DiscussionForumEditor = ({ open, forum_id, onClose }) => {
     };
 
     const initialValues = {
-        title: "",
-        message: "",
+        title: editable ? values.title : "",
+        message: editable ? values.message : "",
     };
 
     const formik = useFormik({
@@ -30,12 +30,17 @@ const DiscussionForumEditor = ({ open, forum_id, onClose }) => {
 
                 const payload = {
                     user_id: JSON.parse(localStorage.getItem("user")).id,
-                    forum_id,
+                    post_id,
                     title,
                     message,
                 };
 
-                dispatch(createForumPost(payload));
+                if(editable){
+                    dispatch(updateForumPost(payload));
+                } else {
+                    dispatch(createPostResponse(payload));
+                }
+
                 onClose();
             } catch (error) {
                 toast.error(error.message);
@@ -48,11 +53,11 @@ const DiscussionForumEditor = ({ open, forum_id, onClose }) => {
 
     return (
         <Dialog open={isOpen} onClose={handleClose} fullWidth>
-            <DialogTitle>Create Post </DialogTitle>
+            <DialogTitle>{editable ? "Edit Post" : "Add Response"}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     <Typography variant="p" fontWeight={"bold"}>
-                        Enter below details to create a post{" "}
+                        Enter below details to add response
                     </Typography>
                 </DialogContentText>
                 <FormikProvider value={formik}>
@@ -67,7 +72,7 @@ const DiscussionForumEditor = ({ open, forum_id, onClose }) => {
                                     Cancel
                                 </Button>
                                 <Button variant="contained" type="submit">
-                                    Create Post
+                                    {editable ? "Update Post" : "Submit Response"}
                                 </Button>
                             </Stack>
                         </Stack>
@@ -78,4 +83,4 @@ const DiscussionForumEditor = ({ open, forum_id, onClose }) => {
     );
 };
 
-export default DiscussionForumEditor;
+export default DiscussionForumResponseEditor;
