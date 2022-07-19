@@ -1,6 +1,7 @@
 const Course = require("../models/course");
 const Student = require("../../students/models/student");
 const Tutor = require("../../tutors/models/tutor");
+const ForumService = require("../../forum/services/forum");
 
 const getAllCourses = async () => {
     return await Course.find({}).populate("tutor");
@@ -14,6 +15,7 @@ const createCourse = async (course) => {
         const tutor_ = await Tutor.findOne({ _id: course?.tutor });
         tutor_.courses.push(savedCourse.id)
         await tutor_.save();
+        ForumService.createForum(savedCourse.id)
     } catch (err){
         console.log(err)
     }

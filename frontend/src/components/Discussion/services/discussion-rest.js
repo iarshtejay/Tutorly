@@ -22,7 +22,10 @@ export const fetchCourseList = createAsyncThunk("discussion/courses", async (use
 
     return forums.map((f) => {
         const { _id: id, course_id: course } = f;
-        const { _id: course_id, name, description, imageURL: picture } = course;
+        const { _id: course_id, name, description: rawDescription, imageURL: picture } = course;
+        const words = rawDescription.split(" ");
+        const limit = 40;
+        const description = words.length > limit ? words.slice(0, limit).join(" ")+" ..." : rawDescription;
         return {
             id,
             course_id,

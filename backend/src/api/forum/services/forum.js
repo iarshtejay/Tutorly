@@ -6,6 +6,8 @@ const { ObjectId } = require("../../../db");
 const Course = require("../../courses/models/course");
 const User = require("../../userManagement/models/user");
 const Forum = require("../schema/forum");
+const Student = require("../../students/models/student");
+const Tutor = require("../../tutors/models/tutor");
 
 /**
  * @author Harsh Shah
@@ -37,19 +39,41 @@ const getForums = async (user_id) => {
         return [];
     }
 
-    const user = await User.findOne({ _id: user_id }).lean();
 
-    // if(user.role === "student"){
-    // } else {
-    // }
+    const user = await User.findOne({
+        _id: user_id,
+    }).populate({
+        path: "tutor",
+        populate: {
+            path: "courses",
+            populate: {
+                path: "course",
+                model: "Course",
+            },
+        },
+    })
+    .populate({
+        path: "student",
+        populate: {
+            path: "courses",
+            populate: {
+                path: "course",
+                model: "Course",
+            },
+        },
+    }).lean();
 
-    const course_id = (await Course.find({}).lean()).map((c) => c._id);
+    console.log(user);
+
+    const userRole = user.student || user.tutor;
+    const course_ids = userRole.courses.map(x => x.course._id);
 
     return await Forum.find({
-        course_id,
+        course_id: { $in: course_ids},
         status: "active",
     })
         .populate("course_id")
         .lean();
 };
+
 module.exports = { createForum, getForums };
