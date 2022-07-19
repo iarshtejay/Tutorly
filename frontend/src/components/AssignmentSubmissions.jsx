@@ -148,7 +148,7 @@ const AssignmentSubmissions = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
                             <Typography sx={{ mt: 4, mb: 2 }} variant="h5" component="div">
-                                Assignments
+                                Assignment Submissions
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={12}>
