@@ -39,7 +39,7 @@ export default function ForumPost({ list, onSelect }) {
                       item.id === selectedId ? blue[50] : "white",
                   }}
                   alignItems="flex-start"
-                  onClick={() => onSelectItem(item.id)}
+                  onClick={() => onSelectItem(item._id)}
                 >
                   <Box>
                     <Box>
@@ -48,7 +48,7 @@ export default function ForumPost({ list, onSelect }) {
                       </ListSubheader>
                     </Box>
 
-                    <Box display={"flex"}>
+                    <Box justifyContent={"center"} alignItems={"center"} display={"flex"} px={2}>
                       <ListItemAvatar>
                         <Badge
                           color={item.status === 1 ? "success" : "default"}
@@ -60,7 +60,7 @@ export default function ForumPost({ list, onSelect }) {
                           }}
                           overlap="circular"
                         >
-                          <Avatar alt={item.name} src="dummy" />
+                          <Avatar alt={item.author_by.firstname} src="dummy" />
                         </Badge>
                       </ListItemAvatar>
                       <ListItemText
