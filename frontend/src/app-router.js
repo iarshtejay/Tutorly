@@ -64,9 +64,8 @@ const AppRoutes = (props) => {
                     <Route path="discussion" element={<DiscussionLayout />}>
                         <Route index element={<CourseSelector />} />
                         <Route path="courses" element={<CourseSelector />} />
-                        <Route path="forum" element={<DiscussionForum />} />
-                        <Route path="forum/editor" element={<DiscussionForumEditor />} />
-                        <Route path="forum/:id" element={<DiscussionForumDetails />} />
+                        <Route path="forums/posts" element={<DiscussionForum />} />
+                        <Route path="forums/posts/:id" element={<DiscussionForumDetails />} />
                     </Route>
                 </Route>
                 <Route path="courses" element={<CourseLayout />}>

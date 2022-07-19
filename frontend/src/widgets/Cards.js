@@ -4,11 +4,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
 export default function TCard({ data, onSelect }) {
-    const { name, picture, description, caption, course_id } = data;
+    const { name, picture, description, caption, id } = data;
 
     return (
         <Card
-            onClick={() => onSelect(course_id)}
+            onClick={() => onSelect(id)}
             sx={{
                 height: "100%",
 

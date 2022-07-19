@@ -31,7 +31,7 @@ export default function AppLayout() {
                 },
                 {
                     label: "Forum",
-                    route: "discussion/forum",
+                    route: "discussion/forums/posts",
                 },
             ],
         },
