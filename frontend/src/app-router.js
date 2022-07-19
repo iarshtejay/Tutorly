@@ -34,6 +34,7 @@ import RecommendedTutorsDashboard from "./views/pages/RecommendedTutorsDashboard
 import VerifyEmail from "./components/VerifyEmail";
 import { Connections } from "./components/Connections/Connections";
 import AssignmentNew from "./components/AssignmentNew";
+import AssignmentSubmissions from "./components/AssignmentSubmissions";
 
 const AppRoutes = (props) => {
     return (
@@ -73,10 +74,11 @@ const AppRoutes = (props) => {
                     {/* <Route index path="quiz" element={<QuizList />} /> */}
                     <Route path=":id/quiz" element={<QuizList />} />
                     <Route path=":id/quiz/new" element={<QuizNew />} />
-                    <Route path=":id/assignments/new" element={<AssignmentNew />} />
                     <Route path=":id/quiz/:quizId/attempt" element={<QuizAttempt />} />
                     <Route path=":id/quiz/:quizId" element={<Quiz />} />
                     <Route path=":id/assignments" element={<AssignmentList />} />
+                    <Route path=":id/assignments/new" element={<AssignmentNew />} />
+                    <Route path=":id/assignments/:assId/submissions" element={<AssignmentSubmissions />} />
                     <Route path=":id/leaderboard" element={<Board />} />
                     <Route path=":id/review" element={<Review />} />
                 </Route>

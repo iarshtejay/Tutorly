@@ -24,12 +24,31 @@ import axios from "axios";
 import moment from "moment";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import SaveIcon from "@mui/icons-material/Save";
 
 function Row({ row }) {
     const navigate = useNavigate();
     const courseId = useParams().id;
+    const assignmentId = useParams().assId;
+
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
 
     const [open, setOpen] = useState(false);
+
+    const [feedback, setFeedback] = useState("");
+
+    const saveFeedback = async () => {
+        await axios({
+            method: "POST",
+            url: `${rootDomain}/course/${courseId}/assignment/${assignmentId}/feedback`,
+            data: {
+                attemptId: row._id,
+                feedback,
+            },
+        });
+        alert("Assignment feedback saved successfully!");
+    };
 
     return (
         <>
@@ -40,19 +59,12 @@ function Row({ row }) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.title}
+                    {row.studentName}
                 </TableCell>
-                <TableCell align="right">{moment(row.startDate).format("llll")}</TableCell>
-                <TableCell align="right">{moment(row.endDate).format("llll")}</TableCell>
+                <TableCell align="right">{moment(row.submittedAt).format("llll")}</TableCell>
                 <TableCell align="right">
-                    <a
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navigate(`/courses/${courseId}/assignments/${row._id}/submissions`);
-                        }}
-                    >
-                        View Submissions
+                    <a href="#" onClick={() => setOpen(!open)}>
+                        Enter Feedback
                     </a>
                 </TableCell>
             </TableRow>
@@ -77,6 +89,29 @@ function Row({ row }) {
                                     </a>
                                 ))}
                             </Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        multiline
+                                        rows={10}
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        label="Feedback"
+                                        value={row.feedback}
+                                        onChange={(e) => {
+                                            setFeedback(e.target.value);
+                                        }}
+                                        style={{ background: "white", borderRadius: "10px" }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant="contained" startIcon={<SaveIcon />} onClick={saveFeedback}>
+                                        Save
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12}></Grid>
+                            </Grid>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -85,18 +120,19 @@ function Row({ row }) {
     );
 }
 
-const AssignmentList = () => {
+const AssignmentSubmissions = () => {
     const navigate = useNavigate();
 
     const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
     const courseId = useParams().id;
+    const assignmentId = useParams().assId;
 
     const [assignments, setAssignments] = useState([]);
 
     const getAssignments = async () => {
         const response = await axios({
             method: "GET",
-            url: `${rootDomain}/course/${courseId}/assignment/list`,
+            url: `${rootDomain}/course/${courseId}/assignment/${assignmentId}/attempts`,
         });
         setAssignments(response.data.data);
     };
@@ -108,17 +144,6 @@ const AssignmentList = () => {
     return (
         <>
             <Container fixed>
-                <Box>
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        onClick={(e) => {
-                            navigate(`/courses/${courseId}/assignments/new`);
-                        }}
-                    >
-                        New Assignment
-                    </Button>
-                </Box>
                 <Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
@@ -133,13 +158,10 @@ const AssignmentList = () => {
                                         <TableRow>
                                             <TableCell />
                                             <TableCell>
-                                                <b>Assignment</b>
+                                                <b>Student Name</b>
                                             </TableCell>
                                             <TableCell align="right">
-                                                <b>Start Date</b>
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <b>Due Date</b>
+                                                <b>Submission Date</b>
                                             </TableCell>
                                             <TableCell align="right">
                                                 <b>Actions</b>
@@ -161,4 +183,4 @@ const AssignmentList = () => {
     );
 };
 
-export default AssignmentList;
+export default AssignmentSubmissions;

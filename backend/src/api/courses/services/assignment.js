@@ -6,6 +6,7 @@ const { Storage } = require("@google-cloud/storage");
 const { v4: uuidv4 } = require("uuid");
 const Assignment = require("../models/assignment");
 const AssignmentAttempt = require("../models/assignmentAttempt");
+const User = require("../../userManagement/models/user");
 
 // method to get the signed url for the assignment attachment
 const generateSignedUrlUpload = async () => {
@@ -96,6 +97,12 @@ const getAttempts = async (assignmentId) => {
             };
             const [url] = await file.getSignedUrl(options);
             attempts[i].attachmentUrls.push(url);
+        }
+        const user = await User.findById(attempts[0].student);
+        if (user) {
+            if (user.firstname && user.lastname) {
+                attempts[i].studentName = `${user.firstname} ${user.lastname}`;
+            }
         }
     }
 
