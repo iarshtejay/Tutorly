@@ -56,7 +56,7 @@ const io = new Server(server, {
 
       socket.on("new-message", (data) => {
         console.log(data)
-        socket.broadcast.emit("new-message", data);
+        socket.broadcast.emit("NEW_MESSAGE", data);
       });
 
   });

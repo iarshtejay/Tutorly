@@ -19,3 +19,7 @@ export const store = configureStore({
   },
   middleware: [thunk, logger],
 });
+
+export const currentState = store.getState();
+
+export const dispatch = store.dispatch
