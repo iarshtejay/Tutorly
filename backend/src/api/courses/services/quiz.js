@@ -2,6 +2,8 @@
     Author: Parth Shah
 */
 
+const db = require("../../userManagement/models/user");
+
 const Quiz = require("../models/quiz");
 const QuizAttempt = require("../models/quizAttempt");
 
@@ -78,6 +80,65 @@ const studentQuizzes = async (course, student) => {
     return quizzes;
 };
 
+// method to get leaderboard (Author: Parampal Singh)
+const studentsQuizLeaderboard = async (course) => {
+
+    const quizzes = await getAllQuizzes(course);
+
+    var studentlist = [];
+
+    if (quizzes) {
+        for (let i = 0; i < quizzes.length; i++) {
+            const quiz = quizzes[i];
+            const id = quiz._id;
+            const allAttempts = await QuizAttempt.find({
+                quiz: quiz._id
+            });
+
+            if (allAttempts) {
+                for (let j = 0; j < allAttempts.length; j++) {
+                    attempt = allAttempts[j];
+
+                    var studentDetails = await db
+                        .findById(
+                            attempt.student.toString()
+                        ).exec();                    
+
+                    if (studentlist.length > 0) {
+                        console.log(attempt.student.toString())
+                        var student = studentlist.find(e => e.id.toString() == attempt.student.toString())
+
+                        if (student) {
+                            var obj = studentlist.find(e => e.id.toString() == attempt.student.toString());
+                            obj.score = obj.score + attempt.score;
+                        }
+                        else {
+                            var studentObj = {};
+                            studentObj['id'] = attempt.student;
+                            studentObj['score'] = attempt.score;
+                            studentObj['name'] = studentDetails.firstname + " " + studentDetails.lastname;
+                            studentlist.push(studentObj)
+                        }
+                    }
+                    else {
+                        var studentObj = {};
+                        studentObj['id'] = attempt.student;
+                        studentObj['score'] = attempt.score;
+                        studentObj['name'] = studentDetails.firstname + " " + studentDetails.lastname;
+                        studentlist.push(studentObj)
+                    }
+                }
+            }
+        }
+
+        return studentlist;
+    }
+
+
+
+
+};
+
 module.exports = {
     createQuiz,
     deleteQuiz,
@@ -85,4 +146,5 @@ module.exports = {
     getQuiz,
     attemptQuiz,
     studentQuizzes,
+    studentsQuizLeaderboard
 };

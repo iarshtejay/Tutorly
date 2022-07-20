@@ -629,4 +629,38 @@ router.get("/:id/assignment/list/:studentId", async (req, res) => {
     }
 });
 
+/**
+ * @author Parampal Singh
+ * @description Leaderboard for a course
+ * @params req, res
+ * @return Leaderboard
+ */
+router.get("/:id/leaderboard", async (req, res) => {
+    try {
+        const course = req.params.id;
+        if (!course) {
+            return Utils.requiredRequestParamNotFound(res, "course", {
+                course: {
+                    param: id,
+                },
+            });
+        }
+
+        const leaderboard = await QuizService.studentsQuizLeaderboard(course);
+
+        return res.status(200).json({
+            message: "Leaderboard retrieved Successfully",
+            success: true,
+            data: leaderboard,
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error. Something went wrong while getting the leaderboard.",
+            success: false,
+        });
+    }
+
+})
+
 module.exports = router;
