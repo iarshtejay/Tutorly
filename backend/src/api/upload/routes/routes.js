@@ -42,7 +42,7 @@ router.get("/all/content", async (req, res) => {
         const upload = req.body.contentUpload;
         console.log("Uploaded Content: ", upload);
         if(!upload){
-            Utils.requiredRequestBodyNotFound(res, "upload", {contentUpload: {
+            Utils.requiredRequestBodyNotFound(res, "upload", {upload: {
                 param: Object.keys(Upload.toObject())
             }});
         }

@@ -20,4 +20,6 @@ const upload = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-module.exports = mongoose.model.upload || mongoose.model('upload', upload);
+// module.exports = mongoose.model.upload || mongoose.model('upload', upload);
+mongoose.model.upload = mongoose.model.upload || mongoose.model("upload", upload);
+module.exports = mongoose.model.upload;

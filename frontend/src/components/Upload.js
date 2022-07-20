@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, {useEffect, useState, Component} from 'react';
 import Typography from '@mui/material/Typography';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -8,20 +8,19 @@ import VideoFileIcon from '@mui/icons-material/VideoFile';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { Container, Divider, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardActions, CardContent, Link, Rating } from '@mui/material';
 import axios from "axios";
+import { useParams } from "react-router";
 
-let courseId = "";
+let courseId = "dfg65erewgg";
 const root = process.env.REACT_APP_DOMAIN;
 
-
 export default function Upload(){
-
-  courseId = "jkh354ghgh";
-  const [text, setText] = React.useState('')
+  courseId = useParams().id;
+  console.log("Course Id: ",courseId);
   const [contentUpload, setcontentUpload] = useState({
     courseId: courseId,
     textContent: "",
-    document: null,
-    video: ""
+    document: "Hi",
+    video: "Hello"
   });
   
   const onFileChange = event => { 
@@ -37,7 +36,7 @@ export default function Upload(){
   };  
 
   const handleFeedback = async () => {
-
+    console.log(contentUpload);
     await axios({
         method: "PUT",
         url: `${root}/api/upload/add`,
@@ -46,8 +45,10 @@ export default function Upload(){
         },
         data: {contentUpload}
     });
-    window.location.reload();
+
+    //window.location.reload();
 };
+
 
   return (
     <Container sx={{ maxWidth: 930, margin: 'auto', overflow: 'hidden' }}>
@@ -70,7 +71,7 @@ export default function Upload(){
                 <TableBody>
                   <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell style={{textAlign: "center"}}>
-                      <CKEditor editor = {ClassicEditor} data={text} onChange={(event, editor) => {
+                      <CKEditor editor = {ClassicEditor} onChange={(event, editor) => {
                         const data = editor.getData() 
                         setcontentUpload({ ...contentUpload, textContent: data})
                       }} />

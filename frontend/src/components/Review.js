@@ -42,11 +42,27 @@ const getFeedback = async () => {
 
     return responseData.data.data;
 };
+const getContent = async () => {
+    const responseData = await axios({
+        method: "GET",
+        params: {
+            id: courseId
+        },
+        url: `${root}/api/upload/content/${courseId}`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+  
+    console.log("All content: ", responseData.data.data);
+  
+    return responseData.data.data;
+  };
 
 export default function Review() {
     username = JSON.parse(localStorage.getItem("user")).firstName;
     courseId = useParams().id;
-    console.log("PARAM: ", useParams().id);
+    
     username = JSON.parse(localStorage.getItem("user")).firstName;
     const [feedbacks, setFeedbacks] = useState([]);
 
@@ -55,6 +71,15 @@ export default function Review() {
             setFeedbacks(feedbacks);
         });
     }, []);
+
+    const [content, setContent] = useState([]);
+
+    useEffect(() => {
+        getContent().then((content) => {
+            setContent(content);
+        });
+    }, []);
+
     const [formData, setFormData] = useReducer(formReducer, {});
     const [posting, setPosting] = useState(false);
     const handleSubmit = (event) => {
@@ -123,8 +148,9 @@ export default function Review() {
                     Overview
                 </Typography>
                 <Typography variant="body2" gutterBottom style={{textAlign: "justify", marginBottom: "1%"}}> 
-                    Python relies on indentation, using whitespace, to define scope; such as the scope of loops, 
-                    functions and classes. Other programming languages often use curly-brackets for this purpose.
+                {content.map((content) => (
+                    content.textContent
+                    ))}
                 </Typography>
                 <video autoplay controls style={{marginTop: "1%"}}>
                     <source src="https://www.youtube.com/watch?v=kqtD5dpn9C8" type="video/mp4" />
@@ -199,3 +225,4 @@ export default function Review() {
 }
 
 getFeedback();
+getContent();
