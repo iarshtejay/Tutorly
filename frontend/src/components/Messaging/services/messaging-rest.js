@@ -4,6 +4,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import httpClient from "../../../lib/httpClient";
+import { sendEvent } from "../chat-area/ChatArea";
 import { postMessage } from "../slice/MessageSlice";
 
 // dispatch(addToContactList({userId1, userId2}))
@@ -47,6 +48,8 @@ export const sendChatMessage = createAsyncThunk("messages/post", async (payload,
         is_important,
         message,
     });
+
+    sendEvent("new-message", {conversation_id, receiver_user_id, sender_user_id})
 
     thunkAPI.dispatch(postMessage(response.data));
 });

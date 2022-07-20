@@ -7,6 +7,7 @@ import { Box, FormControl, IconButton, TextField, Typography } from "@mui/materi
 import { grey, red } from "@mui/material/colors";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { sendEvent } from "../../../socket";
 import { sendChatMessage } from "../services/messaging-rest";
 
 const ChatEditor = () => {
@@ -28,7 +29,8 @@ const ChatEditor = () => {
             return;
         }
 
-        dispatch(sendChatMessage({ conversation_id, other_person, message, is_important: isImportant, sender_user_id: JSON.parse(localStorage.getItem("user")).id }));
+        const sender_user_id = JSON.parse(localStorage.getItem("user")).id
+        dispatch(sendChatMessage({ conversation_id, other_person, message, is_important: isImportant, sender_user_id }));
         messageHandler("");
     };
 

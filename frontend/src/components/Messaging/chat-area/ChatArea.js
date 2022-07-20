@@ -10,6 +10,12 @@ import { checkForNewMessage, fetchChats } from "../services/messaging-rest";
 import ChatEditor from "./ChatEditor";
 import ChatHeader from "./ChatHeader";
 import { ChatMessages } from "./ChatMessages";
+import io from "socket.io-client";
+const socket = io(process.env.REACT_APP_DOMAIN, {}).connect();
+
+export const sendEvent = async (name, data) => {
+    socket.emit(name, data);
+};
 
 const ChatArea = () => {
     const { isFetching, list } = useSelector((state) => state.messages.chat);
@@ -24,14 +30,31 @@ const ChatArea = () => {
         }
     }, [dispatch, activeChat.id]);
 
-    useEffect(() => {
-        let id = setInterval(() => {
-            if (activeChat.id) {
-                dispatch(checkForNewMessage(activeChat.id));
-            }
-        }, 2000);
-        return () => clearInterval(id);
-    }, [dispatch, activeChat.id]);
+    // useEffect(() => {
+    //     let id = setInterval(() => {
+    //         if (activeChat.id) {
+    //             dispatch(checkForNewMessage(activeChat.id));
+    //         }
+    //     }, 2000);
+    //     return () => clearInterval(id);
+    // }, [dispatch, activeChat.id]);
+
+    socket.on("NEW_MESSAGE", (data) => {
+        console.log(data);
+        const { conversation_id, receiver_user_id, sender_user_id } = data;
+        const user_id = JSON.parse(localStorage.getItem("user")).id;
+    
+        if (receiver_user_id !== user_id) {
+            return;
+        }
+    
+        if (activeChat.id !== conversation_id) {
+            return;
+        }
+    
+        dispatch(checkForNewMessage(conversation_id))
+    });
+    
 
     return (
         <Grid sx={{ height: "100%" }} container>
