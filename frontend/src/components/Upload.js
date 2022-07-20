@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, Component} from 'react';
 import Typography from '@mui/material/Typography';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -7,12 +7,47 @@ import SendIcon from '@mui/icons-material/Send';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { Container, Divider, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardActions, CardContent, Link, Rating } from '@mui/material';
+import axios from "axios";
+
+let courseId = "";
+const root = process.env.REACT_APP_DOMAIN;
 
 
-export default function Upload() {
+export default function Upload(){
 
+  courseId = "jkh354ghgh";
   const [text, setText] = React.useState('')
+  const [contentUpload, setcontentUpload] = useState({
+    courseId: courseId,
+    textContent: "",
+    document: null,
+    video: ""
+  });
+  
+  const onFileChange = event => { 
+    setcontentUpload({ selectedFile: event.target.files[0] }); 
+  }; 
+  
+  const onFileUpload = () => { 
+    const formData = new FormData(); 
+   
+    console.log("Selected File: ", contentUpload.selectedFile); 
+   
+    // axios.post("api/uploadfile", formData); 
+  };  
 
+  const handleFeedback = async () => {
+
+    await axios({
+        method: "PUT",
+        url: `${root}/api/upload/add`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: {contentUpload}
+    });
+    window.location.reload();
+};
 
   return (
     <Container sx={{ maxWidth: 930, margin: 'auto', overflow: 'hidden' }}>
@@ -37,21 +72,22 @@ export default function Upload() {
                     <TableCell style={{textAlign: "center"}}>
                       <CKEditor editor = {ClassicEditor} data={text} onChange={(event, editor) => {
                         const data = editor.getData() 
-                        setText(data)
+                        setcontentUpload({ ...contentUpload, textContent: data})
                       }} />
                     </TableCell>
                     <TableCell style={{textAlign: "center"}}>
                         <Button style={{borderColor: "#06283D", color: "#06283D"}} variant="outlined" endIcon={<VideoFileIcon />}>Upload Video</Button>
                       </TableCell>
                       <TableCell style={{textAlign: "center"}}>
-                        <Button style={{borderColor: "#06283D", color: "#06283D"}} variant="outlined" endIcon={<UploadFileIcon />}>Upload Document</Button>
+                      <input type="file" onChange={onFileChange}/>
+                        <Button onClick={onFileUpload} style={{borderColor: "#06283D", color: "#06283D"}} variant="outlined" endIcon={<UploadFileIcon />}>Upload Document</Button>
                       </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
             </TableContainer>
             <div className='d-grid d-md-flex justify-content-md-end'>
-                <Button variant="contained" endIcon={<SendIcon />} style={{marginTop: "2%"}}>Post</Button>
+                <Button variant="contained" endIcon={<SendIcon />} onClick={handleFeedback} style={{marginTop: "2%"}}>Post</Button>
             </div> 
             </div>
           </div>
