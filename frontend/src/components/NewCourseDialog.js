@@ -110,7 +110,7 @@ export default function NewCourseDialogue() {
     };
 
     const handleFinish = () => {
-        navigate("/my-courses/upload");
+        navigate("/my-courses/upload", { state : details });
     };
 
     const validateName = (event) => {
