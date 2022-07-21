@@ -7,43 +7,16 @@ import { theme } from "../theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+const FormData = require('form-data');
 
-const featuredPosts = [
-    {
-        title: "Java Management",
-        date: "June 12",
-        description: "Last June we announced a new cloud service running on Oracle Cloud Infrastructure (OCI) to help",
-        image: "https://source.unsplash.com/random?sig=1",
-        imageLabel: "Image Text",
-    },
-    {
-        title: "Discrete Mathematics",
-        date: "June 11",
-        description: "US K-12 mathematics has long been dominated by the notion that any legitimate pathway through high",
-        image: "https://source.unsplash.com/random?sig=2",
-        imageLabel: "Image Text",
-    },
-    {
-        title: "React JS",
-        date: "June 11",
-        description: "If you have been around the React game long enough, you will remember the React.createClass",
-        image: "https://source.unsplash.com/random?sig=3",
-        imageLabel: "Image Text",
-    },
-    {
-        title: "Node JS",
-        date: "June 11",
-        description: "Running subprocesses with Node.js is relatively simple. Node.js has a built-in module with a mature and stable API",
-        image: "https://source.unsplash.com/random?sig=4",
-        imageLabel: "Image Text",
-    },
-];
 
 const style = {
     position: "absolute",
@@ -59,9 +32,50 @@ const style = {
 };
 
 export default function Blog() {
+    const navigate = useNavigate();
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
+    const currentUser = JSON.parse(localStorage.getItem("user"))
     const [open, setOpen] = React.useState(false);
+    const [blogs, setBlogs] = React.useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [blog, setBlog] = useState({})
+    const formData = new FormData();
+    useEffect(() => {
+        async function getBlogs() {
+          const response = await axios.get(`${rootDomain}/blog/getBlogs`);
+          console.log(response)
+          if (response.status === 200) {
+            setBlogs(response.data.data)
+
+            navigate('/blogs')
+        } else {
+            alert(response.data.message)
+        }
+          
+        }
+        getBlogs();
+      }, []);
+
+    const saveBlog = async () => {
+        formData.append('title', blog.title);
+        formData.append('description', blog.description);
+        formData.append('image', blog.image);
+        formData.append('user_id', currentUser.id);
+
+        await axios.post(`${rootDomain}/blog/addBlogs`, formData).then(async (response) => {
+            console.log(response)
+            if (response.status === 200) {
+                alert(response.data.message)
+                window.location.reload();
+
+                navigate('/blogs')
+            } else {
+                alert(response.data.message)
+            }
+        })
+    };
+
     return (
         <React.Fragment>
             <Toolbar sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -80,6 +94,7 @@ export default function Blog() {
                                     Add Blog
                                 </Typography>
                                 <Box component="form" noValidate sx={{ mt: 1 }} borderRadius="50%">
+
                                     <TextField // Input field for First Name
                                         margin="normal"
                                         required
@@ -89,6 +104,9 @@ export default function Blog() {
                                         name="title"
                                         autoComplete="title"
                                         autoFocus
+                                        onChange={(e) => {
+                                            setBlog({ ...blog, title: e.target.value });
+                                        }}
                                     />
                                     <TextField // Input field for First Name
                                         margin="normal"
@@ -102,40 +120,30 @@ export default function Blog() {
                                         multiline
                                         rows={5}
                                         type="file"
-                                    />
-                                    <TextField
-                                        id="date"
-                                        margin="normal"
-                                        label="Date "
-                                        type="date"
-                                        fullWidth
-                                        multiline={false}
-                                        defaultValue="2017-05-24"
-                                        InputLabelProps={{
-                                            color: "secondary",
-                                            className: "DatePicker",
-                                            style: { color: "#009688" },
-                                            shrink: true,
+                                        onChange={(e) => {
+                                            setBlog({ ...blog, description: e.target.value });
                                         }}
-                                        inputProps={{
-                                            style: { color: "#009688" },
-                                        }}
+
                                     />
-                                    <input style={{ display: "none" }} id="contained-button-file" type="file" />
+
+                                    <input style={{ display: "none" }} id="contained-button-file" type="file" onChange={(e) => {
+                                        setBlog({ ...blog, image: e.target.files[0] });
+                                    }} />
                                     <label htmlFor="contained-button-file">
-                                        <Button variant="contained" color="primary" component="span" fullWidth>
+                                        <Button variant="contained" color="primary" component="span" fullWidth o>
                                             UPLOAD IMAGE
                                         </Button>
                                     </label>
                                 </Box>
                             </Container>
                         </Grid>
+
                         <Button // SignUp Button
                             type="submit"
                             fullWidth
-                            backgroundColor="#009688"
                             variant="contained"
-                            sx={{ mt: 3, mb: 2, backgroundColor: "#009688", ":hover": { backgroundColor: "#009688" } }}
+                            sx={{ mt: 3, mb: 2 }}
+                            onClick={saveBlog}
                         >
                             SAVE
                         </Button>
@@ -149,7 +157,7 @@ export default function Blog() {
                     <Container maxWidth="lg">
                         <main>
                             <Grid container spacing={4}>
-                                {featuredPosts.map((post) => (
+                                {blogs.map((post) => (
                                     <ChildBlogs key={post.title} post={post} />
                                 ))}
                             </Grid>

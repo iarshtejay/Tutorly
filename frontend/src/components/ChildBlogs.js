@@ -28,16 +28,22 @@ function ChildBlogs(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const base64String = btoa(String.fromCharCode(...new Uint8Array(post.img.data)));
+    var x=post.description
+    x=x.substring(0,100)+"..."
+    console.log(x)
+
+    
 
     return (
         <>
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Article Title
+                    {post.title}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse doloremque magnam error praesentium adipisci vel excepturi accusantium reiciendis expedita blanditiis voluptatibus ipsa recusandae iusto nemo, alias assumenda earum modi dicta non eveniet? Sequi culpa aspernatur deleniti magni, sed, ut omnis eveniet assumenda quis voluptas nisi voluptatem exercitationem asperiores, eaque consequuntur aliquam ad. Natus ipsam exercitationem provident magni a, iste odio quod aliquam necessitatibus error ut esse adipisci! Aspernatur ab atque possimus aliquid magnam hic dolores quisquam? Quam quibusdam suscipit quis amet sed natus quasi reprehenderit est nostrum optio nemo beatae enim quod quo consequatur doloremque recusandae similique, accusantium blanditiis ullam!
+                       {post.description}
                     </Typography>
                 </Box>
             </Modal>
@@ -51,14 +57,12 @@ function ChildBlogs(props) {
                             <Typography variant="subtitle1" color="text.secondary">
                                 {post.date}
                             </Typography>
-                            <Typography variant="subtitle1" paragraph>
-                                {post.description}
+                            <Typography variant="subtitle1" paragraph numberOfLines={1}>
+                                {x}
                             </Typography>
-                            <Typography variant="subtitle1" color="primary">
-                                Continue reading...
-                            </Typography>
+                            
                         </CardContent>
-                        <CardMedia component="img" sx={{ width: 160, display: { xs: "none", sm: "block" } }} image={post.image} alt={post.imageLabel} />
+                        <CardMedia component="img" sx={{ width: 160, display: { xs: "none", sm: "block" } }} image={`data:image/png;base64,${base64String}`} alt={post.imageLabel} />
                     </Card>
                 </CardActionArea>
             </Grid>
