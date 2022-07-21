@@ -48,10 +48,6 @@ const getForums = async (user_id) => {
             path: "tutor",
             populate: {
                 path: "courses",
-                populate: {
-                    path: "course",
-                    model: "Course",
-                },
             },
         })
         .populate({
@@ -66,10 +62,12 @@ const getForums = async (user_id) => {
         })
         .lean();
 
-    console.log(user);
-
-    const userRole = user.student || user.tutor;
-    const course_ids = userRole.courses.map((x) => x.course._id);
+    let course_ids = [];
+    if (user.student) {
+        course_ids = user.student.courses.map((x) => x.course._id);
+    } else {
+        course_ids = user.tutor.courses.map((x) => x._id);
+    }
 
     return await Forum.find({
         course_id: { $in: course_ids },

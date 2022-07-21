@@ -115,7 +115,7 @@ const DiscussionForumDetails = () => {
                                                     {response.author_by.firstname[0]}
                                                 </Avatar>
                                             }
-                                            title={response.title}
+                                            title={`${response.author_by.firstname} ${response.author_by.lastname}`}
                                             subheader={new Date(response.audit.created_on).toDateString()}
                                         />
                                         <CardContent>
