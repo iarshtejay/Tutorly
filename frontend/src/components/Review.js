@@ -41,11 +41,45 @@ const getFeedback = async () => {
 
     return responseData.data.data;
 };
+const getContent = async () => {
+    const responseData = await axios({
+        method: "GET",
+        params: {
+            id: courseId
+        },
+        url: `${root}/api/upload/content/${courseId}`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+  
+    console.log("All content: ", responseData.data.data);
+  
+    return responseData.data.data;
+  };
+
+
+  const getCourseDetails = async () => {
+    const responseData = await axios({
+        method: "GET",
+        params: {
+            id: courseId
+        },
+        url: `${root}/api/course/${courseId}`,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    console.log("All course Details: ", responseData.data.data);
+
+    return responseData.data.data;
+};
 
 export default function Review() {
     username = JSON.parse(localStorage.getItem("user")).firstName;
     courseId = useParams().id;
-    console.log("PARAM: ", useParams().id);
+    console.log("Course Id: ", courseId);
     username = JSON.parse(localStorage.getItem("user")).firstName;
     const [feedbacks, setFeedbacks] = useState([]);
 
@@ -54,6 +88,25 @@ export default function Review() {
             setFeedbacks(feedbacks);
         });
     }, []);
+
+    const [content, setContent] = useState([]);
+
+    useEffect(() => {
+        getContent().then((content) => {
+            setContent(content);
+        });
+    }, []);
+
+    const [getDetails, setDetails] = useState([]);
+
+    useEffect(() => {
+        getCourseDetails().then((course) => {
+            setDetails(course);
+        });
+    }, []);
+
+console.log("Set Details: ", getDetails);
+
     const [formData, setFormData] = useReducer(formReducer, {});
     const [posting, setPosting] = useState(false);
     const handleSubmit = (event) => {
@@ -104,26 +157,30 @@ export default function Review() {
   return (
     <Container sx={{ maxWidth: 930, margin: 'auto', overflow: 'hidden' }}>
         <Typography variant="h5" component="h5" style={{color: "#009687", textAlign: "center", marginBottom: "1%"}}>
-            Intermediate Python 101
+        {getDetails.map((course) => (
+                    course.name
+                    ))}
         </Typography>
         <Typography variant="body2" gutterBottom style={{textAlign: "justify", marginBottom: "1%"}}> 
-            This course is an excellent introduction to basic programming ideas as well as the Python programming language. 
-            By the conclusion, you'll know how to write in Python and be able to transfer your knowledge from the Tutorly 
-            platform to your own computer. Python is a sophisticated, adaptable, and general-purpose programming language 
-            that can handle any task you throw at it.
+        {getDetails.map((course) => (
+                    course.description
+                    ))}
         </Typography>
         <Divider variant='middle' />
         <Grid container columns={{ xs: 4, md: 12 }} style={{marginTop: "2%"}}>
             <Grid item xs={6} md={8} style={{paddingRight: "1%"}}>
                 <Typography variant="overline" display="block" gutterBottom>
-                    Module 1: Python Recap
+                    Module 1: {getDetails.map((course) => (
+                    course.name
+                    ))}
                 </Typography>
                 <Typography variant="subtitle2" gutterBottom component="div">
                     Overview
                 </Typography>
                 <Typography variant="body2" gutterBottom style={{textAlign: "justify", marginBottom: "1%"}}> 
-                    Python relies on indentation, using whitespace, to define scope; such as the scope of loops, 
-                    functions and classes. Other programming languages often use curly-brackets for this purpose.
+                {content.map((content) => (
+                    content.textContent
+                    ))}
                 </Typography>
                 <video autoplay controls style={{marginTop: "1%"}}>
                     <source src="https://www.youtube.com/watch?v=kqtD5dpn9C8" type="video/mp4" />
@@ -198,3 +255,5 @@ export default function Review() {
 }
 
 getFeedback();
+getContent();
+getCourseDetails();
