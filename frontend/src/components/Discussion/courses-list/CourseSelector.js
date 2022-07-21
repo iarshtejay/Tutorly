@@ -27,7 +27,6 @@ const CourseSelector = () => {
 
     const onSelectedHandler = (id) => {
         dispatch(setActiveCourse(id));
-        dispatch(setActiveTab("Forum"));
         navigate("/discussion/forums/posts", { state: { forum_id: id } });
     };
 
