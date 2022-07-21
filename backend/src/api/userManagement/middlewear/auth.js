@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 const jwt = require("jsonwebtoken");
 
 exports.verifyToken = (req, res, next) => {

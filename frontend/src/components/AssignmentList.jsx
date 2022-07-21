@@ -1,3 +1,7 @@
+/*
+    Author: Parth Shah
+*/
+
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -14,40 +18,52 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
-const assignments = [
-    {
-        id: 1,
-        name: "Assignment 1",
-        attachment: "Assignment1_S22.pdf",
-        score: "80/100",
-        dueDate: "May 27, 2022 11:59 PM",
-        description: "This is the first assignment. Download the file for more information.",
-        attachmentSize: "1.5 MB",
-    },
-    {
-        id: 2,
-        name: "Assignment 2",
-        attachment: "Assignment2_S22.pdf",
-        score: "92/100",
-        dueDate: "June 27, 2022 11:59 PM",
-        description: "This is the second assignment. Download the file for more information.",
-        attachmentSize: "1.9 MB",
-    },
-    {
-        id: 3,
-        name: "Assignment 3",
-        attachment: "Assignment3_S22.pdf",
-        score: "86/100",
-        dueDate: "August 27, 2022 11:59 PM",
-        description: "This is the third assignment. Download the file for more information.",
-        attachmentSize: "2.5 MB",
-    },
-];
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import moment from "moment";
+import AddIcon from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
+import AttachmentIcon from "@mui/icons-material/Attachment";
 
 function Row({ row }) {
+    const navigate = useNavigate();
+    const courseId = useParams().id;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
+
     const [open, setOpen] = useState(false);
+
+    const processAttachment = async (e) => {
+        const attachments = [];
+        for (let i = 0; i < e.target.files.length; i++) {
+            const response = await axios({
+                method: "GET",
+                url: `${rootDomain}/course/${courseId}/assignment/attachment/upload`,
+            });
+
+            await axios({
+                method: "PUT",
+                url: response.data.data.url,
+                headers: {
+                    "content-type": "application/octet-stream",
+                },
+                data: e.target.files[i],
+            });
+            attachments.push(response.data.data.id);
+        }
+        await axios({
+            method: "PUT",
+            url: `${rootDomain}/course/${courseId}/assignment/${row._id}/attempt`,
+            data: {
+                attempt: {
+                    student: user.id,
+                    attachments: attachments,
+                },
+            },
+        });
+        alert("Assignment Submitted Successfully");
+    };
 
     return (
         <>
@@ -58,10 +74,31 @@ function Row({ row }) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.title}
                 </TableCell>
-                <TableCell align="right">{row.score}</TableCell>
-                <TableCell align="right">{row.dueDate}</TableCell>
+                <TableCell align="right">{moment(row.startDate).format("llll")}</TableCell>
+                <TableCell align="right">{moment(row.endDate).format("llll")}</TableCell>
+                {user.role === "tutor" && (
+                    <TableCell align="right">
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(`/courses/${courseId}/assignments/${row._id}/submissions`);
+                            }}
+                        >
+                            View Submissions
+                        </a>
+                    </TableCell>
+                )}
+                {user.role === "student" && (
+                    <TableCell align="right">
+                        <Button variant="contained" component="label" sx={{ mr: 2 }}>
+                            Submit
+                            <input hidden multiple type="file" onChange={processAttachment} />
+                        </Button>
+                    </TableCell>
+                )}
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -70,13 +107,26 @@ function Row({ row }) {
                             <Typography variant="body1" gutterBottom component="div">
                                 {row.description}
                             </Typography>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Attachments
-                            </Typography>
+                            {row.attachments.length > 0 && (
+                                <Typography variant="h6" gutterBottom component="div">
+                                    Attachments
+                                </Typography>
+                            )}
                             <Typography variant="body1" gutterBottom component="div"></Typography>
                             <Typography variant="body1" gutterBottom component="div">
-                                <a href="#">{row.attachment}</a> {row.attachmentSize}
+                                {row.attachmentUrls.map((url) => (
+                                    <a href={url} key={url}>
+                                        Attachment.pdf
+                                        <br />
+                                    </a>
+                                ))}
                             </Typography>
+                            {row.feedback && (
+                                <Typography variant="body1" gutterBottom component="div">
+                                    <b>Tutor Feedback: </b>
+                                    {row.feedback}
+                                </Typography>
+                            )}
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -87,9 +137,49 @@ function Row({ row }) {
 
 const AssignmentList = () => {
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const rootDomain = process.env.REACT_APP_BACKEND_BASE_URL;
+    const courseId = useParams().id;
+
+    const [assignments, setAssignments] = useState([]);
+
+    const getAssignments = async () => {
+        if (user.role === "tutor") {
+            const response = await axios({
+                method: "GET",
+                url: `${rootDomain}/course/${courseId}/assignment/list`,
+            });
+            setAssignments(response.data.data);
+        } else {
+            const response = await axios({
+                method: "GET",
+                url: `${rootDomain}/course/${courseId}/assignment/list/${user.id}`,
+            });
+            setAssignments(response.data.data);
+        }
+    };
+
+    useEffect(() => {
+        getAssignments();
+    }, []);
+
     return (
         <>
             <Container fixed>
+                {user.role === "tutor" && (
+                    <Box>
+                        <Button
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            onClick={(e) => {
+                                navigate(`/courses/${courseId}/assignments/new`);
+                            }}
+                        >
+                            New Assignment
+                        </Button>
+                    </Box>
+                )}
                 <Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
@@ -107,16 +197,19 @@ const AssignmentList = () => {
                                                 <b>Assignment</b>
                                             </TableCell>
                                             <TableCell align="right">
-                                                <b>Score</b>
+                                                <b>Start Date</b>
                                             </TableCell>
                                             <TableCell align="right">
                                                 <b>Due Date</b>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <b>Actions</b>
                                             </TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {assignments.map((row) => (
-                                            <Row key={row.id} row={row} />
+                                            <Row key={row._id} row={row} />
                                         ))}
                                     </TableBody>
                                 </Table>

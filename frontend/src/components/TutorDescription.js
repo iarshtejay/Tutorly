@@ -1,3 +1,7 @@
+/**
+ * @author Arshdeep Singh
+ */
+
 import React from "react";
 const TutorDescription = ({ tutorDescription }) => {
     return (

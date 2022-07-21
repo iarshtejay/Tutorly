@@ -24,7 +24,7 @@ router.get("/:id", async (req, res) => {
  * @return message Id
  */
 router.post("/", async (req, res) => {
-    const { sender_user_id, receiver_user_id, conversation_id, message } = req.body;
+    const { sender_user_id, receiver_user_id, conversation_id, is_important, message } = req.body;
 
     if (sender_user_id === undefined || receiver_user_id === undefined || conversation_id === undefined || message === undefined) {
         return res.status(400).json({
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
         });
     }
 
-    const response = await postMessage(sender_user_id, receiver_user_id, conversation_id, message);
+    const response = await postMessage(sender_user_id, receiver_user_id, conversation_id, is_important, message);
 
     return res.json(response);
 });

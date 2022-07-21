@@ -6,13 +6,18 @@ import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { Box, Button, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { fetchForumPost } from "../services/discussion-rest";
+import DiscussionForumEditor from "./DiscussionForumEditor";
 import ForumPost from "./ForumPost";
 import SearchBar from "./SearchBar";
 
 const DiscussionForum = () => {
+    const location = useLocation();
+    const { forum_id } = location.state;
+
     const [searchKey, setSearchKey] = useState("");
+    const [createPostDialog, toggleCreatePostDialog] = useState(false);
     const isSearchPerformed = searchKey.length !== 0;
 
     const dispatch = useDispatch();
@@ -20,8 +25,8 @@ const DiscussionForum = () => {
     const { isFetching, filteredList, list } = useSelector((state) => state.discussion.posts);
 
     useEffect(() => {
-        dispatch(fetchForumPost());
-    }, [dispatch]);
+        dispatch(fetchForumPost(forum_id));
+    }, [dispatch, forum_id]);
 
     const onChangeHandler = (key) => {
         setSearchKey(key);
@@ -32,12 +37,12 @@ const DiscussionForum = () => {
     useEffect(() => {}, [searchKey, isSearchPerformed, dispatch]);
 
     const onSelectHandler = (id) => {
-        navigate("/discussion/forum/" + id);
+        navigate("/discussion/forums/posts/" + id);
     };
 
     const createPostHandler = () => {
-      dispatch(navigate("/discussion/forum/editor"))
-    }
+        toggleCreatePostDialog(true)
+    };
 
     return (
         <>
@@ -50,9 +55,9 @@ const DiscussionForum = () => {
                 >
                     <Container maxWidth="md">
                         <Box display={"flex"} alignItems={"center"}>
-                            <SearchBar onChange={onChangeHandler} />
+                            <SearchBar label={"Search Posts"} onChange={onChangeHandler} />
                             <Box minWidth={200} ml={5}>
-                                <Button variant="outlined"  onClick={createPostHandler} startIcon={<AddIcon/>}>
+                                <Button variant="outlined" onClick={createPostHandler} startIcon={<AddIcon />}>
                                     Create Post
                                 </Button>
                             </Box>
@@ -83,6 +88,8 @@ const DiscussionForum = () => {
                     )}
                 </Box>
             </Box>
+
+            {createPostDialog && <DiscussionForumEditor open={createPostDialog} forum_id={forum_id} onClose={() => toggleCreatePostDialog(false)} />}
         </>
     );
 };

@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 const router = require("express").Router();
 const verifySignUp = require("../middlewear/verifySignup");
 const services = require("../services/user")

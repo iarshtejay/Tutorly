@@ -18,6 +18,10 @@ const model = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "User",
     },
+    is_important: {
+        type: Boolean,
+        default: false
+    },
     status: {
         type: String,
         default: "SENT",

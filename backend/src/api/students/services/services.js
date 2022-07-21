@@ -4,30 +4,30 @@ const Tutor = require("../../tutors/models/tutor");
 
 const checkIfCourseExistsAndUpdate = (student, courseId, archived) => {
     for (let i = 0; i < student.courses.length; i++) {
-        const course = student.courses[i];
-        if (course._id === courseId) {
-            course.archived = archived;
+        const currCourse = student.courses[i];
+        if (currCourse.course.valueOf() === courseId) {
+            currCourse.archived = archived;
             return student;
-        } else if ((course._id !== courseId) && (i === student.courseslength - 1) && archived) {
+        } else if ((currCourse.course.valueOf() !== courseId) && (i === student.courses.length - 1) && archived) {
             student.courses.push({
-                _id: courseId,
+                course: courseId,
                 progress: 0,
                 archived: archived
             })
             return student;
         }
     };
-
+    return student;
 }
 
 const checkIfCourseExistsAndUnEnroll = (oldStudent, oldCourse) => {
-    oldStudent.courses = (oldStudent.courses).filter(c_ => c_.course.valueOf() !== oldCourse._id.valueOf())
-    oldCourse.students = (oldCourse.students).filter(s_ => s_._id.valueOf() !== oldStudent._id.valueOf())
+    oldStudent.courses = (oldStudent.courses).filter(c_ => c_.course?.valueOf() !== oldCourse?._id?.valueOf())
+    oldCourse.students = (oldCourse.students).filter(s_ => s_._id?.valueOf() !== oldStudent?._id?.valueOf())
     return { oldStudent: oldStudent, oldCourse: oldCourse }
 }
 
 const checkIfCourseExistsAndEnroll = (oldStudent, oldCourse) => {
-    if ((oldStudent.courses).find(c_ => c_.course.valueOf() === oldCourse._id.valueOf())) {
+    if ((oldStudent.courses).find(c_ => c_.course?.valueOf() === oldCourse?._id.valueOf())) {
         return { oldStudent: oldStudent, oldCourse: oldCourse }
     }
     oldStudent.courses = [...(oldStudent.courses), {course:oldCourse._id, progress:0, archived:false}]

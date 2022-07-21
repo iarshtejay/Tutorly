@@ -3,7 +3,7 @@
  */
 import { TextField } from "@mui/material";
 
-const SearchBar = ({ onChange }) => {
+const SearchBar = ({  label, onChange }) => {
 
   const onChangeHandler = (key) => {
     onChange(key);
@@ -13,7 +13,7 @@ const SearchBar = ({ onChange }) => {
     <TextField
       fullWidth
       id="outlined-basic-2"
-      label="Search Contact"
+      label={label}
       variant="outlined"
       onChange={(e) => onChangeHandler(e.target.value)}
     />

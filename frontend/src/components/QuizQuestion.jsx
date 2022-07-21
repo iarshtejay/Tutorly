@@ -1,3 +1,7 @@
+/*
+    Author: Parth Shah
+*/
+
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
@@ -8,6 +12,7 @@ import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 
 const QuizQuestion = ({ question, type = "display", setAnswer }) => {
+    // The following method is used to set the answer to the question for display type question
     const getAnswer = () => {
         return question.options.find((option) => option.isCorrect).option;
     };

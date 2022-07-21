@@ -1,3 +1,6 @@
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ */
 import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { useLocation, useParams } from "react-router";
@@ -19,12 +22,14 @@ export default function CourseDetails() {
     }, [dispatch]);
 
     const enrolledCourses = useSelector(state => state.course.enrolledCourses.data);
-    const initialEnrollStatus = enrolledCourses.filter(itr_ => itr_?.course?._id === id).length>0 ? true : false;
+    const enrolledCourseDetail = enrolledCourses.filter(itr_ => itr_?.course?._id === id)?enrolledCourses.filter(itr_ => itr_?.course?._id === id)[0]:undefined;
+    const initialEnrollStatus = enrolledCourseDetail ? true : false;
+    const initialArchiveStatus = enrolledCourseDetail?.archive ? true : false;
     
     return (
         <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden", padding: 2 }}>
             <CourseDetailsHeading title={courseDetail?.data[0]?.name}></CourseDetailsHeading>
-            {isTutor==='true'?(<TutorCourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} courseId={id}></TutorCourseBanner>):(<CourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} initialEnrollStatus={initialEnrollStatus} courseId={id}></CourseBanner>)}
+            {isTutor==='true'?(<TutorCourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} courseId={id}></TutorCourseBanner>):(<CourseBanner courseDescription={courseDetail?.data[0]?.description} courseImage={courseDetail?.data[0]?.imageURL} tutor={courseDetail?.data[0]?.tutor} courseRating={courseDetail?.data[0]?.rating} initialEnrollStatus={initialEnrollStatus} initialArchiveStatus={initialArchiveStatus} courseId={id}></CourseBanner>)}
         </Paper>
     );
 }

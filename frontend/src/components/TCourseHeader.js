@@ -1,3 +1,7 @@
+/**
+ * @author Bharatwaaj Shankaranarayanan
+ */
+
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AppBar from "@mui/material/AppBar";
@@ -74,7 +78,7 @@ function TCourseHeader(props) {
                         </Grid>
                         <Grid item>
                             <IconButton color="inherit" sx={{ p: 0.5 }}>
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                                <Avatar  />
                             </IconButton>
                         </Grid>
                     </Grid>

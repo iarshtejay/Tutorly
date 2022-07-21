@@ -1,3 +1,8 @@
+
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({

@@ -2,13 +2,22 @@
  * @author Harsh Shah
  */
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import httpClient from "../../../lib/httpClient";
-import { openSocket, sendEvent } from "../../../socket";
+import { sendEvent } from "../chat-area/ChatArea";
 import { postMessage } from "../slice/MessageSlice";
 
 // dispatch(addToContactList({userId1, userId2}))
 export const addToContactList = createAsyncThunk("messages/add-contact", async (convo) => {
-    return (await httpClient.post("/conversation", convo)).data;
+    const response =  (await httpClient.post("/conversation", convo)).data;
+
+    if(response.id === null){
+        toast.error("Conversation already exists")
+    } else {
+        toast.success("Request sent for connection")
+    }
+
+    return response;
 });
 
 // Integrated
@@ -28,7 +37,7 @@ export const checkForNewMessage = createAsyncThunk("messages/new-chat", async (c
 });
 
 export const sendChatMessage = createAsyncThunk("messages/post", async (payload, thunkAPI) => {
-    const { message, conversation_id, sender_user_id, other_person } = payload;
+    const { message, conversation_id, sender_user_id, other_person, is_important } = payload;
 
     const receiver_user_id = other_person.user_id;
 
@@ -36,10 +45,28 @@ export const sendChatMessage = createAsyncThunk("messages/post", async (payload,
         sender_user_id,
         receiver_user_id,
         conversation_id,
+        is_important,
         message,
     });
 
-    thunkAPI.dispatch(postMessage(response.data));
+    sendEvent("new-message", {conversation_id, receiver_user_id, sender_user_id})
 
-    sendEvent("new-message", response.data);
+    thunkAPI.dispatch(postMessage(response.data));
+});
+
+
+export const deleteConversation = createAsyncThunk("messages/delete-contact", async (conversation_id, thunkAPI) => {
+   
+
+    const response = await httpClient.delete("/conversation", {
+        params: {
+            conversation_id
+        }
+    });
+
+    if(response.status){
+        toast.error("Connection removed successfully")
+  }
+
+    thunkAPI.dispatch(fetchContactList(JSON.parse(localStorage.getItem("user")).id));
 });

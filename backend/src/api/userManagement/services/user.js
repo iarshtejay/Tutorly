@@ -1,3 +1,7 @@
+/*
+    Author: Manasvi(mn838732@dal.ca)
+*/
+
 const db = require("../models/user");
 var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
@@ -98,6 +102,12 @@ exports.login = async (req, res) => {
         .exec(async (err, user) => {
             if (err) {
                 return;
+            }
+            if (user.status==="Pending") {
+                return res.status(500).json({
+                    message: "Please verify your email first",
+                    success: false,
+                });
             }
             if (!user) {
                 return res.status(404).json({
