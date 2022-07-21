@@ -14,5 +14,6 @@ router.use('/feedback',require('../api/feedback/routes/routes'))
 router.use('/user',require('../api/userManagement/controllers/user'));
 router.use('/forum',require('../api/forum/controllers/forum'));
 router.use('/upload',require('../api/upload/routes/routes'));
+router.use('/blog',require('../api/blogs/controllers/blogs'));
 
 module.exports = router;
