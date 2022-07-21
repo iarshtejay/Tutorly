@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router";
 import Loader from "../../../widgets/Loader";
 import { fetchPostDetails, updatePostResponseOfForum } from "../services/discussion-rest";
 import DiscussionForumResponseEditor from "./DiscussionForumResponseEditor";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const DiscussionForumDetails = () => {
     const navigate = useNavigate();
@@ -97,7 +98,13 @@ const DiscussionForumDetails = () => {
                                 <Box display={"flex"}>
                                     <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
                                         <Box component={"span"} height={"fit-content"}>
-                                            {editable && <Checkbox checked={response.status} sx={{ "& .MuiSvgIcon-root": { fontSize: 30 }, mr: 4 }} onChange={(e) => updateResponseStatusHandler(e, details._id, response._id)} />}
+                                            {editable ? (
+                                                <Checkbox checked={response.status} sx={{ "& .MuiSvgIcon-root": { fontSize: 30 }, mr: 4 }} onChange={(e) => updateResponseStatusHandler(e, details._id, response._id)} />
+                                            ) : (
+                                                <Box px={2}>
+                                                    <CheckCircleIcon sx={{ color: "#009688" }} />
+                                                </Box>
+                                            )}
                                         </Box>
                                     </Box>
 

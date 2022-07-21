@@ -57,7 +57,7 @@ const CourseSelector = () => {
                     }}
                 >
                     <Container maxWidth="md">
-                        <SearchBar onChange={onChangeHandler} />
+                        <SearchBar label={"Search Course"} onChange={onChangeHandler} />
                     </Container>
                 </Box>
                 <Box sx={{ py: 1, px: 4 }} height={"80%"}>
