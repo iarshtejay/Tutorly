@@ -48,16 +48,21 @@ export default function NewCourseDialogue() {
         setOpen(false);
     };
 
+    const [newCourse, setnewCourse] = useState([]);
+
     const handleRegister = async () => {
         const res = await httpClient.post("/course/add", {
             course: { ...details, startDate: startDate, endDate:endDate}
         });
-        if (res.data.data.success) {
-            setRegisterFailed(false);
-            setRegistered(null);
-        } else {
+        console.log("Temp: ",res.data.data);
+        if (res.data.success) {
+            setnewCourse(res.data.data)
+            console.log("new response: ",res.data.data);
             setRegistered(true);
             setRegisterFailed(null);
+        } else {
+            setRegisterFailed(false);
+            setRegistered(null);
         }
     };
 
@@ -107,7 +112,7 @@ export default function NewCourseDialogue() {
     };
 
     const handleFinish = () => {
-        navigate("/my-courses/upload");
+        navigate("/my-courses/upload", {state: newCourse});
     };
 
     const validateName = (event) => {

@@ -8,29 +8,54 @@ import VideoFileIcon from '@mui/icons-material/VideoFile';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { Container, Divider, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, CardActions, CardContent, Link, Rating } from '@mui/material';
 import axios from "axios";
-import { useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 
-let courseId = "dfg65erewgg";
+let courseId = "";
 const root = process.env.REACT_APP_DOMAIN;
 
+
 export default function Upload(){
-  courseId = useParams().id;
-  console.log("Course Id: ",courseId);
+  
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log("State: ",location.state);
+  const contentName = location.state.name;
+  courseId = location.state._id? location.state._id : "dfg65erewgg";
+  console.log("New course id: ",courseId);
+   console.log("Detail Name: ", contentName);
   const [contentUpload, setcontentUpload] = useState({
     courseId: courseId,
     textContent: "",
     document: "Hi",
-    video: "Hello"
+    video: "Hello",
   });
   
   const onFileChange = event => { 
-    setcontentUpload({ selectedFile: event.target.files[0] }); 
+    setcontentUpload({ document: event.target.files[0] }); 
   }; 
   
   const onFileUpload = () => { 
     const formData = new FormData(); 
    
-    console.log("Selected File: ", contentUpload.selectedFile); 
+    console.log("Selected File: ", contentUpload.document); 
+   
+    // axios.post("api/uploadfile", formData); 
+  };  
+
+  const onVideoChange = event => { 
+    const tempVideo = event.target.files[0];
+    const name1 = tempVideo.name;
+    console.log("Name: ", name1);
+    setcontentUpload({ ...contentUpload, video: name1});
+    
+    console.log("Selected File: ", tempVideo.name); 
+    console.log("Tv: ",contentUpload)
+  }; 
+  
+  const onVideoUpload = () => { 
+    const formData = new FormData(); 
+    console.log("FormData: ", formData)
+    console.log("Selected File: ", contentUpload); 
    
     // axios.post("api/uploadfile", formData); 
   };  
@@ -45,7 +70,7 @@ export default function Upload(){
         },
         data: {contentUpload}
     });
-
+    navigate("/my-courses");
     //window.location.reload();
 };
 
@@ -53,7 +78,7 @@ export default function Upload(){
   return (
     <Container sx={{ maxWidth: 930, margin: 'auto', overflow: 'hidden' }}>
         <Typography variant="h5" component="h5" style={{color: "#009687", textAlign: "center", marginBottom: "1%"}}>
-            Upload Content - Intermediate Python 101
+            Upload Content - {contentName}
         </Typography>
         <Divider variant='middle' style={{marginBottom: "2%"}} />
         <div className='container'>
@@ -77,7 +102,8 @@ export default function Upload(){
                       }} />
                     </TableCell>
                     <TableCell style={{textAlign: "center"}}>
-                        <Button style={{borderColor: "#06283D", color: "#06283D"}} variant="outlined" endIcon={<VideoFileIcon />}>Upload Video</Button>
+                      <input type="file" name="video" accept="video/*" class="form-control-file" onChange={onVideoChange}></input> 
+                        <Button onClick={onVideoUpload} style={{borderColor: "#06283D", color: "#06283D"}} variant="outlined" endIcon={<VideoFileIcon />}>Upload Video</Button>
                       </TableCell>
                       <TableCell style={{textAlign: "center"}}>
                       <input type="file" onChange={onFileChange}/>
